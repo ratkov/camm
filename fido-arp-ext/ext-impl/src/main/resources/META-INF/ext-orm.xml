@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_1_0.xsd">
+	<persistence-unit-metadata>
+		<xml-mapping-metadata-complete/>
+		<persistence-unit-defaults>
+			<access>PROPERTY</access>
+		</persistence-unit-defaults>
+	</persistence-unit-metadata>
+	<mapped-superclass class="com.fidoarp.catalog.model.impl.AppModelImpl">
+		<attributes>
+			<id name="appId">
+				<column name="ID" />
+			</id>
+			<basic name="userId">
+				<column name="USER_ID" />
+			</basic>
+			<basic name="organizationId">
+				<column name="ORGANIZATION_ID" />
+			</basic>
+			<basic name="createdDate">
+				<column name="CREATED_DATE" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="description" />
+			<basic name="statusId">
+				<column name="STATUS_ID" />
+			</basic>
+			<basic name="statusChangeDate">
+				<column name="STATUS_CHANGE_DATE" />
+				<temporal>TIMESTAMP</temporal>
+			</basic>
+			<basic name="clientName">
+				<column name="CLIENT_NAME" />
+			</basic>
+			<basic name="clientOkpo">
+				<column name="CLIENT_OKPO" />
+			</basic>
+			<basic name="contactPhone">
+				<column name="CONTACT_PHONE" />
+			</basic>
+			<basic name="creditAmount">
+				<column name="CREDIT_AMOUNT" />
+			</basic>
+			<basic name="comments" />
+			<basic name="questionnaire" />
+			<transient name="commentsCurrentLanguageId" />
+			<transient name="commentsMap" />
+			<transient name="descriptionCurrentLanguageId" />
+			<transient name="descriptionMap" />
+			<transient name="modelAttributes" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="userUuid" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.fidoarp.catalog.model.impl.AppStatusModelImpl">
+		<attributes>
+			<id name="appStatusId">
+				<column name="ID" />
+			</id>
+			<basic name="appStatusCode">
+				<column name="CODE" />
+			</basic>
+			<basic name="name" />
+			<basic name="description" />
+			<transient name="modelAttributes" />
+			<transient name="nameCurrentLanguageId" />
+			<transient name="nameMap" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.fidoarp.catalog.model.impl.ProductTypeModelImpl">
+		<attributes>
+			<id name="productTypeId">
+				<column name="ID" />
+			</id>
+			<basic name="productTypeCode">
+				<column name="CODE" />
+			</basic>
+			<basic name="name" />
+			<basic name="description" />
+			<basic name="organizationId">
+				<column name="ORGANIZATION_ID" />
+			</basic>
+			<basic name="ddmtemplateId">
+				<column name="DDMTEMPLATE_ID" />
+			</basic>
+			<transient name="modelAttributes" />
+			<transient name="nameCurrentLanguageId" />
+			<transient name="nameMap" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<entity class="com.fidoarp.catalog.model.impl.AppImpl" name="App">
+		<table name="fido_app" />
+		<attributes />
+	</entity>
+	<entity class="com.fidoarp.catalog.model.impl.AppStatusImpl" name="AppStatus">
+		<table name="fido_app_status" />
+		<attributes />
+	</entity>
+	<entity class="com.fidoarp.catalog.model.impl.ProductTypeImpl" name="ProductType">
+		<table name="fido_product_type" />
+		<attributes />
+	</entity>
+</entity-mappings>

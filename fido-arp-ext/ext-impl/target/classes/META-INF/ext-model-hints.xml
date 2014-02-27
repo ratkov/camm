@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.fidoarp.catalog.model.App">
+		<field name="appId" type="long" />
+		<field name="userId" type="long" />
+		<field name="organizationId" type="long" />
+		<field name="createdDate" type="Date" />
+		<field name="description" type="String" localized="true" />
+		<field name="statusId" type="long" />
+		<field name="statusChangeDate" type="Date" />
+		<field name="clientName" type="String" />
+		<field name="clientOkpo" type="String" />
+		<field name="contactPhone" type="String" />
+		<field name="creditAmount" type="int" />
+		<field name="comments" type="String" localized="true" />
+		<field name="questionnaire" type="String" />
+	</model>
+	<model name="com.fidoarp.catalog.model.AppStatus">
+		<field name="appStatusId" type="long" />
+		<field name="appStatusCode" type="String" />
+		<field name="name" type="String" localized="true" />
+		<field name="description" type="String" />
+	</model>
+	<model name="com.fidoarp.catalog.model.ProductType">
+		<field name="productTypeId" type="long" />
+		<field name="productTypeCode" type="String" />
+		<field name="name" type="String" localized="true" />
+		<field name="description" type="String" />
+		<field name="organizationId" type="long" />
+		<field name="ddmtemplateId" type="long" />
+	</model>
+</model-hints>

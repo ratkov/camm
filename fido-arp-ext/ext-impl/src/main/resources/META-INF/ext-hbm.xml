@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-lazy="false" auto-import="false">
+	<import class="com.fidoarp.catalog.model.App" />
+	<import class="com.fidoarp.catalog.model.AppStatus" />
+	<import class="com.fidoarp.catalog.model.ProductType" />
+	<class name="com.fidoarp.catalog.model.impl.AppImpl" table="fido_app">
+		<id name="appId" column="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="user_id" />
+		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="organization_id" />
+		<property name="createdDate" type="org.hibernate.type.TimestampType" column="created_date" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="statusId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="status_id" />
+		<property name="statusChangeDate" type="org.hibernate.type.TimestampType" column="status_change_date" />
+		<property name="clientName" type="com.liferay.portal.dao.orm.hibernate.StringType" column="client_name" />
+		<property name="clientOkpo" type="com.liferay.portal.dao.orm.hibernate.StringType" column="client_okpo" />
+		<property name="contactPhone" type="com.liferay.portal.dao.orm.hibernate.StringType" column="contact_phone" />
+		<property name="creditAmount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="credit_amount" />
+		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="questionnaire" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.fidoarp.catalog.model.impl.AppStatusImpl" table="fido_app_status">
+		<id name="appStatusId" column="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="appStatusCode" type="com.liferay.portal.dao.orm.hibernate.StringType" column="code" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.fidoarp.catalog.model.impl.ProductTypeImpl" table="fido_product_type">
+		<id name="productTypeId" column="id" type="long">
+			<generator class="assigned" />
+		</id>
+		<property name="productTypeCode" type="com.liferay.portal.dao.orm.hibernate.StringType" column="code" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="organization_id" />
+		<property name="ddmtemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="ddmtemplate_id" />
+	</class>
+</hibernate-mapping>
