@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <parent>
+        <groupId>FidoARPLiferay</groupId>
+        <artifactId>FidoARP</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>web-services</artifactId>
+    <packaging>pom</packaging>
+    <name>FidoARP-web-services</name>
+    <properties>
+        <cxf.version>2.7.3</cxf.version>
+        <slf4j.version>1.7.2</slf4j.version>
+    </properties>
+    <!--<modules>-->
+        <!--<module>dictionary-service</module>-->
+        <!--<module>security-service</module>-->
+        <!--<module>payments-service</module>-->
+        <!--<module>checkout-service</module>-->
+        <!--<module>quote-service</module>-->
+        <!--<module>mobipay-service</module>-->
+        <!--<module>easypay-service</module>-->
+        <!--<module>web-services-util</module>-->
+        <!--<module>accounts-service</module>-->
+        <!--<module>card-service</module>-->
+        <!--<module>deposits-service</module>-->
+        <!--<module>cards-srv</module>-->
+    <!--</modules>-->
+</project>
