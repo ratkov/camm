@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!DOCTYPE display PUBLIC "-//Liferay//DTD Display 6.1.0//EN" "http://www.liferay.com/dtd/liferay-display_6_1_0.dtd">
+
+<display>
+	<category name="Fido ARP">
+		<portlet id="fido_arp_queues" />
+		<portlet id="fido_arp_partners" />
+		<portlet id="fido_arp_users" />
+		<portlet id="fido_arp_templates" />
+	</category>
+</display>
