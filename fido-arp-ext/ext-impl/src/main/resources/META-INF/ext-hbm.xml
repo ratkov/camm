@@ -6,6 +6,7 @@
 	<import class="com.fidoarp.catalog.model.AppStatus" />
 	<import class="com.fidoarp.catalog.model.ProductType" />
 	<class name="com.fidoarp.catalog.model.impl.AppImpl" table="fido_app">
+		<cache usage="read-write" />
 		<id name="appId" column="id" type="long">
 			<generator class="assigned" />
 		</id>
@@ -23,6 +24,7 @@
 		<property name="questionnaire" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.fidoarp.catalog.model.impl.AppStatusImpl" table="fido_app_status">
+		<cache usage="read-write" />
 		<id name="appStatusId" column="id" type="long">
 			<generator class="assigned" />
 		</id>
@@ -31,6 +33,7 @@
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.fidoarp.catalog.model.impl.ProductTypeImpl" table="fido_product_type">
+		<cache usage="read-write" />
 		<id name="productTypeId" column="id" type="long">
 			<generator class="assigned" />
 		</id>

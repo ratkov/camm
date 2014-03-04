@@ -11,7 +11,7 @@ create table fido_app (
 	contact_phone VARCHAR(75) null,
 	credit_amount INTEGER,
 	comments STRING null,
-	questionnaire CLOB null
+	questionnaire VARCHAR(75) null
 );
 
 create table fido_app_status (
