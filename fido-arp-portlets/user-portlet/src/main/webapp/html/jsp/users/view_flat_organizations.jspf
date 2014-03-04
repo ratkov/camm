@@ -41,7 +41,7 @@ if (filterManageableOrganizations) {
 			<aui:input disabled="<%= true %>" name="organizationsRedirect" type="hidden" value="<%= portletURL.toString() %>" />
 
 			<liferay-ui:search-form
-				page="/html/portlet/users_admin/organization_search.jsp"
+				page="/html/jsp/users/organization_search.jsp"
 			/>
 
 			<%
@@ -88,7 +88,7 @@ if (filterManageableOrganizations) {
 
 				<liferay-ui:search-container-column-jsp
 					align="right"
-					path="/html/portlet/users_admin/organization_action.jsp"
+					path="/html/jsp/users/organization_action.jsp"
 				/>
 			</liferay-ui:search-container-row>
 

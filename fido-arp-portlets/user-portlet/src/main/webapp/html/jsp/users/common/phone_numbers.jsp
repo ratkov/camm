@@ -1,3 +1,4 @@
+<%@ page import="com.liferay.portal.model.impl.PhoneImpl" %>
 <%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.

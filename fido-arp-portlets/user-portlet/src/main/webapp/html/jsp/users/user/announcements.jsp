@@ -61,11 +61,11 @@ else {
 		/>
 		<liferay-ui:search-container-column-jsp
 			name="email"
-			path="/html/portlet/users_admin/user/announcements_checkbox.jsp"
+			path="/html/jsp/users/user/announcements_checkbox.jsp"
 		/>
 		<liferay-ui:search-container-column-jsp
 			name="sms"
-			path="/html/portlet/users_admin/user/announcements_checkbox.jsp"
+			path="/html/port/html/jsp/usersuncements_checkbox.jsp"
 		/>
 		<liferay-ui:search-container-column-jsp
 			name="website"

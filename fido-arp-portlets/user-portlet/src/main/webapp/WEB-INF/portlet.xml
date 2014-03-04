@@ -5,10 +5,10 @@
 	<portlet>
 		<portlet-name>fido_arp_users</portlet-name>
 		<display-name>FidoArp Users</display-name>
-		<portlet-class>com.fidoarp.portlet.UsersPortlet</portlet-class>
+        <portlet-class>com.fidoarp.fidoarpusers.portlet.UserPortlet</portlet-class>
 		<init-param>
             <name>view-jsp</name>
-			<value>/html/jsp/view.jsp</value>
+			<value>/html/jsp/users/view.jsp</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
@@ -24,9 +24,6 @@
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>
-		</security-role-ref>
-		<security-role-ref>
-			<role-name>guest</role-name>
 		</security-role-ref>
 		<security-role-ref>
 			<role-name>power-user</role-name>

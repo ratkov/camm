@@ -1,3 +1,4 @@
+
 <%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
@@ -39,7 +40,7 @@ if (organization != null) {
 String[][] categorySections = {mainSections, identificationSections, miscellaneousSections};
 %>
 
-<liferay-util:include page="/html/portlet/users_admin/toolbar.jsp">
+<liferay-util:include page="/html/jsp/users/toolbar.jsp">
 	<liferay-util:param name="toolbarItem" value='<%= (organization == null) ? "add" : "view" %>' />
 </liferay-util:include>
 
@@ -91,7 +92,7 @@ String[][] categorySections = {mainSections, identificationSections, miscellaneo
 		categoryNames="<%= _CATEGORY_NAMES %>"
 		categorySections="<%= categorySections %>"
 		htmlTop="<%= htmlTop %>"
-		jspPath="/html/portlet/users_admin/organization/"
+		jspPath="/html/jsp/users/organization/"
 	/>
 </aui:form>
 

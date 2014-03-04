@@ -3,7 +3,7 @@
 
 <liferay-portlet-app>
 	<portlet>
-		<portlet-name>template-portlet</portlet-name>
+		<portlet-name>fido_arp_template</portlet-name>
 		<instanceable>false</instanceable>
 		<header-portlet-css>/html/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/html/js/main.js</footer-portlet-javascript>
@@ -14,10 +14,6 @@
 		<role-name>administrator</role-name>
 		<role-link>Administrator</role-link>
 	</role-mapper>
-	<!--<role-mapper>-->
-		<!--<role-name>guest</role-name>-->
-		<!--<role-link>Guest</role-link>-->
-	<!--</role-mapper>-->
 	<role-mapper>
 		<role-name>power-user</role-name>
 		<role-link>Power User</role-link>

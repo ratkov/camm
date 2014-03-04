@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
+    <portlet>
+        <portlet-name>fido_arp_partners</portlet-name>
+        <display-name>FidoARP Partners</display-name>
+        <portlet-class>com.fidoarp.portlet.PartnerPortlet</portlet-class>
+        <init-param>
+            <name>view-jsp</name>
+            <value>/html/jsp/portlet/partners/view/view.jsp</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <supported-locale>uk_UA</supported-locale>
+        <supported-locale>ru_RU</supported-locale>
+        <resource-bundle>i18n.Resource</resource-bundle>
+        <portlet-info>
+            <title>FidoArp Partners</title>
+            <short-title>FidoArp Partners</short-title>
+            <keywords>partners</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+	<portlet>
+		<portlet-name>fido_arp_queues</portlet-name>
+		<display-name>FidoARP Queues</display-name>
+		<portlet-class>com.fidoarp.portlet.QueuePortlet</portlet-class>
+		<init-param>
+            <name>view-jsp</name>
+			<value>/html/jsp/portlet/queues/view/view.jsp</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+        <supported-locale>uk_UA</supported-locale>
+        <supported-locale>ru_RU</supported-locale>
+        <resource-bundle>i18n.Resource</resource-bundle>
+		<portlet-info>
+			<title>FidoArp Queues</title>
+			<short-title>FidoArp Queues</short-title>
+			<keywords>queues</keywords>
+		</portlet-info>
+		<security-role-ref>
+			<role-name>administrator</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>power-user</role-name>
+		</security-role-ref>
+		<security-role-ref>
+			<role-name>user</role-name>
+		</security-role-ref>
+	</portlet>
+
+</portlet-app>

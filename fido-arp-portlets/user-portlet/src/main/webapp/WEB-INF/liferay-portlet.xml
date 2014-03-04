@@ -10,14 +10,11 @@
 		<css-class-wrapper>fido-arp-users-portlet</css-class-wrapper>
 	</portlet>
 
+
 	<role-mapper>
 		<role-name>administrator</role-name>
 		<role-link>Administrator</role-link>
 	</role-mapper>
-	<!--<role-mapper>-->
-		<!--<role-name>guest</role-name>-->
-		<!--<role-link>Guest</role-link>-->
-	<!--</role-mapper>-->
 	<role-mapper>
 		<role-name>power-user</role-name>
 		<role-link>Power User</role-link>

@@ -3,9 +3,9 @@
 <portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd http://java.sun.com/xml/ns/portlet/portlet-app_2_0.xsd" version="2.0">
 	<portlet>
-		<portlet-name>template-portlet</portlet-name>
-		<display-name>Template Portlet</display-name>
-		<portlet-class>com.fidoarp.portlet.TemplatesPortlet</portlet-class>
+		<portlet-name>fido_arp_template</portlet-name>
+		<display-name>FidoARP Template</display-name>
+        <portlet-class>com.fidoarp.dynamicdatamapping.portlet.TemplatePortlet</portlet-class>
 		<init-param>
             <name>view-jsp</name>
 			<value>/html/jsp/view.jsp</value>
@@ -24,9 +24,6 @@
 		</portlet-info>
 		<security-role-ref>
 			<role-name>administrator</role-name>
-		</security-role-ref>
-		<security-role-ref>
-			<role-name>guest</role-name>
 		</security-role-ref>
 		<security-role-ref>
 			<role-name>power-user</role-name>

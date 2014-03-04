@@ -49,7 +49,7 @@ String portletURLString = portletURL.toString();
 	%>
 
 	<c:if test="<%= portletName.equals(PortletKeys.USERS_ADMIN) %>">
-		<liferay-util:include page="/html/portlet/users_admin/toolbar.jsp">
+		<liferay-util:include page="/html/jsp/users/toolbar.jsp">
 			<liferay-util:param name="toolbarItem" value="view-all" />
 		</liferay-util:include>
 

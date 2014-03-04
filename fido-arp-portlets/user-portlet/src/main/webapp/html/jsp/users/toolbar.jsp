@@ -22,7 +22,7 @@ String toolbarItem = ParamUtil.getString(request, "toolbarItem", "view");
 
 <div class="lfr-portlet-toolbar">
 	<portlet:renderURL var="viewUsersURL">
-		<portlet:param name="struts_action" value="/users_admin/view" />
+		<portlet:param name="struts_action" value="/users/view" />
 		<portlet:param name="usersListView" value="<%= UserConstants.LIST_VIEW_TREE %>" />
 		<portlet:param name="saveUsersListView" value="<%= Boolean.TRUE.toString() %>" />
 	</portlet:renderURL>
@@ -90,6 +90,6 @@ String toolbarItem = ParamUtil.getString(request, "toolbarItem", "view");
 <aui:script>
 	function <portlet:namespace />exportUsers() {
 		document.<portlet:namespace />fm.method = "post";
-		submitForm(document.<portlet:namespace />fm, "<portlet:actionURL><portlet:param name="struts_action" value="/users_admin/export_users" /></portlet:actionURL>&compress=0&etag=0&strip=0", false);
+		submitForm(document.<portlet:namespace />fm, "<portlet:actionURL><portlet:param name="struts_action" value="/users/export_users" /></portlet:actionURL>&compress=0&etag=0&strip=0", false);
 	}
 </aui:script>

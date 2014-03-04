@@ -37,7 +37,7 @@ if (Validator.isNotNull(target)) {
 		searchContainer="<%= new OrganizationSearch(renderRequest, portletURL) %>"
 	>
 		<liferay-ui:search-form
-			page="/html/portlet/users_admin/organization_search.jsp"
+			page="/html/jsp/users/organization_search.jsp"
 		/>
 
 		<%
