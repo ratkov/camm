@@ -29,7 +29,7 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.sites.util.SitesUtil;
-import com.fidoarp.fidoarpusers.util.UsersAdminUtil;
+import  com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;

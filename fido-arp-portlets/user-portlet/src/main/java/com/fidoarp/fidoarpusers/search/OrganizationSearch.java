@@ -24,7 +24,7 @@ import com.liferay.portal.model.Organization;
 import com.liferay.portal.util.PortletKeys;
 import com.liferay.portlet.PortalPreferences;
 import com.liferay.portlet.PortletPreferencesFactoryUtil;
-import com.fidoarp.fidoarpusers.util.UsersAdminUtil;
+import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletURL;

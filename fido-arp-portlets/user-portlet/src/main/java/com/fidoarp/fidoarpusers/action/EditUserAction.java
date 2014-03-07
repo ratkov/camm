@@ -42,7 +42,7 @@ import com.liferay.portlet.announcements.service.AnnouncementsDeliveryLocalServi
 import com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil;
 import com.liferay.portlet.asset.service.AssetTagLocalServiceUtil;
 import com.liferay.portlet.sites.util.SitesUtil;
-import com.fidoarp.fidoarpusers.util.UsersAdminUtil;
+import com.liferay.portlet.usersadmin.util.UsersAdminUtil;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;

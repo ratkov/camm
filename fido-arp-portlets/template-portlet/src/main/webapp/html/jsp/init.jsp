@@ -170,8 +170,7 @@ page import="com.fidoarp.dynamicdatamapping.search.TemplateSearchTerms" %>
 <%
 PortalPreferences portalPreferences = PortletPreferencesFactoryUtil.getPortalPreferences(request);
 
-
-    String chooseCallback = ParamUtil.getString(request, "chooseCallback");
+String chooseCallback = ParamUtil.getString(request, "chooseCallback");
 String ddmResource = ParamUtil.getString(request, "ddmResource");
 String saveCallback = ParamUtil.getString(request, "saveCallback");
 String scopeAvailableFields = ParamUtil.getString(request, "scopeAvailableFields");
