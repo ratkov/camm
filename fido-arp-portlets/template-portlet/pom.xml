@@ -24,6 +24,8 @@
                     <appServerLibGlobalDir>${liferay.app.server.lib.global.dir}</appServerLibGlobalDir>
                     <appServerPortalDir>${liferay.app.server.portal.dir}</appServerPortalDir>
                     <liferayVersion>${liferay.version}</liferayVersion>
+                    <serviceFileName>${basedir}/src/main/resources/service.xml</serviceFileName>
+                    <apiDir>${basedir}/src/main/java</apiDir>
                     <pluginType>portlet</pluginType>
                 </configuration>
             </plugin>
@@ -50,7 +52,7 @@
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
-                <filtering>true</filtering>
+                <!--<filtering>true</filtering>-->
                 <includes>
                     <include>**/*</include>
                 </includes>

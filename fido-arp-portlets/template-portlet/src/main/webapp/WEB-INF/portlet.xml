@@ -8,7 +8,7 @@
         <portlet-class>com.fidoarp.dynamicdatamapping.portlet.TemplatePortlet</portlet-class>
 		<init-param>
             <name>view-jsp</name>
-			<value>/html/jsp/view.jsp</value>
+			<value>/html/view.jsp</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>

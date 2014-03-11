@@ -5,8 +5,9 @@
 	<portlet>
 		<portlet-name>fido_arp_template</portlet-name>
 		<instanceable>false</instanceable>
-		<header-portlet-css>/html/css/main.css</header-portlet-css>
-		<footer-portlet-javascript>/html/js/main.js</footer-portlet-javascript>
+        <autopropagated-parameters>chooseCallback,ddmResource,saveCallback,scopeAvailableFields,scopeStorageType,scopeStructureName,scopeStructureType,scopeTemplateMode,scopeTemplateType,showGlobalScope,showManageTemplates,showToolbar,templateHeaderTitle</autopropagated-parameters>
+        <header-portlet-css>/html/css/main.css</header-portlet-css>
+        <footer-portlet-javascript>/html/js/main.js</footer-portlet-javascript>
 		<css-class-wrapper>fido-arp-template-portlet</css-class-wrapper>
 	</portlet>
 
