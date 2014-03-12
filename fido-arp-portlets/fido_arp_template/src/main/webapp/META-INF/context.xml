@@ -1,0 +1,3 @@
+<Context reloadable="true" path="/fido_arp_template">
+    <Loader loaderClass="com.liferay.support.tomcat.loader.PortalClassLoader"/>
+</Context>
