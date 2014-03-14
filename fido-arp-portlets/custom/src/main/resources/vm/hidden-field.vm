@@ -1,0 +1,8 @@
+#foreach($fieldRow in $children)
+    <input type="hidden" name="$fieldRow.name" value="$fieldRow.value" />
+    #foreach($fieldRowChild in $fieldRow.getChildren())
+        #if($fieldRowChild.type == "checkbox")
+            <input type="hidden" name="$fieldRowChild.name" value="$fieldRowChild.value" />
+        #end
+    #end
+#end

@@ -1,0 +1,50 @@
+#set($i = 0)
+#foreach($field in $fields)
+    #if($field.hasChildren() && $field.type.indexOf("fieldset") > -1)
+        #set($i = $i + 1)
+    #end
+#end
+
+#if($i == 0)
+<div class="quest-template dict-load liferay-form-quest">
+    <fieldset>
+        #set($children = $fields)
+        #parse("/vm/field.vm")
+
+        <div class="tar text-right">
+            <a href="javascript:void(0);" class="nextStep btn btn-primary">$continue<span></span></a>
+        </div>
+    </fieldset>
+</div>
+#else
+    <div class="t_wrap quest-template dict-load liferay-form-quest">
+        #set($j = 0)
+        #foreach($field in $fields)
+            #if($field.hasChildren() && $field.type.indexOf("fieldset") > -1)
+                #set($children = $field.children)
+                #if($field.hideStep)
+                   #parse("/vm/hidden-field.vm")
+                #else
+                    <div class="t_item">
+                        <a class="t_link #if($i > 0) disable #end" href="#">$field.label</a>
+                        <fieldset class="t_content">
+                            #parse("/vm/field.vm")
+                            <div class="tar text-right">
+                                <a href="javascript:void(0);" class="nextStep btn btn-primary">$continue<span></span></a>
+                            </div>
+                        </fieldset>
+                    </div>
+                    #set($j = $j + 1)
+                #end
+            #end
+        #end
+        #if($j == 0)
+            <div class="tar text-right">
+                <a href="javascript:void(0);" class="nextStep btn btn-primary">$continue<span></span></a>
+            </div>
+        #end
+    </div>
+#end
+
+
+

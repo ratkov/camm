@@ -1,0 +1,164 @@
+#set($counterInline = 1)
+#foreach($fieldRow in $children)
+    #set($maxsize = "")
+    #set($minsize = "")
+    #set($showIf = "")
+    #set($isToday = "")
+    #set($classStyle = $fieldRow.customStyleClass)
+    #if($fieldRow.required)
+        #if($fieldRow.type.equalsIgnoreCase("select"))
+            #set($classStyle = $classStyle + " requiredSelect")
+        #elseif($fieldRow.type.equalsIgnoreCase("ddm-date"))
+            #set($classStyle = $classStyle + " requiredDate")
+        #else
+            #set($classStyle = $classStyle + " required")
+        #end
+    #end
+    #if($fieldRow.showIf)
+        #set($showIf = 'data-show="' + $fieldRow.showIf + '"')
+    #end
+    #if($fieldRow.isToday)
+        #set($isToday = 'data-today="true"')
+    #end
+    #if($fieldRow.type.equalsIgnoreCase("checkbox"))
+        <div class="regRow form-group" $showIf>
+            <label></label>
+            <div class="enterField">
+                <input type="$fieldRow.type" id="$fieldRow.name" class="pretCheck $classStyle" name="$fieldRow.name"
+                    #if($fieldRow.value == "true") checked="checked" #end
+                    #if($fieldRow.hasChildren())
+                       data-children="true"
+                    #end
+                    value="$fieldRow.value"
+                    data-label="$fieldRow.label" />
+                #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
+            </div>
+        </div>
+        #if($fieldRow.hasChildren())
+            <div #if($fieldRow.value == "" || $fieldRow.value == "false") style="display: none;" #end class="children-list">
+                #set($children = $fieldRow.children)
+                #parse("/vm/field.vm")
+            </div>
+        #end
+    #elseif($fieldRow.type.equalsIgnoreCase("ddm-paragraph"))
+    <div class="regTitle">$fieldRow.label</div>
+    #else
+    <div class="regRow form-group  #if( $fieldRow.label.contains("||") ) change-label #end #if($counterInline % 2 == 0) second #end #if($classStyle.contains("display-inline")) display-inline #set($counterInline = $counterInline + 1) #end" $showIf>
+        #if( $fieldRow.label.contains("||") )
+            #set($arr = $fieldRow.label.split("\|\|"))
+            #set($ic = 1)
+            #foreach($lab in $arr)
+               <label for="$fieldRow.name" class="label$ic" #if($ic != 1) style="display: none;" #end>$lab</label>
+               #set($ic = $ic + 1)
+            #end
+        #else
+            <label for="$fieldRow.name">$fieldRow.label</label>
+        #end
+
+        #if($fieldRow.type.equalsIgnoreCase("text") || $fieldRow.type.equalsIgnoreCase("ddm-number"))
+            #set($maxsize = $fieldRow.maxsize)
+            #set($minsize = $fieldRow.minsize)
+            <div class="enterField">
+                <input type="text" name="$fieldRow.name" id="$fieldRow.name" class="$classStyle" value="$esc.escapeHtml($fieldRow.value)"
+                        maxlength="$maxsize" minlength="$minsize" />
+                #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
+            </div>
+        #elseif($fieldRow.type.equalsIgnoreCase("ddm-date"))
+            #set($maxsize = $fieldRow.maxsize)
+            #set($minsize = $fieldRow.minsize)
+            #set($valDate = "")
+            #if($fieldRow.value == '')
+                #if($fieldRow.predefinedValue != '')
+                    #set($valDate = 'data-value="' + $fieldRow.predefinedValue + '"')
+                #end
+            #else
+                #set($valDate = 'data-value="' + $fieldRow.value + '"')
+            #end
+            <div class="enterField tac cls dateChooser" data-locale="$locale" data-name="$fieldRow.name" $isToday
+                  $valDate data-start="$minsize" data-end="$maxsize">
+                <div class="day">
+                    #set($nameD = $fieldRow.name + "Day")
+                    <select class="selDate $classStyle" name="$nameD" id="$nameD"></select>
+                </div><!-- .day -->
+                <div class="month">
+                    #set($nameM = $fieldRow.name + "Month")
+                    <select class="selDate $classStyle" name="$nameM" id="$nameM"></select>
+                </div><!-- .month -->
+                <div class="year">
+                    #set($nameY = $fieldRow.name + "Year")
+                    <select class="selDate $classStyle" name="$nameY" id="$nameY"></select>
+                </div><!-- .year -->
+                <div class="clear"></div>
+                #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
+            </div><!-- .enterField -->
+        #elseif($fieldRow.type.equalsIgnoreCase("textarea"))
+            <div class="enterField">
+                <textarea name="$fieldRow.name" class="$classStyle">$fieldRow.value</textarea>
+                #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
+            </div>
+        #elseif($fieldRow.type.equalsIgnoreCase("radio"))
+            <div class="enterField radField">
+                #set($counter = 0)
+                #foreach($option in $fieldRow.options)
+                    <div class="radioBlock">
+                        <input type="radio" class="#if($counter == 0) $classStyle #end pretRad"
+                               data-label="$option.label" name="$fieldRow.name" id="$fieldRow.name$counter"
+                               value="$option.value"  #if($fieldRow.value == $option.value) checked="checked" #end
+                               value="$fieldRow.value"/>
+                    </div>
+                    #set($counter = $counter+1)
+                #end
+                #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
+            </div>
+        #elseif($fieldRow.type.equalsIgnoreCase("fieldset"))
+            <div class="enterField">
+                #foreach($fieldRowChild in $fieldRow.getChildren())
+                    #if($fieldRowChild.type == "checkbox")
+                        <div class="multiCheck">
+                            #set($classChStyle = $fieldRowChild.customStyleClass)
+                            #if($fieldRowChild.required)
+                                #set($classChStyle = $classStyle + " required")
+                            #end
+                            <input type="$fieldRowChild.type" class="pretCheck $classChStyle"
+                                   name="$fieldRowChild.name" id="$fieldRowChild.name" data-label="$fieldRowChild.label" value="$fieldRowChild.value"
+                                #if($fieldRowChild.value == "on" || $fieldRowChild.value == "true") checked="checked" #end />
+                        </div>
+                    #end
+                #end
+            </div>
+        #elseif($fieldRow.type.equalsIgnoreCase("select"))
+            #if($fieldRow.hasOptions())
+                #if($fieldRow.getOptionsSize() == 1 && $classStyle.contains("autoload"))
+                    #foreach($option in $fieldRow.options)
+                        #set($rowSelect = "selField")
+                        #if($classStyle.contains("chose"))
+                            #set($rowSelect = "choseField")
+                        #end
+                        <div class="enterField $rowSelect">
+                            <select class="$classStyle" name="$fieldRow.name" id="$fieldRow.name"  data-placeholder=" "
+                                    data-dictionary="$option.value"
+                                    #if($fieldRow.value != "") data-selected="$fieldRow.value" #end></select>
+
+                            #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
+                        </div>
+                    #end
+                #else
+                    #set($rowSelect = "selField")
+                    #if($classStyle.contains("chose"))
+                        #set($rowSelect = "choseField")
+                    #end
+                    <div class="enterField $rowSelect">
+                        <select class="$classStyle" name="$fieldRow.name" id="$fieldRow.name" data-placeholder=" ">
+                            #foreach($option in $fieldRow.options)
+                                <option value="$option.value" #if($option.value == $fieldRow.value) selected="selected" #end>$option.label</option>
+                            #end
+                        </select>
+
+                        #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
+                    </div>
+                #end
+            #end
+        #end
+    </div>
+    #end
+#end
