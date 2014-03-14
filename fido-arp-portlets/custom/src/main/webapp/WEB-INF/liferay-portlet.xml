@@ -16,15 +16,29 @@
 		<footer-portlet-javascript>/html/js/main.js</footer-portlet-javascript>
 		<css-class-wrapper>fido-arp-queues-portlet</css-class-wrapper>
 	</portlet>
+    <portlet>
+        <portlet-name>fido_arp_users</portlet-name>
+        <instanceable>false</instanceable>
+        <header-portlet-css>/html/css/main.css</header-portlet-css>
+        <footer-portlet-javascript>/html/js/jquery-1.9.1.min.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/jquery.form.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/class.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/main.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/users/users.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/validation.js</footer-portlet-javascript>
+
+        <css-class-wrapper>fido-arp-users-portlet</css-class-wrapper>
+    </portlet>
 
 	<role-mapper>
 		<role-name>administrator</role-name>
 		<role-link>Administrator</role-link>
 	</role-mapper>
-	<!--<role-mapper>-->
-		<!--<role-name>guest</role-name>-->
-		<!--<role-link>Guest</role-link>-->
-	<!--</role-mapper>-->
+	<role-mapper>
+		<role-name>guest</role-name>
+		<role-link>Guest</role-link>
+	</role-mapper>
 	<role-mapper>
 		<role-name>power-user</role-name>
 		<role-link>Power User</role-link>

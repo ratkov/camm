@@ -62,5 +62,36 @@
 			<role-name>user</role-name>
 		</security-role-ref>
 	</portlet>
+    <portlet>
+        <portlet-name>fido_arp_users</portlet-name>
+        <display-name>FidoARP Users</display-name>
+        <portlet-class>com.fidoarp.portlet.UserPortlet</portlet-class>
+        <init-param>
+            <name>view-jsp</name>
+            <value>/html/jsp/portlet/users/view/view.jsp</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <supported-locale>uk_UA</supported-locale>
+        <supported-locale>ru_RU</supported-locale>
+        <resource-bundle>i18n.user.Resource</resource-bundle>
+        <portlet-info>
+            <title>FidoArp Users</title>
+            <short-title>FidoArp Users</short-title>
+            <keywords>users</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <!--<security-role-ref>-->
+            <!--<role-name>user</role-name>-->
+        <!--</security-role-ref>-->
+    </portlet>
+
 
 </portlet-app>
