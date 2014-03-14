@@ -37,12 +37,23 @@
                                         tofile="${liferay.app.server.portal.dir}/WEB-INF/classes/portal-ext.properties"
                                         overwrite="true"
                                         />
-
-                                <copy
-                                        file="${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/classes/com/liferay/portal/tools/deploy/BaseDeployer.class"
-                                        tofile="${liferay.app.server.portal.dir}/WEB-INF/classes//com/liferay/portal/tools/deploy/BaseDeployer.class"
-                                        overwrite="true"
-                                        />
+                                <copy todir="${liferay.app.server.portal.dir}/WEB-INF/classes">
+                                    <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/classes">
+                                        <include name="**/*"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="${liferay.app.server.portal.dir}/WEB-INF">
+                                    <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/WEB-INF/">
+                                        <include name="**/*-ext.xml"/>
+                                        <include name="**/liferay-display.xml"/>
+                                    </fileset>
+                                </copy>
+                                <copy todir="${liferay.app.server.portal.dir}/html/portlet">
+                                    <fileset dir="${project.build.directory}/${project.artifactId}-${project.version}/html/portlet">
+                                        <include name="**/*.jsp"/>
+                                        <include name="**/*.jspf"/>
+                                    </fileset>
+                                </copy>
                             </tasks>
                         </configuration>
                         <goals>
@@ -109,9 +120,32 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.4</version>
+        </dependency>
+        <dependency>
+            <groupId>struts</groupId>
+            <artifactId>struts</artifactId>
+            <version>1.2.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>oro</groupId>
             <artifactId>oro</artifactId>
             <version>2.0.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aop</artifactId>
+            <version>3.0.7.RELEASE</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>3.0.7.RELEASE</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

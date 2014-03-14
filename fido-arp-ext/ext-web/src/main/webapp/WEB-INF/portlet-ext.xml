@@ -1,4 +1,43 @@
 <?xml version="1.0"?>
 
 <portlet-app>
+    <portlet>
+        <portlet-name>fido_arp_template</portlet-name>
+        <display-name>FidoARP Template</display-name>
+        <portlet-class>com.liferay.portlet.StrutsPortlet</portlet-class>
+        <init-param>
+            <name>ddm-resource</name>
+            <value>com.liferay.portlet.dynamicdatalists</value>
+        </init-param>
+        <init-param>
+            <name>template-path</name>
+            <value>/html/portlet/ext/fido_arp_template/</value>
+        </init-param>
+        <init-param>
+            <name>view-action</name>
+            <value>/fido_arp_template/view</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <supported-locale>uk_UA</supported-locale>
+        <supported-locale>ru_RU</supported-locale>
+        <resource-bundle>i18n.Resource</resource-bundle>
+        <!--<resource-bundle>com.liferay.portlet.StrutsResourceBundle</resource-bundle>-->
+        <portlet-info>
+            <title>FidoArp Templates</title>
+            <short-title>FidoArp Templates</short-title>
+            <keywords>templates</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
 </portlet-app>

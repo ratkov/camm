@@ -350,8 +350,10 @@ public class BaseDeployer implements AutoDeployer, Deployer {
         // commons-logging*.jar
 
         File pluginLibDir = new File(srcFile + "/WEB-INF/lib/");
+        boolean customDeployCommonsLogging
+                = Boolean.valueOf(properties.getProperty("auto-deploy-copy-commons-logging-custom", "true"));
 
-        if (PropsValues.AUTO_DEPLOY_COPY_COMMONS_LOGGING) {
+        if (PropsValues.AUTO_DEPLOY_COPY_COMMONS_LOGGING && customDeployCommonsLogging) {
             String[] commonsLoggingJars = pluginLibDir.list(
                     new GlobFilenameFilter("commons-logging*.jar"));
 
@@ -369,7 +371,9 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
         // log4j*.jar
 
-        if (PropsValues.AUTO_DEPLOY_COPY_LOG4J) {
+        boolean customDeployLog4J = Boolean.valueOf(properties.getProperty("auto-deploy-copy-log4j-custom", "true"));
+
+        if (PropsValues.AUTO_DEPLOY_COPY_LOG4J && customDeployLog4J) {
             String[] log4jJars = pluginLibDir.list(
                     new GlobFilenameFilter("log4j*.jar"));
 
@@ -385,13 +389,21 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 
     public void copyProperties(File srcFile, PluginPackage pluginPackage)
             throws Exception {
-
-        if (PropsValues.AUTO_DEPLOY_COPY_COMMONS_LOGGING) {
+        Properties properties = getPluginPackageProperties(srcFile);
+        boolean customDeployLog4J = true;
+        boolean customDeployCommonsLogging = true;
+        if(properties != null){
+            customDeployLog4J
+                    = Boolean.valueOf(properties.getProperty("auto-deploy-copy-log4j-custom", "true"));
+            customDeployCommonsLogging
+                = Boolean.valueOf(properties.getProperty("auto-deploy-copy-commons-logging-custom", "true"));
+        }
+        if (PropsValues.AUTO_DEPLOY_COPY_COMMONS_LOGGING && customDeployCommonsLogging) {
             copyDependencyXml(
                     "logging.properties", srcFile + "/WEB-INF/classes");
         }
 
-        if (PropsValues.AUTO_DEPLOY_COPY_LOG4J) {
+        if (PropsValues.AUTO_DEPLOY_COPY_LOG4J && customDeployLog4J) {
             copyDependencyXml("log4j.properties", srcFile + "/WEB-INF/classes");
         }
 
@@ -464,7 +476,11 @@ public class BaseDeployer implements AutoDeployer, Deployer {
     }
 
     public void copyTomcatContextXml(File targetDir) throws Exception {
-        if (!appServerType.equals(ServerDetector.TOMCAT_ID)) {
+        File targetFile = new File(targetDir, "META-INF/context.xml");
+
+        if (!appServerType.equals(ServerDetector.TOMCAT_ID) ||
+                targetFile.exists()) {
+
             return;
         }
 
@@ -1767,11 +1783,11 @@ public class BaseDeployer implements AutoDeployer, Deployer {
 		String content, boolean hasCustomServletListener,
 		boolean securityManagerEnabled)
 		throws Exception {
-		
+
 		if (!hasCustomServletListener && !securityManagerEnabled) {
 			return content;
 		}
-		
+
         Document document = SAXReaderUtil.read(content);
 
         Element rootElement = document.getRootElement();

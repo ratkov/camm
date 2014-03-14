@@ -2,5 +2,33 @@
 <!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/tiles-config_1_1.dtd">
 
 <tiles-definitions>
-	<definition name="portlet.ext" extends="portlet" />
+    <definition name="portlet.fido_arp_template" extends="portlet" />
+
+    <definition name="portlet.fido_arp_template.copy_structure" extends="portlet.fido_arp_template">
+        <put name="portlet_content" value="/portlet/ext/fido_arp_template/copy_structure.jsp" />
+    </definition>
+
+    <definition name="portlet.fido_arp_template.edit_structure" extends="portlet.fido_arp_template">
+        <put name="portlet_content" value="/portlet/ext/fido_arp_template/edit_structure.jsp" />
+    </definition>
+
+    <definition name="portlet.fido_arp_template.edit_template" extends="portlet.fido_arp_template">
+        <put name="portlet_content" value="/portlet/ext/fido_arp_template/edit_template.jsp" />
+    </definition>
+
+    <definition name="portlet.fido_arp_template.error" extends="portlet.fido_arp_template">
+        <put name="portlet_content" value="/portlet/ext/fido_arp_template/error.jsp" />
+    </definition>
+
+    <definition name="portlet.fido_arp_template.select_structure" extends="portlet.fido_arp_template">
+        <put name="portlet_content" value="/portlet/ext/fido_arp_template/select_structure.jsp" />
+    </definition>
+
+    <definition name="portlet.fido_arp_template.view" extends="portlet.fido_arp_template">
+        <put name="portlet_content" value="/portlet/ext/fido_arp_template/view.jsp" />
+    </definition>
+
+    <definition name="portlet.fido_arp_template.view_template" extends="portlet.fido_arp_template">
+        <put name="portlet_content" value="/portlet/ext/fido_arp_template/view_template.jsp" />
+    </definition>
 </tiles-definitions>

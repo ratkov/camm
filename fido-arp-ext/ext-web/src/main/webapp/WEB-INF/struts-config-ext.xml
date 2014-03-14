@@ -2,6 +2,27 @@
 <!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
 
 <struts-config>
-	<action-mappings>
-	</action-mappings>
+    <action-mappings>
+
+        <action path="/fido_arp_template/copy_structure" type="com.fidoarp.dynamicdatamapping.action.CopyStructureAction">
+            <forward name="portlet.fido_arp_template.copy_structure" path="portlet.fido_arp_template.copy_structure" />
+            <forward name="portlet.fido_arp_template.error" path="portlet.fido_arp_template.error" />
+        </action>
+
+        <action path="/fido_arp_template/edit_structure" type="com.fidoarp.dynamicdatamapping.action.EditStructureAction">
+            <forward name="portlet.fido_arp_template.edit_structure" path="portlet.fido_arp_template.edit_structure" />
+            <forward name="portlet.fido_arp_template.error" path="portlet.fido_arp_template.error" />
+        </action>
+
+        <action path="/fido_arp_template/edit_template" type="com.fidoarp.dynamicdatamapping.action.EditTemplateAction">
+            <forward name="portlet.fido_arp_template.edit_template" path="portlet.fido_arp_template.edit_template" />
+            <forward name="portlet.fido_arp_template.error" path="portlet.fido_arp_template.error" />
+        </action>
+
+        <action path="/fido_arp_template/select_structure" forward="portlet.fido_arp_template.select_structure" />
+
+        <action path="/fido_arp_template/view" forward="portlet.fido_arp_template.view" />
+
+        <action path="/fido_arp_template/view_template" forward="portlet.fido_arp_template.view_template" />
+    </action-mappings>
 </struts-config>

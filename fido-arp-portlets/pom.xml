@@ -47,6 +47,5 @@
 
 	<modules>
 	  <module>custom</module>
-	  <module>fido_arp_template</module>
 	</modules>
 </project>
