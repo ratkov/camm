@@ -1,14 +1,18 @@
 package com.fidoarp.util;
 
+import com.fidoarp.UserStatus;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.JavaConstants;
-import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.*;
 import com.liferay.portal.model.User;
+import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.util.PwdGenerator;
+import com.liferay.util.portlet.PortletProps;
 import org.apache.commons.lang.StringUtils;
 
 import javax.portlet.*;
@@ -23,15 +27,40 @@ public class UsersUtil {
     public static ResourceBundle resources;
 
     public static String addNewUser (ResourceRequest resourceRequest) {
-        String fullName = resourceRequest.getParameter("fullName");
+        ThemeDisplay themeDisplay = (ThemeDisplay) resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
+
+        String firstName = resourceRequest.getParameter("firstName");
+        String middleName = resourceRequest.getParameter("middleName");
+        String lastName = resourceRequest.getParameter("lastName");
         String email = resourceRequest.getParameter("email");
         String login = resourceRequest.getParameter("login");
-        String partnerId = resourceRequest.getParameter("partnerId");
 
-        String validationResult = validateUser(fullName, email, login);
+        String validationResult = validateUser(firstName, middleName, lastName, login, email, themeDisplay.getCompanyId());
 
         if (validationResult == null) {
-            // TODO Here will be code for saving new user
+
+            try {
+                String partnerId = resourceRequest.getParameter("partnerId");
+                String password = PwdGenerator.getPassword();
+
+                int status = UserStatus.ACTIVE.getStatus();
+                long [] organizationIds = {Long.parseLong(partnerId)};
+
+                User user = UserLocalServiceUtil.addUser(themeDisplay.getUserId(),
+                        themeDisplay.getCompanyId(),
+                        false, password, password,
+                        true, login, email, 0, StringUtils.EMPTY,
+                        LocaleUtil.getMostRelevantLocale(), firstName, middleName, lastName, 0,
+                        0, true, 1, 1, 1970, "",
+                        null, organizationIds, null, null, false, new ServiceContext());
+
+                ExpandoUtils.addUserValues(user, "status", UserStatus.ACTIVE.getStatus());
+
+                sendPassword(email, password);
+
+            } catch (Exception e) {
+                log.error("Could not create user cause: " + e.getMessage());
+            }
 
         }
 
@@ -84,15 +113,69 @@ public class UsersUtil {
 
     }
 
-    private static String validateUser(String fullName, String login, String email) {
+    // TODO Need create email template
+    private static boolean sendPassword(String email, String password) {
+        String subject = "";
+        String body = "Your password: " + password;
+        String form = PortletProps.get("send.mail.from");
+
+        return FidoARPUtils.sendMail(form, email, subject, body);
+    }
+
+    private static String validateUser(String firstName, String middleName, String lastName,
+                                       String login, String email, long companyId) {
 
         String result = null;
 
-        // Validate user's full name
-        if (StringUtils.isBlank(fullName)) {
+        // Validate user's first name
+        if (StringUtils.isBlank(firstName)) {
             result = resources.getString("user.validation.full.name.required");
 
             return result;
+
+        } else {
+            for (char c : firstName.trim().replaceAll("[- ']", "").toCharArray()) {
+                if (!Character.isLetter(c)) {
+                    result = resources.getString("user.validation.first.name.failure");
+
+                    return  result;
+                }
+
+            }
+        }
+
+        // Validate user's middle name
+        if (StringUtils.isBlank(middleName)) {
+            result = resources.getString("user.validation.full.name.required");
+
+            return result;
+
+        } else {
+            for (char c : middleName.trim().replaceAll("[- ']", "").toCharArray()) {
+                if (!Character.isLetter(c)) {
+                    result = resources.getString("user.validation.middle.name.failure");
+
+                    return result;
+                }
+
+            }
+        }
+
+        // Validate user's last name
+        if (StringUtils.isBlank(lastName)) {
+            result = resources.getString("user.validation.full.name.required");
+
+            return result;
+
+        } else {
+            for (char c : lastName.trim().replaceAll("[- ']", "").toCharArray()) {
+                if (!Character.isLetter(c)) {
+                    result = resources.getString("user.validation.last.name.failure");
+
+                    return result;
+                }
+
+            }
         }
 
         // Validate user's login
@@ -107,7 +190,26 @@ public class UsersUtil {
 
         // Validate user's email
         if (StringUtils.isNotBlank(email)) {
-            // TODO Here will be user's email validation
+
+            if (!Validator.isEmailAddress(email)) {
+                result = resources.getString("user.validation.email.wrong.format");
+
+                return result;
+
+            } else {
+
+                try {
+                    User user = UserLocalServiceUtil.fetchUserByEmailAddress(companyId, email);
+
+                    if (user != null) {
+                        result = resources.getString("user.validation.email.exist");
+                        return result;
+                    }
+
+                } catch (SystemException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
 
         } else {
             result = resources.getString("user.validation.email.required");

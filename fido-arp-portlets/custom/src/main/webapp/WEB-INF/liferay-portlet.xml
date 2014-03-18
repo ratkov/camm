@@ -28,6 +28,7 @@
         <instanceable>false</instanceable>
         <header-portlet-css>/html/css/main.css</header-portlet-css>
         <footer-portlet-javascript>/html/js/jquery-1.9.1.min.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/jquery-ui-1.10.4.custom.min.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.form.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/class.js</footer-portlet-javascript>

@@ -6,6 +6,14 @@ ValidationProcessor = Class.extend({
             focusInvalid: false
         });
 
+        $.validator.addMethod(
+            'regexp',
+            function (value, element, regexp) {
+                var re = new RegExp(regexp);
+                return this.optional(element) || re.test(value);
+            }
+        );
+
         $(".userContent").each(function () {
             var form = $(this);
 
@@ -13,10 +21,23 @@ ValidationProcessor = Class.extend({
                 errorElement: "span",
                 ignore: ':hidden',
                 rules: {
-                    fullName: {
+                    firstName: {
                         required: true,
                         minlength: 2,
-                        maxlength: 20
+                        maxlength: 20,
+                        regexp: /^[a-zA-Zа-яА-ЯґєіїҐЄІЇ'\- ]*$/
+                    },
+                    middleName: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 20,
+                        regexp: /^[a-zA-Zа-яА-ЯґєіїҐЄІЇ'\- ]*$/
+                    },
+                    lastName: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 20,
+                        regexp: /^[a-zA-Zа-яА-ЯґєіїҐЄІЇ'\- ]*$/
                     },
                     login: {
                         required: true,
@@ -30,10 +51,23 @@ ValidationProcessor = Class.extend({
                 },
 
                 messages: {
-                    fullName: {
-                        required: errorCode.fullNameRequired,
+                    firstName: {
+                        required: errorCode.firstNameRequired,
                         minlength: errorCode.nameMinLength,
-                        maxlength: errorCode.nameMaxLength
+                        maxlength: errorCode.nameMaxLength,
+                        regexp: errorCode.firstNameRegexp
+                    },
+                    middleName: {
+                        required: errorCode.middleNameRequired,
+                        minlength: errorCode.nameMinLength,
+                        maxlength: errorCode.nameMaxLength,
+                        regexp: errorCode.middleNameRegexp
+                    },
+                    lastName: {
+                        required: errorCode.lastNameRequired,
+                        minlength: errorCode.nameMinLength,
+                        maxlength: errorCode.nameMaxLength,
+                        regexp: errorCode.lastNameRegexp
                     },
                     login: {
                         required: errorCode.loginRequired,

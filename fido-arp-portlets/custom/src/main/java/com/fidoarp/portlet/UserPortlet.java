@@ -38,6 +38,8 @@ public class UserPortlet extends FidoMVCPortlet {
 
             String action = renderRequest.getParameter("action");
 
+            renderRequest.setAttribute("pswdGenerate", UsersUtil.resources.getString("user.password.generate"));
+
             if (StringUtils.equals("filterUser", action)) {
                 getPortletContext().getRequestDispatcher("/html/jsp/portlet/users/view/user-table.jsp").include(renderRequest, renderResponse);
                 return;
@@ -59,7 +61,7 @@ public class UserPortlet extends FidoMVCPortlet {
 
         JSONObject jsonFeed = JSONFactoryUtil.createJSONObject();
 
-        String action = resourceRequest.getParameter("addUserAction");
+        String action = resourceRequest.getParameter("action");
         Map<String, String> resultMap = new HashMap<String, String>();
 
         if (StringUtils.equals(action, "addUserAction")) {
@@ -68,6 +70,9 @@ public class UserPortlet extends FidoMVCPortlet {
             if (message != null) {
                 resultMap.put("addUserError", message);
             }
+        } else if (StringUtils.equals(action, "changeStatusAction")) {
+
+            String status = resourceRequest.getParameter("status");
         }
 
         jsonFeed.put("resultMap", JSONFactoryUtil.

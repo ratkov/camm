@@ -12,10 +12,3 @@
 <liferay-theme:defineObjects/>
 <portlet:defineObjects/>
 
-<portlet:resourceURL var="usersUrl" id="getUsersUrl">
-    <portlet:param name="action" value="addUserAction"/>
-</portlet:resourceURL>
-
-<portlet:renderURL var="filterUserURL" windowState="<%=LiferayWindowState.EXCLUSIVE.toString()%>" portletMode="view">
-    <portlet:param name="action" value="filterUser"/>
-</portlet:renderURL>

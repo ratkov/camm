@@ -3,7 +3,37 @@ UsersProcessor = Class.extend({
     init: function (namespace) {
         this.namespace = namespace;
 
-        var $this = this;
+        var $this = this,
+            $statusDialog = $('#' + namespace + 'dialog-status'),
+            $form = $('#' + namespace + 'statusForm');
+
+        $statusDialog.dialog({
+            closeOnEscape: false,
+            modal: true,
+            autoOpen: false,
+            resizable: false,
+            height: 150,
+            width: 350,
+            buttons: [
+                {
+                    id: "ok",
+                    click: function (e) {
+                        $form.ajaxSubmit({
+                            success: function (data) {
+                                $statusDialog.dialog("close");
+                            }
+                        });
+                    }
+                },
+                {
+                    id: "cancel",
+                    click: function () {
+                        $statusDialog.dialog("close");
+                    }
+                }
+            ]
+
+        });
 
         // Filter users
         $("#" + namespace + "partners").change(function (e) {
@@ -56,13 +86,20 @@ UsersProcessor = Class.extend({
                 $partner = $("#" + namespace + "partners option:selected").val(),
                 $link = $('#' + namespace + 'addUser');
 
-            $this.submitFormAjax($userForm, $link, {partnerId: $partner});
+            $this.submitFormAjax($userForm, $link);
 
         }, this));
 
+
+        $('#' + namespace + 'usersSearchContainer').on('click', function (e) {
+//            $form.dialog("open");
+            e.preventDefault();
+            alert($(e.target).parents("tr").text());
+        });
+
     },
 
-    submitFormAjax: function (form, link, data) {
+    submitFormAjax: function (form, link) {
         var $this = this;
 
         if (form.valid() && link.attr("disabled") != "disabled") {
@@ -70,7 +107,6 @@ UsersProcessor = Class.extend({
             link.attr("disabled", "disabled");
             form.ajaxSubmit({
                 type: "POST",
-                data: data,
                 success: function (data) {
                     var parsedErrors = $.parseJSON($.parseJSON(data).errorMap);
 

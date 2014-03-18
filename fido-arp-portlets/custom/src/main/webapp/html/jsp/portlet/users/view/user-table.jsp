@@ -26,19 +26,17 @@
                 value="${user.emailAddress}"
                 />
 
-        <portlet:actionURL name="readSettlement" var="readURL">
-            <liferay-ui:search-container-column-text
-                    name="user.status"
-                    value="${user.status}"
-                    href="javascript:void(0);"
-                    />
-        </portlet:actionURL>
-
-        <%--TODO Here will be link which will generate new password for user by click--%>
         <liferay-ui:search-container-column-text
-                        name="user.password.recovery"
-                        value="${user.password}"
-                       />
+                name="user.status"
+                value="${user.status}"
+                href="javascript:void(0);"
+                />
+
+        <liferay-ui:search-container-column-text
+                name="user.password.recovery"
+                value="${pswdGenerate}"
+                href="javascript:void(0);"
+                />
 
     </liferay-ui:search-container-row>
 

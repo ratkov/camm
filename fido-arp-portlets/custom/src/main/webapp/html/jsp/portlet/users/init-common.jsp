@@ -1,5 +1,17 @@
 <%@include file="../init.jsp"%>
 
+<portlet:resourceURL var="usersUrl" id="getUsersUrl">
+    <portlet:param name="action" value="addUserAction"/>
+</portlet:resourceURL>
+
+<portlet:resourceURL var="statusUrl" id="changeStatusUrl">
+    <portlet:param name="action" value="changeStatusAction"/>
+</portlet:resourceURL>
+
+<portlet:renderURL var="filterUserURL" windowState="<%=LiferayWindowState.EXCLUSIVE.toString()%>" portletMode="view">
+    <portlet:param name="action" value="filterUser"/>
+</portlet:renderURL>
+
 <liferay-util:html-bottom>
 
     <script type="text/javascript">
@@ -9,7 +21,15 @@
                     '<portlet:namespace/>');
 
             var errors = {
-                "fullNameRequired": "<liferay-ui:message key="user.validation.full.name.required"/>",
+                "firstNameRequired": "<liferay-ui:message key="user.validation.full.name.required"/>",
+                "firstNameRegexp": "<liferay-ui:message key="user.validation.first.name.failure"/>",
+
+                "middleNameRequired": "<liferay-ui:message key="user.validation.full.name.required"/>",
+                "middleNameRegexp": "<liferay-ui:message key="user.validation.middle.name.failure"/>",
+
+                "lastNameRequired": "<liferay-ui:message key="user.validation.full.name.required"/>",
+                "lastNameRegexp": "<liferay-ui:message key="user.validation.last.name.failure"/>",
+
                 "nameMinLength": "<liferay-ui:message key="user.validation.full.name.min.length"/>",
                 "nameMaxLength": "<liferay-ui:message key="user.validation.full.name.max.length"/>",
 
@@ -22,6 +42,9 @@
             };
 
             window.page = new ValidationProcessor(errors);
+
+            $('#ok').button('option', 'label', '<liferay-ui:message key="status.change"/>');
+            $('#cancel').button('option', 'label', '<liferay-ui:message key="status.cancel"/>');
         });
 
     </script>

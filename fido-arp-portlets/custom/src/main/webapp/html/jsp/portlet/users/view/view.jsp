@@ -30,13 +30,12 @@
 
     <div id="<portlet:namespace/>dialog-status" style="display: none" title="<liferay-ui:message key="user.change.status"/>">
 
-        <form id="<portlet:namespace/>statusForm" action="${usersUrl}" method="POST">
+        <form id="<portlet:namespace/>statusForm" action="${statusUrl}" method="POST">
 
             <div><input type="radio" name="status" value="0"/> <liferay-ui:message key="user.status.active"/></div>
             <div><input type="radio" name="status" value="1"/> <liferay-ui:message key="user.status.blocked"/></div>
             <div><input type="radio" name="status" value="2"/> <liferay-ui:message key="user.status.disabled"/></div>
 
-            <div><input type="submit" id="<portlet:namespace/>changeStatus" value="OK"/></div>
         </form>
 
     </div>
