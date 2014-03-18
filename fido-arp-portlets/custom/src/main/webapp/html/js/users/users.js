@@ -12,15 +12,26 @@ UsersProcessor = Class.extend({
             modal: true,
             autoOpen: false,
             resizable: false,
-            height: 150,
-            width: 350,
+            height: 250,
+            width: 450,
             buttons: [
                 {
                     id: "ok",
                     click: function (e) {
                         $form.ajaxSubmit({
                             success: function (data) {
-                                $statusDialog.dialog("close");
+                                var parsedMessage = $.parseJSON($.parseJSON(data).resultMap),
+                                    $statusForm = $('#' + namespace + 'statusForm'),
+                                    $content = $('#' + namespace + 'successContent');
+
+                                if (parsedMessage.length == 0) {
+                                    $statusForm.hide();
+                                    $content.show();
+                                } else {
+                                    $('#' + $this.namespace + 'changeStatusError')
+                                        .empty()
+                                        .append(parsedMessage[0].value).show().addClass('error');
+                                }
                             }
                         });
                     }
@@ -28,7 +39,7 @@ UsersProcessor = Class.extend({
                 {
                     id: "cancel",
                     click: function () {
-                        $statusDialog.dialog("close");
+                        window.location.reload();
                     }
                 }
             ]
@@ -83,7 +94,6 @@ UsersProcessor = Class.extend({
             e.preventDefault();
 
             var $userForm = $('#' + namespace + 'usersForm'),
-                $partner = $("#" + namespace + "partners option:selected").val(),
                 $link = $('#' + namespace + 'addUser');
 
             $this.submitFormAjax($userForm, $link);
@@ -91,11 +101,36 @@ UsersProcessor = Class.extend({
         }, this));
 
 
-        $('#' + namespace + 'usersSearchContainer').on('click', function (e) {
-//            $form.dialog("open");
+        $(document).on('click', '#' + namespace + "usersSearchContainer table td[id*='col-user.status']", function (e) {
             e.preventDefault();
-            alert($(e.target).parents("tr").text());
+
+            $statusDialog.dialog("open");
+
+            var $loginName = $(e.target).parents("tr").find("td[id*='col-user.login'] ").text().trim(),
+                $userId = $(e.target).parents("tr").find("td[id*='col-id'] ").text().trim(),
+                $dialogTitle = $('.ui-dialog-title'),
+                $inputIdField = $('#' + namespace + 'userId');
+
+            $dialogTitle.append($loginName);
+            $inputIdField.val($userId);
+
         });
+
+//        $('#' + namespace + 'usersSearchContainer table').on('click', "td[id*='col-user.password.recovery']", function (e) {
+//            e.preventDefault();
+//
+//            var $url = $('#' + namespace + 'passwordUrl').val();
+//
+//            $.ajax({
+//                url: $url,
+//                type: "POST",
+//                success: function (data) {
+//
+//                }
+//
+//            });
+//
+//        });
 
     },
 
@@ -108,15 +143,15 @@ UsersProcessor = Class.extend({
             form.ajaxSubmit({
                 type: "POST",
                 success: function (data) {
-                    var parsedErrors = $.parseJSON($.parseJSON(data).errorMap);
+                    var parsedMessage = $.parseJSON($.parseJSON(data).resultMap);
 
-                    if (parsedErrors.length == 0) {
+                    if (parsedMessage.length == 0) {
                         window.location.reload();
 
                     } else {
                         $('#' + $this.namespace + 'addUserError')
                             .empty()
-                            .append(parsedErrors[0].value).show().addClass('error');
+                            .append(parsedMessage[0].value).show().addClass('error');
 
                         link.removeAttr("disabled");
                     }

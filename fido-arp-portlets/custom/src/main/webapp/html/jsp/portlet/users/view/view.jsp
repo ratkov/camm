@@ -28,15 +28,23 @@
 
     <%@include file="add-user.jsp" %>
 
-    <div id="<portlet:namespace/>dialog-status" style="display: none" title="<liferay-ui:message key="user.change.status"/>">
+    <div id="<portlet:namespace/>dialog-status" style="display: none" title="<liferay-ui:message key="user.change.status"/>&#58;&nbsp;">
 
         <form id="<portlet:namespace/>statusForm" action="${statusUrl}" method="POST">
+            <div class="">
+                <label class="" id="<portlet:namespace/>changeStatusError"></label>
+            </div>
+            <input type="hidden" name="userId" value="" id="<portlet:namespace/>userId">
 
             <div><input type="radio" name="status" value="0"/> <liferay-ui:message key="user.status.active"/></div>
             <div><input type="radio" name="status" value="1"/> <liferay-ui:message key="user.status.blocked"/></div>
             <div><input type="radio" name="status" value="2"/> <liferay-ui:message key="user.status.disabled"/></div>
 
         </form>
+
+        <div id="<portlet:namespace/>successContent" style="display: none">
+            <liferay-ui:message key="user.status.update.successfully"/>
+        </div>
 
     </div>
 </div>

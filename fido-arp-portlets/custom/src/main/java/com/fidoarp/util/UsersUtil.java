@@ -43,7 +43,7 @@ public class UsersUtil {
                 String partnerId = resourceRequest.getParameter("partnerId");
                 String password = PwdGenerator.getPassword();
 
-                int status = UserStatus.ACTIVE.getStatus();
+                int status = UserStatus.DISABLED.getStatus();
                 long [] organizationIds = {Long.parseLong(partnerId)};
 
                 User user = UserLocalServiceUtil.addUser(themeDisplay.getUserId(),
@@ -54,7 +54,7 @@ public class UsersUtil {
                         0, true, 1, 1, 1970, "",
                         null, organizationIds, null, null, false, new ServiceContext());
 
-                ExpandoUtils.addUserValues(user, "status", UserStatus.ACTIVE.getStatus());
+                ExpandoUtils.addUserValues(user, "status", status);
 
                 sendPassword(email, password);
 
@@ -111,6 +111,19 @@ public class UsersUtil {
         searchContainer.setResults(userList);
         renderRequest.setAttribute("userSearchContainer", searchContainer);
 
+    }
+
+    public static String changeStatus(String status, String userId, long companyId) {
+
+        String result = null;
+
+        if (StringUtils.isNotBlank(status) && StringUtils.isNotBlank(userId)) {
+            ExpandoUtils.updateUserValues(Long.parseLong(userId), companyId, status);
+        } else {
+            result = resources.getString("user.status.update.error");
+        }
+
+        return result;
     }
 
     // TODO Need create email template

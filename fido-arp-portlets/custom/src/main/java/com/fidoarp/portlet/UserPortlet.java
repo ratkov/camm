@@ -1,5 +1,6 @@
 package com.fidoarp.portlet;
 
+import com.fidoarp.UserStatus;
 import com.fidoarp.util.UsersUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -39,6 +40,7 @@ public class UserPortlet extends FidoMVCPortlet {
             String action = renderRequest.getParameter("action");
 
             renderRequest.setAttribute("pswdGenerate", UsersUtil.resources.getString("user.password.generate"));
+            renderRequest.setAttribute("userStatus", UserStatus.values());
 
             if (StringUtils.equals("filterUser", action)) {
                 getPortletContext().getRequestDispatcher("/html/jsp/portlet/users/view/user-table.jsp").include(renderRequest, renderResponse);
@@ -61,18 +63,27 @@ public class UserPortlet extends FidoMVCPortlet {
 
         JSONObject jsonFeed = JSONFactoryUtil.createJSONObject();
 
-        String action = resourceRequest.getParameter("action");
         Map<String, String> resultMap = new HashMap<String, String>();
+        String action = resourceRequest.getParameter("action");
+        String message = null;
 
         if (StringUtils.equals(action, "addUserAction")) {
-            String message = UsersUtil.addNewUser(resourceRequest);
+            message = UsersUtil.addNewUser(resourceRequest);
 
             if (message != null) {
                 resultMap.put("addUserError", message);
             }
-        } else if (StringUtils.equals(action, "changeStatusAction")) {
 
+        } else if (StringUtils.equals(action, "changeStatusAction")) {
+            ThemeDisplay themeDisplay = (ThemeDisplay) resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
             String status = resourceRequest.getParameter("status");
+            String userId = resourceRequest.getParameter("userId");
+
+            message =  UsersUtil.changeStatus(status, userId, themeDisplay.getCompanyId());
+
+            if (message != null) {
+                resultMap.put("changeStatusError", message);
+            }
         }
 
         jsonFeed.put("resultMap", JSONFactoryUtil.

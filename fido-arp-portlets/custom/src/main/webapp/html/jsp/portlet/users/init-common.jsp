@@ -8,6 +8,10 @@
     <portlet:param name="action" value="changeStatusAction"/>
 </portlet:resourceURL>
 
+<portlet:resourceURL var="passwordUrl" id="passwordRecoveryUrl">
+    <portlet:param name="action" value="passwordRecoveryAction"/>
+</portlet:resourceURL>
+
 <portlet:renderURL var="filterUserURL" windowState="<%=LiferayWindowState.EXCLUSIVE.toString()%>" portletMode="view">
     <portlet:param name="action" value="filterUser"/>
 </portlet:renderURL>
@@ -21,13 +25,13 @@
                     '<portlet:namespace/>');
 
             var errors = {
-                "firstNameRequired": "<liferay-ui:message key="user.validation.full.name.required"/>",
+                "firstNameRequired": "<liferay-ui:message key="user.validation.first.name.required"/>",
                 "firstNameRegexp": "<liferay-ui:message key="user.validation.first.name.failure"/>",
 
-                "middleNameRequired": "<liferay-ui:message key="user.validation.full.name.required"/>",
+                "middleNameRequired": "<liferay-ui:message key="user.validation.middle.name.required"/>",
                 "middleNameRegexp": "<liferay-ui:message key="user.validation.middle.name.failure"/>",
 
-                "lastNameRequired": "<liferay-ui:message key="user.validation.full.name.required"/>",
+                "lastNameRequired": "<liferay-ui:message key="user.validation.last.name.required"/>",
                 "lastNameRegexp": "<liferay-ui:message key="user.validation.last.name.failure"/>",
 
                 "nameMinLength": "<liferay-ui:message key="user.validation.full.name.min.length"/>",
