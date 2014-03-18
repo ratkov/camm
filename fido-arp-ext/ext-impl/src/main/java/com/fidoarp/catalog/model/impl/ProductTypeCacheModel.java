@@ -21,12 +21,13 @@ public class ProductTypeCacheModel implements CacheModel<ProductType>,
     public String productTypeCode;
     public String name;
     public String description;
+    public String status;
     public long organizationId;
-    public long ddmtemplateId;
+    public long templateId;
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{productTypeId=");
         sb.append(productTypeId);
@@ -36,10 +37,12 @@ public class ProductTypeCacheModel implements CacheModel<ProductType>,
         sb.append(name);
         sb.append(", description=");
         sb.append(description);
+        sb.append(", status=");
+        sb.append(status);
         sb.append(", organizationId=");
         sb.append(organizationId);
-        sb.append(", ddmtemplateId=");
-        sb.append(ddmtemplateId);
+        sb.append(", templateId=");
+        sb.append(templateId);
         sb.append("}");
 
         return sb.toString();
@@ -68,8 +71,14 @@ public class ProductTypeCacheModel implements CacheModel<ProductType>,
             productTypeImpl.setDescription(description);
         }
 
+        if (status == null) {
+            productTypeImpl.setStatus(StringPool.BLANK);
+        } else {
+            productTypeImpl.setStatus(status);
+        }
+
         productTypeImpl.setOrganizationId(organizationId);
-        productTypeImpl.setDdmtemplateId(ddmtemplateId);
+        productTypeImpl.setTemplateId(templateId);
 
         productTypeImpl.resetOriginalValues();
 

@@ -12,3 +12,5 @@
 <liferay-theme:defineObjects/>
 <portlet:defineObjects/>
 
+<c:set var="normal" value="<%=LiferayWindowState.NORMAL.toString()%>"/>
+<c:set var="exclusive" value="<%=LiferayWindowState.EXCLUSIVE.toString()%>"/>

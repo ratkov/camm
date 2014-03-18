@@ -55,10 +55,11 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
             { "code", Types.VARCHAR },
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR },
+            { "status", Types.VARCHAR },
             { "organization_id", Types.BIGINT },
-            { "ddmtemplate_id", Types.BIGINT }
+            { "template_id", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table fido_product_type (id LONG not null primary key,code VARCHAR(75) null,name STRING null,description VARCHAR(75) null,organization_id LONG,ddmtemplate_id LONG)";
+    public static final String TABLE_SQL_CREATE = "create table fido_product_type (id LONG not null primary key,code VARCHAR(75) null,name STRING null,description VARCHAR(75) null,status VARCHAR(75) null,organization_id LONG,template_id LONG)";
     public static final String TABLE_SQL_DROP = "drop table fido_product_type";
     public static final String ORDER_BY_JPQL = " ORDER BY productType.productTypeId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY fido_product_type.id ASC";
@@ -74,7 +75,8 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
                 "value.object.column.bitmask.enabled.com.fidoarp.catalog.model.ProductType"),
             true);
-    public static long PRODUCTTYPECODE_COLUMN_BITMASK = 1L;
+    public static long ORGANIZATIONID_COLUMN_BITMASK = 1L;
+    public static long PRODUCTTYPECODE_COLUMN_BITMASK = 2L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
                 "lock.expiration.time.com.fidoarp.catalog.model.ProductType"));
     private static ClassLoader _classLoader = ProductType.class.getClassLoader();
@@ -87,8 +89,11 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
     private String _name;
     private String _nameCurrentLanguageId;
     private String _description;
+    private String _status;
     private long _organizationId;
-    private long _ddmtemplateId;
+    private long _originalOrganizationId;
+    private boolean _setOriginalOrganizationId;
+    private long _templateId;
     private long _columnBitmask;
     private ProductType _escapedModelProxy;
 
@@ -127,8 +132,9 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
         attributes.put("productTypeCode", getProductTypeCode());
         attributes.put("name", getName());
         attributes.put("description", getDescription());
+        attributes.put("status", getStatus());
         attributes.put("organizationId", getOrganizationId());
-        attributes.put("ddmtemplateId", getDdmtemplateId());
+        attributes.put("templateId", getTemplateId());
 
         return attributes;
     }
@@ -159,16 +165,22 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
             setDescription(description);
         }
 
+        String status = (String) attributes.get("status");
+
+        if (status != null) {
+            setStatus(status);
+        }
+
         Long organizationId = (Long) attributes.get("organizationId");
 
         if (organizationId != null) {
             setOrganizationId(organizationId);
         }
 
-        Long ddmtemplateId = (Long) attributes.get("ddmtemplateId");
+        Long templateId = (Long) attributes.get("templateId");
 
-        if (ddmtemplateId != null) {
-            setDdmtemplateId(ddmtemplateId);
+        if (templateId != null) {
+            setTemplateId(templateId);
         }
     }
 
@@ -303,20 +315,44 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
         _description = description;
     }
 
+    public String getStatus() {
+        if (_status == null) {
+            return StringPool.BLANK;
+        } else {
+            return _status;
+        }
+    }
+
+    public void setStatus(String status) {
+        _status = status;
+    }
+
     public long getOrganizationId() {
         return _organizationId;
     }
 
     public void setOrganizationId(long organizationId) {
+        _columnBitmask |= ORGANIZATIONID_COLUMN_BITMASK;
+
+        if (!_setOriginalOrganizationId) {
+            _setOriginalOrganizationId = true;
+
+            _originalOrganizationId = _organizationId;
+        }
+
         _organizationId = organizationId;
     }
 
-    public long getDdmtemplateId() {
-        return _ddmtemplateId;
+    public long getOriginalOrganizationId() {
+        return _originalOrganizationId;
     }
 
-    public void setDdmtemplateId(long ddmtemplateId) {
-        _ddmtemplateId = ddmtemplateId;
+    public long getTemplateId() {
+        return _templateId;
+    }
+
+    public void setTemplateId(long templateId) {
+        _templateId = templateId;
     }
 
     public long getColumnBitmask() {
@@ -362,8 +398,9 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
         productTypeImpl.setProductTypeCode(getProductTypeCode());
         productTypeImpl.setName(getName());
         productTypeImpl.setDescription(getDescription());
+        productTypeImpl.setStatus(getStatus());
         productTypeImpl.setOrganizationId(getOrganizationId());
-        productTypeImpl.setDdmtemplateId(getDdmtemplateId());
+        productTypeImpl.setTemplateId(getTemplateId());
 
         productTypeImpl.resetOriginalValues();
 
@@ -422,6 +459,10 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
 
         productTypeModelImpl._originalProductTypeCode = productTypeModelImpl._productTypeCode;
 
+        productTypeModelImpl._originalOrganizationId = productTypeModelImpl._organizationId;
+
+        productTypeModelImpl._setOriginalOrganizationId = false;
+
         productTypeModelImpl._columnBitmask = 0;
     }
 
@@ -455,16 +496,24 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
             productTypeCacheModel.description = null;
         }
 
+        productTypeCacheModel.status = getStatus();
+
+        String status = productTypeCacheModel.status;
+
+        if ((status != null) && (status.length() == 0)) {
+            productTypeCacheModel.status = null;
+        }
+
         productTypeCacheModel.organizationId = getOrganizationId();
 
-        productTypeCacheModel.ddmtemplateId = getDdmtemplateId();
+        productTypeCacheModel.templateId = getTemplateId();
 
         return productTypeCacheModel;
     }
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(13);
+        StringBundler sb = new StringBundler(15);
 
         sb.append("{productTypeId=");
         sb.append(getProductTypeId());
@@ -474,17 +523,19 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
         sb.append(getName());
         sb.append(", description=");
         sb.append(getDescription());
+        sb.append(", status=");
+        sb.append(getStatus());
         sb.append(", organizationId=");
         sb.append(getOrganizationId());
-        sb.append(", ddmtemplateId=");
-        sb.append(getDdmtemplateId());
+        sb.append(", templateId=");
+        sb.append(getTemplateId());
         sb.append("}");
 
         return sb.toString();
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(22);
+        StringBundler sb = new StringBundler(25);
 
         sb.append("<model><model-name>");
         sb.append("com.fidoarp.catalog.model.ProductType");
@@ -507,12 +558,16 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
         sb.append(getDescription());
         sb.append("]]></column-value></column>");
         sb.append(
+            "<column><column-name>status</column-name><column-value><![CDATA[");
+        sb.append(getStatus());
+        sb.append("]]></column-value></column>");
+        sb.append(
             "<column><column-name>organizationId</column-name><column-value><![CDATA[");
         sb.append(getOrganizationId());
         sb.append("]]></column-value></column>");
         sb.append(
-            "<column><column-name>ddmtemplateId</column-name><column-value><![CDATA[");
-        sb.append(getDdmtemplateId());
+            "<column><column-name>templateId</column-name><column-value><![CDATA[");
+        sb.append(getTemplateId());
         sb.append("]]></column-value></column>");
 
         sb.append("</model>");

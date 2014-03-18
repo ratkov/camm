@@ -123,6 +123,125 @@ public interface ProductTypePersistence extends BasePersistence<ProductType> {
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Returns all the product types where organizationId = &#63;.
+    *
+    * @param organizationId the organization ID
+    * @return the matching product types
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.fidoarp.catalog.model.ProductType> findByOrganizationId(
+        long organizationId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns a range of all the product types where organizationId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param organizationId the organization ID
+    * @param start the lower bound of the range of product types
+    * @param end the upper bound of the range of product types (not inclusive)
+    * @return the range of matching product types
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.fidoarp.catalog.model.ProductType> findByOrganizationId(
+        long organizationId, int start, int end)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns an ordered range of all the product types where organizationId = &#63;.
+    *
+    * <p>
+    * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to {@link com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS} will return the full result set.
+    * </p>
+    *
+    * @param organizationId the organization ID
+    * @param start the lower bound of the range of product types
+    * @param end the upper bound of the range of product types (not inclusive)
+    * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+    * @return the ordered range of matching product types
+    * @throws SystemException if a system exception occurred
+    */
+    public java.util.List<com.fidoarp.catalog.model.ProductType> findByOrganizationId(
+        long organizationId, int start, int end,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first product type in the ordered set where organizationId = &#63;.
+    *
+    * @param organizationId the organization ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching product type
+    * @throws com.fidoarp.catalog.NoSuchProductTypeException if a matching product type could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.fidoarp.catalog.model.ProductType findByOrganizationId_First(
+        long organizationId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.fidoarp.catalog.NoSuchProductTypeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the first product type in the ordered set where organizationId = &#63;.
+    *
+    * @param organizationId the organization ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the first matching product type, or <code>null</code> if a matching product type could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.fidoarp.catalog.model.ProductType fetchByOrganizationId_First(
+        long organizationId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last product type in the ordered set where organizationId = &#63;.
+    *
+    * @param organizationId the organization ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching product type
+    * @throws com.fidoarp.catalog.NoSuchProductTypeException if a matching product type could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.fidoarp.catalog.model.ProductType findByOrganizationId_Last(
+        long organizationId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.fidoarp.catalog.NoSuchProductTypeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the last product type in the ordered set where organizationId = &#63;.
+    *
+    * @param organizationId the organization ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the last matching product type, or <code>null</code> if a matching product type could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.fidoarp.catalog.model.ProductType fetchByOrganizationId_Last(
+        long organizationId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the product types before and after the current product type in the ordered set where organizationId = &#63;.
+    *
+    * @param productTypeId the primary key of the current product type
+    * @param organizationId the organization ID
+    * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+    * @return the previous, current, and next product type
+    * @throws com.fidoarp.catalog.NoSuchProductTypeException if a product type with the primary key could not be found
+    * @throws SystemException if a system exception occurred
+    */
+    public com.fidoarp.catalog.model.ProductType[] findByOrganizationId_PrevAndNext(
+        long productTypeId, long organizationId,
+        com.liferay.portal.kernel.util.OrderByComparator orderByComparator)
+        throws com.fidoarp.catalog.NoSuchProductTypeException,
+            com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Returns all the product types.
     *
     * @return the product types
@@ -178,6 +297,15 @@ public interface ProductTypePersistence extends BasePersistence<ProductType> {
             com.liferay.portal.kernel.exception.SystemException;
 
     /**
+    * Removes all the product types where organizationId = &#63; from the database.
+    *
+    * @param organizationId the organization ID
+    * @throws SystemException if a system exception occurred
+    */
+    public void removeByOrganizationId(long organizationId)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
     * Removes all the product types from the database.
     *
     * @throws SystemException if a system exception occurred
@@ -193,6 +321,16 @@ public interface ProductTypePersistence extends BasePersistence<ProductType> {
     * @throws SystemException if a system exception occurred
     */
     public int countByCode(java.lang.String productTypeCode)
+        throws com.liferay.portal.kernel.exception.SystemException;
+
+    /**
+    * Returns the number of product types where organizationId = &#63;.
+    *
+    * @param organizationId the organization ID
+    * @return the number of matching product types
+    * @throws SystemException if a system exception occurred
+    */
+    public int countByOrganizationId(long organizationId)
         throws com.liferay.portal.kernel.exception.SystemException;
 
     /**

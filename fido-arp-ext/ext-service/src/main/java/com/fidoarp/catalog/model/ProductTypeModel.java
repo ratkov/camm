@@ -191,6 +191,21 @@ public interface ProductTypeModel extends BaseModel<ProductType> {
     public void setDescription(String description);
 
     /**
+     * Returns the status of this product type.
+     *
+     * @return the status of this product type
+     */
+    @AutoEscape
+    public String getStatus();
+
+    /**
+     * Sets the status of this product type.
+     *
+     * @param status the status of this product type
+     */
+    public void setStatus(String status);
+
+    /**
      * Returns the organization ID of this product type.
      *
      * @return the organization ID of this product type
@@ -205,18 +220,18 @@ public interface ProductTypeModel extends BaseModel<ProductType> {
     public void setOrganizationId(long organizationId);
 
     /**
-     * Returns the ddmtemplate ID of this product type.
+     * Returns the template ID of this product type.
      *
-     * @return the ddmtemplate ID of this product type
+     * @return the template ID of this product type
      */
-    public long getDdmtemplateId();
+    public long getTemplateId();
 
     /**
-     * Sets the ddmtemplate ID of this product type.
+     * Sets the template ID of this product type.
      *
-     * @param ddmtemplateId the ddmtemplate ID of this product type
+     * @param templateId the template ID of this product type
      */
-    public void setDdmtemplateId(long ddmtemplateId);
+    public void setTemplateId(long templateId);
 
     public boolean isNew();
 

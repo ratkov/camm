@@ -8,7 +8,9 @@
 	<class name="com.fidoarp.catalog.model.impl.AppImpl" table="fido_app">
 		<cache usage="read-write" />
 		<id name="appId" column="id" type="long">
-			<generator class="assigned" />
+			<generator class="sequence">
+				<param name="sequence">id_sequence</param>
+			</generator>
 		</id>
 		<property name="userId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="user_id" />
 		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="organization_id" />
@@ -26,7 +28,9 @@
 	<class name="com.fidoarp.catalog.model.impl.AppStatusImpl" table="fido_app_status">
 		<cache usage="read-write" />
 		<id name="appStatusId" column="id" type="long">
-			<generator class="assigned" />
+			<generator class="sequence">
+				<param name="sequence">id_sequence</param>
+			</generator>
 		</id>
 		<property name="appStatusCode" type="com.liferay.portal.dao.orm.hibernate.StringType" column="code" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
@@ -35,12 +39,15 @@
 	<class name="com.fidoarp.catalog.model.impl.ProductTypeImpl" table="fido_product_type">
 		<cache usage="read-write" />
 		<id name="productTypeId" column="id" type="long">
-			<generator class="assigned" />
+			<generator class="sequence">
+				<param name="sequence">id_sequence</param>
+			</generator>
 		</id>
 		<property name="productTypeCode" type="com.liferay.portal.dao.orm.hibernate.StringType" column="code" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="organization_id" />
-		<property name="ddmtemplateId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="ddmtemplate_id" />
+		<property name="templateId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="template_id" />
 	</class>
 </hibernate-mapping>

@@ -4,13 +4,16 @@
     <namespace>fido</namespace>
     <entity name="ProductType" table="fido_product_type" uuid="false" local-service="true" remote-service="false">
         <!-- PK fields -->
-        <column name="productTypeId" db-name="id" type="long" primary="true" />
+        <column name="productTypeId" db-name="id" type="long" primary="true"
+                id-type="sequence"
+                id-param="id_sequence"/>
         <!-- Other fields -->
         <column name="productTypeCode" db-name="code" type="String" />
-        <column name="name" type="String" localized="true"/>
-        <column name="description" type="String" />
+        <column name="name" db-name="name" type="String" localized="true"/>
+        <column name="description" db-name="description" type="String" />
+        <column name="status" db-name="status" type="String" />
         <column name="organizationId" db-name="organization_id" type="long" />
-        <column name="ddmtemplateId" db-name="ddmtemplate_id" type="long" />
+        <column name="templateId" db-name="template_id" type="long" />
 
         <!-- Order -->
         <order by="asc">
@@ -21,14 +24,19 @@
         <finder return-type="ProductType" name="Code" unique="true">
             <finder-column name="productTypeCode" />
         </finder>
+        <finder return-type="Collection" name="OrganizationId" unique="true">
+            <finder-column name="organizationId" />
+        </finder>
     </entity>
     <entity name="AppStatus" table="fido_app_status" uuid="false" local-service="true" remote-service="false">
         <!-- PK fields -->
-        <column name="appStatusId" db-name="id" type="long" primary="true" />
+        <column name="appStatusId" db-name="id" type="long" primary="true"
+                id-type="sequence"
+                id-param="id_sequence"/>
         <!-- Other fields -->
         <column name="appStatusCode" db-name="code" type="String" />
-        <column name="name" type="String" localized="true"/>
-        <column name="description" type="String" />
+        <column name="name" db-name="name" type="String" localized="true"/>
+        <column name="description" db-name="description" type="String" />
 
         <!-- Order -->
         <order by="asc">
@@ -42,19 +50,22 @@
     </entity>
     <entity name="App" table="fido_app" uuid="false" local-service="true" remote-service="false">
         <!-- PK fields -->
-        <column name="appId" db-name="id" type="long" primary="true" />
+        <column name="appId" db-name="id" type="long"
+                primary="true"
+                id-type="sequence"
+                id-param="id_sequence"/>
         <!-- Other fields -->
         <column name="userId" db-name="user_id" type="long" />
         <column name="organizationId" db-name="organization_id" type="long" />
         <column name="createdDate" db-name="created_date" type="Date" />
-        <column name="description" type="String" localized="true"/>
+        <column name="description" db-name="description" type="String" localized="true"/>
         <column name="statusId" db-name="status_id" type="long" />
         <column name="statusChangeDate" db-name="status_change_date" type="Date" />
         <column name="clientName" db-name="client_name" type="String" />
         <column name="clientOkpo" db-name="client_okpo" type="String" />
         <column name="contactPhone" db-name="contact_phone" type="String" />
         <column name="creditAmount" db-name="credit_amount" type="int" />
-        <column name="comments" type="String" localized="true"/>
+        <column name="comments" db-name="comments" type="String" localized="true"/>
         <column name="questionnaire" db-name="questionnaire" type="String"/>
         <!-- Order -->
         <order by="asc">

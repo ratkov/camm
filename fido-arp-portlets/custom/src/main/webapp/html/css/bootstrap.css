@@ -116,6 +116,7 @@ textarea {
   margin: 0;
   font: inherit;
   color: inherit;
+    outline: none;
 }
 button {
   overflow: visible;
@@ -2052,6 +2053,7 @@ fieldset[disabled] .btn {
 .open .dropdown-toggle.btn-default {
   color: #333;
   background-color: #ebebeb;
+  background-image: none;
   border-color: #adadad;
 }
 .btn-default:active,

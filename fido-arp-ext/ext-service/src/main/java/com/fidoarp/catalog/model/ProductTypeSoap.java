@@ -16,8 +16,9 @@ public class ProductTypeSoap implements Serializable {
     private String _productTypeCode;
     private String _name;
     private String _description;
+    private String _status;
     private long _organizationId;
-    private long _ddmtemplateId;
+    private long _templateId;
 
     public ProductTypeSoap() {
     }
@@ -29,8 +30,9 @@ public class ProductTypeSoap implements Serializable {
         soapModel.setProductTypeCode(model.getProductTypeCode());
         soapModel.setName(model.getName());
         soapModel.setDescription(model.getDescription());
+        soapModel.setStatus(model.getStatus());
         soapModel.setOrganizationId(model.getOrganizationId());
-        soapModel.setDdmtemplateId(model.getDdmtemplateId());
+        soapModel.setTemplateId(model.getTemplateId());
 
         return soapModel;
     }
@@ -111,6 +113,14 @@ public class ProductTypeSoap implements Serializable {
         _description = description;
     }
 
+    public String getStatus() {
+        return _status;
+    }
+
+    public void setStatus(String status) {
+        _status = status;
+    }
+
     public long getOrganizationId() {
         return _organizationId;
     }
@@ -119,11 +129,11 @@ public class ProductTypeSoap implements Serializable {
         _organizationId = organizationId;
     }
 
-    public long getDdmtemplateId() {
-        return _ddmtemplateId;
+    public long getTemplateId() {
+        return _templateId;
     }
 
-    public void setDdmtemplateId(long ddmtemplateId) {
-        _ddmtemplateId = ddmtemplateId;
+    public void setTemplateId(long templateId) {
+        _templateId = templateId;
     }
 }

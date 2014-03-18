@@ -6,5 +6,6 @@
 		<portlet id="fido_arp_partners" />
 		<portlet id="fido_arp_queues" />
         <portlet id="fido_arp_users" />
+        <portlet id="fido_arp_partner_product_type" />
 	</category>
 </display>

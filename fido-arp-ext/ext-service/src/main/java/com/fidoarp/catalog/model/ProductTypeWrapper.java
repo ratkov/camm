@@ -37,8 +37,9 @@ public class ProductTypeWrapper implements ProductType,
         attributes.put("productTypeCode", getProductTypeCode());
         attributes.put("name", getName());
         attributes.put("description", getDescription());
+        attributes.put("status", getStatus());
         attributes.put("organizationId", getOrganizationId());
-        attributes.put("ddmtemplateId", getDdmtemplateId());
+        attributes.put("templateId", getTemplateId());
 
         return attributes;
     }
@@ -68,16 +69,22 @@ public class ProductTypeWrapper implements ProductType,
             setDescription(description);
         }
 
+        String status = (String) attributes.get("status");
+
+        if (status != null) {
+            setStatus(status);
+        }
+
         Long organizationId = (Long) attributes.get("organizationId");
 
         if (organizationId != null) {
             setOrganizationId(organizationId);
         }
 
-        Long ddmtemplateId = (Long) attributes.get("ddmtemplateId");
+        Long templateId = (Long) attributes.get("templateId");
 
-        if (ddmtemplateId != null) {
-            setDdmtemplateId(ddmtemplateId);
+        if (templateId != null) {
+            setTemplateId(templateId);
         }
     }
 
@@ -280,6 +287,24 @@ public class ProductTypeWrapper implements ProductType,
     }
 
     /**
+    * Returns the status of this product type.
+    *
+    * @return the status of this product type
+    */
+    public java.lang.String getStatus() {
+        return _productType.getStatus();
+    }
+
+    /**
+    * Sets the status of this product type.
+    *
+    * @param status the status of this product type
+    */
+    public void setStatus(java.lang.String status) {
+        _productType.setStatus(status);
+    }
+
+    /**
     * Returns the organization ID of this product type.
     *
     * @return the organization ID of this product type
@@ -298,21 +323,21 @@ public class ProductTypeWrapper implements ProductType,
     }
 
     /**
-    * Returns the ddmtemplate ID of this product type.
+    * Returns the template ID of this product type.
     *
-    * @return the ddmtemplate ID of this product type
+    * @return the template ID of this product type
     */
-    public long getDdmtemplateId() {
-        return _productType.getDdmtemplateId();
+    public long getTemplateId() {
+        return _productType.getTemplateId();
     }
 
     /**
-    * Sets the ddmtemplate ID of this product type.
+    * Sets the template ID of this product type.
     *
-    * @param ddmtemplateId the ddmtemplate ID of this product type
+    * @param templateId the template ID of this product type
     */
-    public void setDdmtemplateId(long ddmtemplateId) {
-        _productType.setDdmtemplateId(ddmtemplateId);
+    public void setTemplateId(long templateId) {
+        _productType.setTemplateId(templateId);
     }
 
     public boolean isNew() {

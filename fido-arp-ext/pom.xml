@@ -13,7 +13,8 @@
     <description>This module contain all hooks</description>
 
     <properties>
-        <database.host>world</database.host>
+        <!--<database.host>world</database.host>-->
+        <jdbc.driver>oracle.jdbc.driver.OracleDriver</jdbc.driver>
     </properties>
     <build>
         <plugins>
@@ -83,8 +84,8 @@
 
     <modules>
         <module>ext</module>
+        <module>ext-impl</module>
         <module>ext-service</module>
         <module>ext-web</module>
-        <module>ext-impl</module>
     </modules>
 </project>
