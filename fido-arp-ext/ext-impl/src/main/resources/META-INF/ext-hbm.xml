@@ -40,7 +40,7 @@
 		<property name="productTypeCode" type="com.liferay.portal.dao.orm.hibernate.StringType" column="code" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="status" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="status" type="com.liferay.portal.dao.orm.hibernate.BooleanType" />
 		<property name="organizationId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="organization_id" />
 		<property name="templateId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="template_id" />
 	</class>

@@ -48,16 +48,8 @@
         <label class="col-sm-2 control-label"><liferay-ui:message key="partner.product.type.status" /></label>
         <div class="col-sm-10">
             <select id='productStatus' name='productStatus' class="form-control required">
-                <c:forEach items="${statuses}" var="status">
-                    <c:choose>
-                        <c:when test="${productType.status}">
-                            <option value="${status}" <c:if test="${status eq productType.status}">selected</c:if>><liferay-ui:message key="${status.label}"/></option>
-                        </c:when>
-                        <c:otherwise>
-                            <option value="${status}"><liferay-ui:message key="${status.label}"/></option>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
+                <option value="true" <c:if test="${productType.status}">selected</c:if>><liferay-ui:message key="partner.product.type.active"/></option>
+                <option value="false" <c:if test="${!productType.status}">selected</c:if>><liferay-ui:message key="partner.product.type.inactive"/></option>
             </select>
         </div>
     </div>

@@ -21,7 +21,7 @@ public class ProductTypeCacheModel implements CacheModel<ProductType>,
     public String productTypeCode;
     public String name;
     public String description;
-    public String status;
+    public boolean status;
     public long organizationId;
     public long templateId;
 
@@ -71,12 +71,7 @@ public class ProductTypeCacheModel implements CacheModel<ProductType>,
             productTypeImpl.setDescription(description);
         }
 
-        if (status == null) {
-            productTypeImpl.setStatus(StringPool.BLANK);
-        } else {
-            productTypeImpl.setStatus(status);
-        }
-
+        productTypeImpl.setStatus(status);
         productTypeImpl.setOrganizationId(organizationId);
         productTypeImpl.setTemplateId(templateId);
 

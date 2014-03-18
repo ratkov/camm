@@ -195,15 +195,21 @@ public interface ProductTypeModel extends BaseModel<ProductType> {
      *
      * @return the status of this product type
      */
-    @AutoEscape
-    public String getStatus();
+    public boolean getStatus();
 
     /**
-     * Sets the status of this product type.
+     * Returns <code>true</code> if this product type is status.
+     *
+     * @return <code>true</code> if this product type is status; <code>false</code> otherwise
+     */
+    public boolean isStatus();
+
+    /**
+     * Sets whether this product type is status.
      *
      * @param status the status of this product type
      */
-    public void setStatus(String status);
+    public void setStatus(boolean status);
 
     /**
      * Returns the organization ID of this product type.

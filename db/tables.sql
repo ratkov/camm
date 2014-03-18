@@ -26,7 +26,7 @@ create table fido_product_type (
 	code VARCHAR(75) null,
 	name VARCHAR(75) null,
 	description VARCHAR(75) null,
-	status VARCHAR(75) null,
+	status NUMBER(1,0) null,
 	organization_id NUMBER(30,0),
 	template_id NUMBER(30,0)
 );

@@ -9,7 +9,7 @@
         <column name="productTypeCode" db-name="code" type="String" />
         <column name="name" db-name="name" type="String" localized="true"/>
         <column name="description" db-name="description" type="String" />
-        <column name="status" db-name="status" type="String" />
+        <column name="status" db-name="status" type="boolean" />
         <column name="organizationId" db-name="organization_id" type="long" />
         <column name="templateId" db-name="template_id" type="long" />
 

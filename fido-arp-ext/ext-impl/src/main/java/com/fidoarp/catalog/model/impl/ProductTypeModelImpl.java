@@ -55,11 +55,11 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
             { "code", Types.VARCHAR },
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR },
-            { "status", Types.VARCHAR },
+            { "status", Types.BOOLEAN },
             { "organization_id", Types.BIGINT },
             { "template_id", Types.BIGINT }
         };
-    public static final String TABLE_SQL_CREATE = "create table fido_product_type (id LONG not null primary key,code VARCHAR(75) null,name STRING null,description VARCHAR(75) null,status VARCHAR(75) null,organization_id LONG,template_id LONG)";
+    public static final String TABLE_SQL_CREATE = "create table fido_product_type (id LONG not null primary key,code VARCHAR(75) null,name STRING null,description VARCHAR(75) null,status BOOLEAN,organization_id LONG,template_id LONG)";
     public static final String TABLE_SQL_DROP = "drop table fido_product_type";
     public static final String ORDER_BY_JPQL = " ORDER BY productType.productTypeId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY fido_product_type.id ASC";
@@ -89,7 +89,7 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
     private String _name;
     private String _nameCurrentLanguageId;
     private String _description;
-    private String _status;
+    private boolean _status;
     private long _organizationId;
     private long _originalOrganizationId;
     private boolean _setOriginalOrganizationId;
@@ -165,7 +165,7 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
             setDescription(description);
         }
 
-        String status = (String) attributes.get("status");
+        Boolean status = (Boolean) attributes.get("status");
 
         if (status != null) {
             setStatus(status);
@@ -315,15 +315,15 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
         _description = description;
     }
 
-    public String getStatus() {
-        if (_status == null) {
-            return StringPool.BLANK;
-        } else {
-            return _status;
-        }
+    public boolean getStatus() {
+        return _status;
     }
 
-    public void setStatus(String status) {
+    public boolean isStatus() {
+        return _status;
+    }
+
+    public void setStatus(boolean status) {
         _status = status;
     }
 
@@ -497,12 +497,6 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
         }
 
         productTypeCacheModel.status = getStatus();
-
-        String status = productTypeCacheModel.status;
-
-        if ((status != null) && (status.length() == 0)) {
-            productTypeCacheModel.status = null;
-        }
 
         productTypeCacheModel.organizationId = getOrganizationId();
 

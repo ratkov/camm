@@ -26,7 +26,7 @@ create table fido_product_type (
 	code VARCHAR(75) null,
 	name STRING null,
 	description VARCHAR(75) null,
-	status VARCHAR(75) null,
+	status BOOLEAN,
 	organization_id LONG,
 	template_id LONG
 );

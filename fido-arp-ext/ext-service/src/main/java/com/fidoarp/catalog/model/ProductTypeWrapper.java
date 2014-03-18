@@ -69,7 +69,7 @@ public class ProductTypeWrapper implements ProductType,
             setDescription(description);
         }
 
-        String status = (String) attributes.get("status");
+        Boolean status = (Boolean) attributes.get("status");
 
         if (status != null) {
             setStatus(status);
@@ -291,16 +291,25 @@ public class ProductTypeWrapper implements ProductType,
     *
     * @return the status of this product type
     */
-    public java.lang.String getStatus() {
+    public boolean getStatus() {
         return _productType.getStatus();
     }
 
     /**
-    * Sets the status of this product type.
+    * Returns <code>true</code> if this product type is status.
+    *
+    * @return <code>true</code> if this product type is status; <code>false</code> otherwise
+    */
+    public boolean isStatus() {
+        return _productType.isStatus();
+    }
+
+    /**
+    * Sets whether this product type is status.
     *
     * @param status the status of this product type
     */
-    public void setStatus(java.lang.String status) {
+    public void setStatus(boolean status) {
         _productType.setStatus(status);
     }
 

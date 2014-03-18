@@ -413,7 +413,7 @@ public class ProductTypePersistenceImpl extends BasePersistenceImpl<ProductType>
         productTypeImpl.setProductTypeCode(productType.getProductTypeCode());
         productTypeImpl.setName(productType.getName());
         productTypeImpl.setDescription(productType.getDescription());
-        productTypeImpl.setStatus(productType.getStatus());
+        productTypeImpl.setStatus(productType.isStatus());
         productTypeImpl.setOrganizationId(productType.getOrganizationId());
         productTypeImpl.setTemplateId(productType.getTemplateId());
 

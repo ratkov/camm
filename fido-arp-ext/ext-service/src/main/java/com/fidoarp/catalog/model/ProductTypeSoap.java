@@ -16,7 +16,7 @@ public class ProductTypeSoap implements Serializable {
     private String _productTypeCode;
     private String _name;
     private String _description;
-    private String _status;
+    private boolean _status;
     private long _organizationId;
     private long _templateId;
 
@@ -113,11 +113,15 @@ public class ProductTypeSoap implements Serializable {
         _description = description;
     }
 
-    public String getStatus() {
+    public boolean getStatus() {
         return _status;
     }
 
-    public void setStatus(String status) {
+    public boolean isStatus() {
+        return _status;
+    }
+
+    public void setStatus(boolean status) {
         _status = status;
     }
 
