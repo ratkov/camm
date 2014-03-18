@@ -228,4 +228,8 @@ public interface ProductTypeLocalService extends BaseLocalService,
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.fidoarp.catalog.model.ProductType> getListProductTypeByOrganizationId(
+        long organizationId);
 }

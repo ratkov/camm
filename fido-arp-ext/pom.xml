@@ -28,7 +28,7 @@
                     <appServerLibGlobalDir>${liferay.app.server.lib.global.dir}</appServerLibGlobalDir>
                     <appServerPortalDir>${liferay.app.server.portal.dir}</appServerPortalDir>
                     <liferayVersion>${liferay.version}</liferayVersion>
-                    <pluginName>fido-ext</pluginName>
+                    <pluginName>fido-arp-ext</pluginName>
                     <pluginType>ext</pluginType>
                 </configuration>
             </plugin>

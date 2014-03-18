@@ -1,6 +1,10 @@
 package com.fidoarp.catalog.service.impl;
 
+import com.fidoarp.catalog.model.ProductType;
 import com.fidoarp.catalog.service.base.ProductTypeLocalServiceBaseImpl;
+import com.liferay.portal.kernel.exception.SystemException;
+
+import java.util.List;
 
 /**
  * The implementation of the product type local service.
@@ -22,4 +26,14 @@ public class ProductTypeLocalServiceImpl extends ProductTypeLocalServiceBaseImpl
      *
      * Never reference this interface directly. Always use {@link com.fidoarp.catalog.service.ProductTypeLocalServiceUtil} to access the product type local service.
      */
+
+    public List<ProductType> getListProductTypeByOrganizationId(long organizationId){
+        try {
+            return productTypePersistence.findByOrganizationId(organizationId);
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

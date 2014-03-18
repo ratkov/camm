@@ -4,9 +4,7 @@
     <namespace>fido</namespace>
     <entity name="ProductType" table="fido_product_type" uuid="false" local-service="true" remote-service="false">
         <!-- PK fields -->
-        <column name="productTypeId" db-name="id" type="long" primary="true"
-                id-type="sequence"
-                id-param="id_sequence"/>
+        <column name="productTypeId" db-name="id" type="long" primary="true"/>
         <!-- Other fields -->
         <column name="productTypeCode" db-name="code" type="String" />
         <column name="name" db-name="name" type="String" localized="true"/>
@@ -30,9 +28,7 @@
     </entity>
     <entity name="AppStatus" table="fido_app_status" uuid="false" local-service="true" remote-service="false">
         <!-- PK fields -->
-        <column name="appStatusId" db-name="id" type="long" primary="true"
-                id-type="sequence"
-                id-param="id_sequence"/>
+        <column name="appStatusId" db-name="id" type="long" primary="true"/>
         <!-- Other fields -->
         <column name="appStatusCode" db-name="code" type="String" />
         <column name="name" db-name="name" type="String" localized="true"/>
@@ -51,9 +47,7 @@
     <entity name="App" table="fido_app" uuid="false" local-service="true" remote-service="false">
         <!-- PK fields -->
         <column name="appId" db-name="id" type="long"
-                primary="true"
-                id-type="sequence"
-                id-param="id_sequence"/>
+                primary="true"/>
         <!-- Other fields -->
         <column name="userId" db-name="user_id" type="long" />
         <column name="organizationId" db-name="organization_id" type="long" />

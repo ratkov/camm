@@ -1,5 +1,11 @@
 <%@include file="../init-common.jsp"%>
 
+<c:if test="${not empty error}">
+    <div class="alert alert-error"><liferay-ui:message key="${error}"/></div>
+</c:if>
+<c:if test="${not empty info}">
+    <div class="alert alert-info"><liferay-ui:message key="${info}"/></div>
+</c:if>
 <div class="row-fluid">
     <label for="partner" class="col-sm-2 control-label"><liferay-ui:message key="partner.product.type.partner" /></label>
     <div class="col-sm-8">
@@ -15,4 +21,7 @@
             <liferay-ui:message key="partner.product.type.add" />
         </a>
     </div>
+</div>
+<div>
+
 </div>
