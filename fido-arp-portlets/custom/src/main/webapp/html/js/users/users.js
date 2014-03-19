@@ -66,7 +66,7 @@ UsersProcessor = Class.extend({
 
         });
 
-        $('#' + namespace + 'showUserForm').on('click', function(e) {
+        $(document).on('click','#' + namespace + 'showUserForm', function(e) {
             e.preventDefault();
 
             var $userBlock = $('#' + namespace + 'addUserForm'),

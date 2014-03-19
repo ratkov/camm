@@ -21,8 +21,7 @@
     <script type="text/javascript">
 
         jQuery(document).ready(function () {
-            window.page = new UsersProcessor(
-                    '<portlet:namespace/>');
+            window.page = new UsersProcessor('<portlet:namespace/>');
 
             var errors = {
                 "firstNameRequired": "<liferay-ui:message key="user.validation.first.name.required"/>",
