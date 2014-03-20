@@ -21,6 +21,40 @@ create table fido_app_status (
 	description VARCHAR(75) null
 );
 
+create table fido_branch (
+	id VARCHAR(75) not null primary key,
+	branch_num VARCHAR(75) null,
+	branch_num_order INTEGER,
+	name STRING null,
+	schedule STRING null,
+	phones STRING null,
+	face_location STRING null,
+	zip_code STRING null,
+	country STRING null,
+	region STRING null,
+	district STRING null,
+	citytype STRING null,
+	city STRING null,
+	street_type STRING null,
+	street STRING null,
+	house STRING null,
+	block STRING null,
+	apartment STRING null,
+	latitude VARCHAR(75) null,
+	longitude VARCHAR(75) null,
+	branch_type VARCHAR(75) null,
+	comments STRING null
+);
+
+create table fido_dict (
+	ID VARCHAR(75) not null primary key,
+	DICT_CODE VARCHAR(75) null,
+	PARENT_ID VARCHAR(75) null,
+	PARENT2_ID VARCHAR(75) null,
+	name STRING null,
+	sort LONG
+);
+
 create table fido_product_type (
 	id LONG not null primary key,
 	code VARCHAR(75) null,

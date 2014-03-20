@@ -5,6 +5,10 @@
 	<bean id="com.fidoarp.catalog.service.persistence.AppPersistence" class="com.fidoarp.catalog.service.persistence.AppPersistenceImpl" parent="basePersistence" />
 	<bean id="com.fidoarp.catalog.service.AppStatusLocalService" class="com.fidoarp.catalog.service.impl.AppStatusLocalServiceImpl" />
 	<bean id="com.fidoarp.catalog.service.persistence.AppStatusPersistence" class="com.fidoarp.catalog.service.persistence.AppStatusPersistenceImpl" parent="basePersistence" />
+	<bean id="com.fidoarp.catalog.service.DictionaryLocalService" class="com.fidoarp.catalog.service.impl.DictionaryLocalServiceImpl" />
+	<bean id="com.fidoarp.catalog.service.persistence.DictionaryPersistence" class="com.fidoarp.catalog.service.persistence.DictionaryPersistenceImpl" parent="basePersistence" />
+	<bean id="com.fidoarp.catalog.service.FidoBranchLocalService" class="com.fidoarp.catalog.service.impl.FidoBranchLocalServiceImpl" />
+	<bean id="com.fidoarp.catalog.service.persistence.FidoBranchPersistence" class="com.fidoarp.catalog.service.persistence.FidoBranchPersistenceImpl" parent="basePersistence" />
 	<bean id="com.fidoarp.catalog.service.ProductTypeLocalService" class="com.fidoarp.catalog.service.impl.ProductTypeLocalServiceImpl" />
 	<bean id="com.fidoarp.catalog.service.persistence.ProductTypePersistence" class="com.fidoarp.catalog.service.persistence.ProductTypePersistenceImpl" parent="basePersistence" />
 </beans>

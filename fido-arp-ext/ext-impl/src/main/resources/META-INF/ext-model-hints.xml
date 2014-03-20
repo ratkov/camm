@@ -22,6 +22,38 @@
 		<field name="name" type="String" localized="true" />
 		<field name="description" type="String" />
 	</model>
+	<model name="com.fidoarp.catalog.model.Dictionary">
+		<field name="id" type="String" />
+		<field name="code" type="String" />
+		<field name="parentId" type="String" />
+		<field name="otherParentId" type="String" />
+		<field name="name" type="String" localized="true" />
+		<field name="sort" type="long" />
+	</model>
+	<model name="com.fidoarp.catalog.model.FidoBranch">
+		<field name="fidoBranchId" type="String" />
+		<field name="branchNum" type="String" />
+		<field name="branchNumOrder" type="int" />
+		<field name="name" type="String" localized="true" />
+		<field name="schedule" type="String" localized="true" />
+		<field name="phones" type="String" localized="true" />
+		<field name="faceLocation" type="String" localized="true" />
+		<field name="zipCode" type="String" localized="true" />
+		<field name="country" type="String" localized="true" />
+		<field name="region" type="String" localized="true" />
+		<field name="district" type="String" localized="true" />
+		<field name="citytype" type="String" localized="true" />
+		<field name="city" type="String" localized="true" />
+		<field name="streetType" type="String" localized="true" />
+		<field name="street" type="String" localized="true" />
+		<field name="house" type="String" localized="true" />
+		<field name="block" type="String" localized="true" />
+		<field name="apartment" type="String" localized="true" />
+		<field name="latitude" type="String" />
+		<field name="longitude" type="String" />
+		<field name="branchType" type="String" />
+		<field name="comments" type="String" localized="true" />
+	</model>
 	<model name="com.fidoarp.catalog.model.ProductType">
 		<field name="productTypeId" type="long" />
 		<field name="productTypeCode" type="String" />

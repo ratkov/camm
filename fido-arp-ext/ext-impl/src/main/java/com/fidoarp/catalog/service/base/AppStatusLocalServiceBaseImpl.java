@@ -3,9 +3,13 @@ package com.fidoarp.catalog.service.base;
 import com.fidoarp.catalog.model.AppStatus;
 import com.fidoarp.catalog.service.AppLocalService;
 import com.fidoarp.catalog.service.AppStatusLocalService;
+import com.fidoarp.catalog.service.DictionaryLocalService;
+import com.fidoarp.catalog.service.FidoBranchLocalService;
 import com.fidoarp.catalog.service.ProductTypeLocalService;
 import com.fidoarp.catalog.service.persistence.AppPersistence;
 import com.fidoarp.catalog.service.persistence.AppStatusPersistence;
+import com.fidoarp.catalog.service.persistence.DictionaryPersistence;
+import com.fidoarp.catalog.service.persistence.FidoBranchPersistence;
 import com.fidoarp.catalog.service.persistence.ProductTypePersistence;
 
 import com.liferay.counter.service.CounterLocalService;
@@ -59,6 +63,14 @@ public abstract class AppStatusLocalServiceBaseImpl extends BaseLocalServiceImpl
     protected AppStatusLocalService appStatusLocalService;
     @BeanReference(type = AppStatusPersistence.class)
     protected AppStatusPersistence appStatusPersistence;
+    @BeanReference(type = DictionaryLocalService.class)
+    protected DictionaryLocalService dictionaryLocalService;
+    @BeanReference(type = DictionaryPersistence.class)
+    protected DictionaryPersistence dictionaryPersistence;
+    @BeanReference(type = FidoBranchLocalService.class)
+    protected FidoBranchLocalService fidoBranchLocalService;
+    @BeanReference(type = FidoBranchPersistence.class)
+    protected FidoBranchPersistence fidoBranchPersistence;
     @BeanReference(type = ProductTypeLocalService.class)
     protected ProductTypeLocalService productTypeLocalService;
     @BeanReference(type = ProductTypePersistence.class)
@@ -362,6 +374,82 @@ public abstract class AppStatusLocalServiceBaseImpl extends BaseLocalServiceImpl
     public void setAppStatusPersistence(
         AppStatusPersistence appStatusPersistence) {
         this.appStatusPersistence = appStatusPersistence;
+    }
+
+    /**
+     * Returns the dictionary local service.
+     *
+     * @return the dictionary local service
+     */
+    public DictionaryLocalService getDictionaryLocalService() {
+        return dictionaryLocalService;
+    }
+
+    /**
+     * Sets the dictionary local service.
+     *
+     * @param dictionaryLocalService the dictionary local service
+     */
+    public void setDictionaryLocalService(
+        DictionaryLocalService dictionaryLocalService) {
+        this.dictionaryLocalService = dictionaryLocalService;
+    }
+
+    /**
+     * Returns the dictionary persistence.
+     *
+     * @return the dictionary persistence
+     */
+    public DictionaryPersistence getDictionaryPersistence() {
+        return dictionaryPersistence;
+    }
+
+    /**
+     * Sets the dictionary persistence.
+     *
+     * @param dictionaryPersistence the dictionary persistence
+     */
+    public void setDictionaryPersistence(
+        DictionaryPersistence dictionaryPersistence) {
+        this.dictionaryPersistence = dictionaryPersistence;
+    }
+
+    /**
+     * Returns the fido branch local service.
+     *
+     * @return the fido branch local service
+     */
+    public FidoBranchLocalService getFidoBranchLocalService() {
+        return fidoBranchLocalService;
+    }
+
+    /**
+     * Sets the fido branch local service.
+     *
+     * @param fidoBranchLocalService the fido branch local service
+     */
+    public void setFidoBranchLocalService(
+        FidoBranchLocalService fidoBranchLocalService) {
+        this.fidoBranchLocalService = fidoBranchLocalService;
+    }
+
+    /**
+     * Returns the fido branch persistence.
+     *
+     * @return the fido branch persistence
+     */
+    public FidoBranchPersistence getFidoBranchPersistence() {
+        return fidoBranchPersistence;
+    }
+
+    /**
+     * Sets the fido branch persistence.
+     *
+     * @param fidoBranchPersistence the fido branch persistence
+     */
+    public void setFidoBranchPersistence(
+        FidoBranchPersistence fidoBranchPersistence) {
+        this.fidoBranchPersistence = fidoBranchPersistence;
     }
 
     /**

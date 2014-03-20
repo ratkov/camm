@@ -1,5 +1,6 @@
 package com.fidoarp.util;
 
+import com.fidoarp.dictionary.Dictionaries;
 import com.fidoarp.model.questionnaire.DetailsPair;
 import com.fidoarp.model.questionnaire.Field;
 import com.fidoarp.model.questionnaire.Option;
@@ -37,6 +38,7 @@ public class FieldsUtil {
      * The Constant LOG.
      */
     private static final Log log = LogFactoryUtil.getLog(FieldsUtil.class);
+    private final Dictionaries dictionaries = new Dictionaries();
 
     public List<Field> getFields(long ddmTemplateId, String languageId, String defaultLanguageId, String jsonObjectStr, PortletRequest resourceRequest){
         try{
@@ -63,7 +65,7 @@ public class FieldsUtil {
     }
 
     private List<String> containsInName(JSONArray jsonArray) {
-        List<String> names = new ArrayList<String>();
+        List<String>  names = new ArrayList<String>();
         for(int i=0; i< jsonArray.length(); i++){
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             if(jsonObject.getString("name").contains("transliteration")){
@@ -172,6 +174,25 @@ public class FieldsUtil {
             if(DDMImpl.TYPE_RADIO.equals(fieldType) || DDMImpl.TYPE_SELECT.equals(fieldType)){
                 JSONArray jsonArrayOptions = jsonObject.getJSONArray("options");
                 List<Option> options = getOptions(jsonArrayOptions, languageId, defaultLocale.getLanguage());
+                if(options.size() == 1){
+                    String dictionary = options.get(0).getValue();
+                    List<DetailsPair> detailsPairs = dictionaries.get(dictionary).execute(resourceRequest);
+                    if(detailsPairs != null && !detailsPairs.isEmpty()){
+                        List<Option> optionList = new ArrayList<Option>();
+                        for(DetailsPair pair : detailsPairs){
+                            Option option = new Option();
+                            option.setId(pair.getLeft());
+                            option.setValue(pair.getLeft());
+                            option.setLabel(pair.getRight());
+                            option.setName(pair.getLeft());
+                            option.setType("");
+                            optionList.add(option);
+                        }
+                        options = optionList;
+                    }else{
+                        field.setCustomStyleClass(field.getCustomStyleClass() + " autoload");
+                    }
+                }
                 field.setOptions(options);
             }
 
@@ -284,18 +305,18 @@ public class FieldsUtil {
 
                 if(jsonObject.has("fields") && jsonObject.getJSONArray("fields").length() > 0){
                     if(DDMImpl.TYPE_CHECKBOX.equals(fieldType)){
-                       if(!jsonValues.getBoolean(jsonObject.getString("name"))){
-                           fieldNames.addAll(getFieldNames(jsonObject.getJSONArray("fields")));
-                       }
+                        if(!jsonValues.getBoolean(jsonObject.getString("name"))){
+                            fieldNames.addAll(getFieldNames(jsonObject.getJSONArray("fields")));
+                        }
                     }
                     fieldNames.addAll(getSkippedFields(jsonObject.getJSONArray("fields"), jsonValues));
                 }
 
                 if(StringUtils.isNotEmpty(showIf) && StringUtils.isNotBlank(showIf) && !label.contains("||")){
-                   boolean hideField = getHiddenField(showIf, jsonValues, fieldNames);
-                   if(!hideField){
-                      fieldNames.add(jsonObject.getString("name"));
-                   }
+                    boolean hideField = getHiddenField(showIf, jsonValues, fieldNames);
+                    if(!hideField){
+                        fieldNames.add(jsonObject.getString("name"));
+                    }
                 }
             }
         }catch (Exception e){
@@ -315,7 +336,7 @@ public class FieldsUtil {
             }
         }else{
             if(showIf.contains("|")){
-               arrayField = showIf.split("\\|");
+                arrayField = showIf.split("\\|");
             }
             for(String field : arrayField){
                 hide = showIf(jsonValues, field, !hide, true, fieldNames);
@@ -346,7 +367,7 @@ public class FieldsUtil {
         }
 
         return retVal;
-}
+    }
 
     private List<String> getFieldNames(JSONArray fields) {
         List<String> fieldNames = new ArrayList<String>();
@@ -358,27 +379,26 @@ public class FieldsUtil {
         return fieldNames;
     }
 
-
     public String validateTemplate(JSONObject json, long ddmTemplateId, boolean isPensionerProduct){
         try{
             DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.getDDMTemplate(ddmTemplateId);
 
-            DDMStructure ddmStructure = DDMStructureLocalServiceUtil.getDDMStructure(ddmTemplate.getStructureId());
+            DDMStructure structure = DDMStructureLocalServiceUtil.getDDMStructure(ddmTemplate.getStructureId());
 
-            ddmStructure.setXsd(ddmTemplate.getScript());
+            structure.setXsd(ddmTemplate.getScript());
 
-            Set<String> fieldNames = ddmStructure.getFieldNames();
+            Set<String> fieldNames = structure.getFieldNames();
             List<String> skipNames = getSkippedFields(getJSONTemplate(ddmTemplateId), json);
 
             Date dateBirth = null;
 
             for (String fieldName : fieldNames){
                 String fieldValue = "";
-                String fieldDataType = ddmStructure.getFieldDataType(fieldName);
-                String fieldClass = ddmStructure.getFieldProperty(fieldName, "customStyleClass");
+                String fieldDataType = structure.getFieldDataType(fieldName);
+                String fieldClass = structure.getFieldProperty(fieldName, "customStyleClass");
 
-                if((ddmStructure.getFieldRequired(fieldName) || fieldClass.contains("required")
-                    || fieldClass.contains("requiredIf")) && !skipNames.contains(fieldName)){
+                if((structure.getFieldRequired(fieldName) || fieldClass.contains("required")
+                        || fieldClass.contains("requiredIf")) && !skipNames.contains(fieldName)){
                     if (fieldDataType.equals(FieldConstants.DATE)) {
                         int fieldValueMonth = GetterUtil.getInteger(json.getString(fieldName + "Month"));
                         int fieldValueYear = GetterUtil.getInteger(json.getString(fieldName + "Year"));
@@ -399,8 +419,8 @@ public class FieldsUtil {
                     }
 
                     if(StringUtils.isEmpty(fieldValue)){
-                       log.error("FieldsUtil.validateTemplate() error: " + fieldName + " is empty");
-                       return "checkout.error.data.is.wrong";
+                        log.error("FieldsUtil.validateTemplate() error: " + fieldName + " is empty");
+                        return "checkout.error.data.is.wrong";
                     }
                 }
             }
@@ -516,9 +536,7 @@ public class FieldsUtil {
     }
 
     private JSONObject getJsonQuestionary(long userId, boolean client) throws SystemException, JSONException {
-        JSONObject oldQuestionnaire = null;
-
-        return oldQuestionnaire;
+        return null;
     }
 
     public Date getValueDate(int fieldValueMonth, int fieldValueYear, int fieldValueDay) {
@@ -586,7 +604,7 @@ public class FieldsUtil {
                                 String value = jsonObject.getString(multiCheckField.getName());
                                 if(DDMImpl.TYPE_CHECKBOX.equals(multiCheckField.getType()) && StringUtils.isNotEmpty(value) && StringUtils.isNotBlank(value)){
                                     multiChecked = true;
-                               }
+                                }
                             }
                             if(!multiChecked){
                                 isHidden = false;
@@ -600,5 +618,10 @@ public class FieldsUtil {
         }catch (Exception e){
             log.error(e.toString());
         }
+    }
+
+    public boolean isNotHiddenField( String fieldName, Long templateId, JSONObject json ) {
+        List< String > skippedFieldNames = getSkippedFields( getJSONTemplate( templateId ), json );
+        return !skippedFieldNames.contains( fieldName );
     }
 }

@@ -6,6 +6,8 @@ import com.fidoarp.catalog.model.impl.AppImpl;
 import com.fidoarp.catalog.model.impl.AppModelImpl;
 import com.fidoarp.catalog.service.persistence.AppPersistence;
 import com.fidoarp.catalog.service.persistence.AppStatusPersistence;
+import com.fidoarp.catalog.service.persistence.DictionaryPersistence;
+import com.fidoarp.catalog.service.persistence.FidoBranchPersistence;
 import com.fidoarp.catalog.service.persistence.ProductTypePersistence;
 
 import com.liferay.portal.NoSuchModelException;
@@ -123,6 +125,10 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
     protected AppPersistence appPersistence;
     @BeanReference(type = AppStatusPersistence.class)
     protected AppStatusPersistence appStatusPersistence;
+    @BeanReference(type = DictionaryPersistence.class)
+    protected DictionaryPersistence dictionaryPersistence;
+    @BeanReference(type = FidoBranchPersistence.class)
+    protected FidoBranchPersistence fidoBranchPersistence;
     @BeanReference(type = ProductTypePersistence.class)
     protected ProductTypePersistence productTypePersistence;
     @BeanReference(type = ResourcePersistence.class)

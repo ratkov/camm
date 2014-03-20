@@ -71,6 +71,104 @@
 			<transient name="primaryKeyObj" />
 		</attributes>
 	</mapped-superclass>
+	<mapped-superclass class="com.fidoarp.catalog.model.impl.DictionaryModelImpl">
+		<attributes>
+			<id name="id">
+				<column name="ID" />
+			</id>
+			<basic name="code">
+				<column name="DICT_CODE" />
+			</basic>
+			<basic name="parentId">
+				<column name="PARENT_ID" />
+			</basic>
+			<basic name="otherParentId">
+				<column name="PARENT2_ID" />
+			</basic>
+			<basic name="name" />
+			<basic name="sort" />
+			<transient name="modelAttributes" />
+			<transient name="nameCurrentLanguageId" />
+			<transient name="nameMap" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+		</attributes>
+	</mapped-superclass>
+	<mapped-superclass class="com.fidoarp.catalog.model.impl.FidoBranchModelImpl">
+		<attributes>
+			<id name="fidoBranchId">
+				<column name="ID" />
+			</id>
+			<basic name="branchNum">
+				<column name="BRANCH_NUM" />
+			</basic>
+			<basic name="branchNumOrder">
+				<column name="BRANCH_NUM_ORDER" />
+			</basic>
+			<basic name="name" />
+			<basic name="schedule" />
+			<basic name="phones" />
+			<basic name="faceLocation">
+				<column name="FACE_LOCATION" />
+			</basic>
+			<basic name="zipCode">
+				<column name="ZIP_CODE" />
+			</basic>
+			<basic name="country" />
+			<basic name="region" />
+			<basic name="district" />
+			<basic name="citytype" />
+			<basic name="city" />
+			<basic name="streetType">
+				<column name="STREET_TYPE" />
+			</basic>
+			<basic name="street" />
+			<basic name="house" />
+			<basic name="block" />
+			<basic name="apartment" />
+			<basic name="latitude" />
+			<basic name="longitude" />
+			<basic name="branchType">
+				<column name="BRANCH_TYPE" />
+			</basic>
+			<basic name="comments" />
+			<transient name="apartmentCurrentLanguageId" />
+			<transient name="apartmentMap" />
+			<transient name="blockCurrentLanguageId" />
+			<transient name="blockMap" />
+			<transient name="cityCurrentLanguageId" />
+			<transient name="cityMap" />
+			<transient name="citytypeCurrentLanguageId" />
+			<transient name="citytypeMap" />
+			<transient name="commentsCurrentLanguageId" />
+			<transient name="commentsMap" />
+			<transient name="countryCurrentLanguageId" />
+			<transient name="countryMap" />
+			<transient name="districtCurrentLanguageId" />
+			<transient name="districtMap" />
+			<transient name="faceLocationCurrentLanguageId" />
+			<transient name="faceLocationMap" />
+			<transient name="houseCurrentLanguageId" />
+			<transient name="houseMap" />
+			<transient name="modelAttributes" />
+			<transient name="nameCurrentLanguageId" />
+			<transient name="nameMap" />
+			<transient name="phonesCurrentLanguageId" />
+			<transient name="phonesMap" />
+			<transient name="primaryKey" />
+			<transient name="primaryKeyObj" />
+			<transient name="regionCurrentLanguageId" />
+			<transient name="regionMap" />
+			<transient name="scheduleCurrentLanguageId" />
+			<transient name="scheduleMap" />
+			<transient name="streetCurrentLanguageId" />
+			<transient name="streetMap" />
+			<transient name="streetTypeCurrentLanguageId" />
+			<transient name="streetTypeMap" />
+			<transient name="zipCodeCurrentLanguageId" />
+			<transient name="zipCodeMap" />
+		</attributes>
+	</mapped-superclass>
 	<mapped-superclass class="com.fidoarp.catalog.model.impl.ProductTypeModelImpl">
 		<attributes>
 			<id name="productTypeId">
@@ -101,6 +199,14 @@
 	</entity>
 	<entity class="com.fidoarp.catalog.model.impl.AppStatusImpl" name="AppStatus">
 		<table name="fido_app_status" />
+		<attributes />
+	</entity>
+	<entity class="com.fidoarp.catalog.model.impl.DictionaryImpl" name="Dictionary">
+		<table name="fido_dict" />
+		<attributes />
+	</entity>
+	<entity class="com.fidoarp.catalog.model.impl.FidoBranchImpl" name="FidoBranch">
+		<table name="fido_branch" />
 		<attributes />
 	</entity>
 	<entity class="com.fidoarp.catalog.model.impl.ProductTypeImpl" name="ProductType">

@@ -147,6 +147,16 @@ String defaultLanguageId = LocalizationUtil.getDefaultLocale(script);
 	</div>
 </div>
 
+<style>
+    .aui-diagram-builder-drop-container{
+        overflow: auto;
+    }
+    .aui-diagram-builder-tabs {
+        height: 600px;
+        overflow: auto;
+    }
+</style>
+
 <%
 JSONArray availableLocalesJSONArray = JSONFactoryUtil.createJSONArray();
 

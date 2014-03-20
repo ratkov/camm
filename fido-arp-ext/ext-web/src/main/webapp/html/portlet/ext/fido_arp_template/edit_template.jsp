@@ -1,3 +1,8 @@
+<%@ page import="com.liferay.portal.kernel.json.JSONArray" %>
+<%@ page import="com.liferay.portal.kernel.json.JSONFactoryUtil" %>
+<%@ page import="com.liferay.portal.kernel.json.JSONObject" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
@@ -43,9 +48,28 @@ String type = BeanParamUtil.getString(template, request, "type", "detail");
 String script = BeanParamUtil.getString(template, request, "script");
 
 JSONArray scriptJSONArray = null;
+//JSONArray scriptJSONArrayAvailable = null;
 
 if (type.equals("detail") && Validator.isNotNull(script)) {
-	scriptJSONArray = DDMXSDUtil.getJSONArray(script);
+    scriptJSONArray = DDMXSDUtil.getJSONArray(script);
+
+    /*scriptJSONArrayAvailable =  scriptJSONArray;
+    List<String> namesTemplate = templateJSONArray(scriptJSONArray);
+    JSONArray structureJSONArray = DDMXSDUtil.getJSONArray(structure.getXsd());
+    for(int y = 0; y < structureJSONArray.length(); y++){
+        JSONObject jsonObject = structureJSONArray.getJSONObject(y);
+        String joName = jsonObject.getString("name");
+        int count = 0;
+        for(String name : namesTemplate){
+            if(name.equals(joName)){
+                count++;
+                continue;
+            }
+        }
+        if(count == 0){
+            scriptJSONArrayAvailable.put(jsonObject);
+        }
+    }*/
 }
 
 String structureAvailableFields = ParamUtil.getString(request, "structureAvailableFields");
@@ -182,3 +206,32 @@ if (Validator.isNotNull(structureAvailableFields)) {
 
 	<aui:button href="<%= redirect %>" type="cancel" />
 </aui:button-row>
+
+<%!
+    private void addFieldsToArray(List<String> names, JSONObject jsonObject) {
+        JSONArray fields = jsonObject.getJSONArray("fields");
+        for(int j = 0; j < fields.length(); j++) {
+            JSONObject field = fields.getJSONObject(j);
+            if(!field.getString("type").equals("fieldset") && !field.getString("type").equals("ddm-paragraph")) {
+                if (field.has("name")) {
+                    names.add(field.getString("name"));
+                }
+            }
+            if(field.has("fields") && field.getJSONArray("fields").length() > 0){
+                addFieldsToArray(names, field);
+            }
+        }
+    }
+
+    public List<String> templateJSONArray(JSONArray scriptJSONArray){
+        List<String> names = new ArrayList<String>();
+        for (int i = 0; i < scriptJSONArray.length(); i++) {
+            JSONObject jsonObject = scriptJSONArray.getJSONObject(i);
+            names.add(jsonObject.getString("name"));
+            if(jsonObject.has("fields") && jsonObject.getJSONArray("fields").length() > 0){
+                addFieldsToArray(names, jsonObject);
+            }
+        }
+        return names;
+    }
+%>

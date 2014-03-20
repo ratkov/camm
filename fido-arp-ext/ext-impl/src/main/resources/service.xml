@@ -72,4 +72,71 @@
         </finder>
     </entity>
 
+    <entity name="Dictionary" table="fido_dict" uuid="false"
+            local-service="true" remote-service="false">
+        <column name="id" type="String" db-name="ID" primary="true" />
+        <column name="code" type="String" db-name="DICT_CODE" />
+        <column name="parentId" type="String" db-name="PARENT_ID" />
+        <column name="otherParentId" type="String" db-name="PARENT2_ID" />
+        <column name="name" type="String" localized="true" />
+        <column name="sort" type="long" />
+        <order by="asc">
+            <order-column name="sort" />
+            <order-column name="name" case-sensitive="false" />
+        </order>
+        <finder return-type="Collection" name="Code">
+            <finder-column name="code" />
+        </finder>
+        <finder return-type="Collection" name="CodeParent">
+            <finder-column name="code" />
+            <finder-column name="parentId" />
+        </finder>
+        <finder return-type="Collection" name="CodeParents">
+            <finder-column name="code" />
+            <finder-column name="parentId" />
+            <finder-column name="otherParentId" />
+        </finder>
+    </entity>
+
+    <entity name="FidoBranch" table="fido_branch" uuid="false"
+            local-service="true" remote-service="false">
+        <column name="fidoBranchId" type="String" primary="true" db-name="id"/>
+        <column name="branchNum" type="String" db-name="branch_num" />
+        <column name="branchNumOrder" type="int" db-name="branch_num_order" />
+        <column name="name" type="String" localized="true"/>
+        <column name="schedule" type="String" localized="true"/>
+        <column name="phones" type="String" localized="true"/>
+        <column name="faceLocation" db-name="face_location" type="String" localized="true"/>
+        <column name="zipCode" db-name="zip_code" type="String" localized="true"/>
+        <column name="country" type="String" localized="true"/>
+        <column name="region" type="String" localized="true"/>
+        <column name="district" type="String" localized="true"/>
+        <column name="citytype"  type="String" localized="true"/>
+        <column name="city" type="String" localized="true"/>
+        <column name="streetType" db-name="street_type" type="String" localized="true"/>
+        <column name="street" type="String" localized="true"/>
+        <column name="house" type="String" localized="true"/>
+        <column name="block" type="String" localized="true"/>
+        <column name="apartment" type="String" localized="true"/>
+        <column name="latitude" type="String" />
+        <column name="longitude" type="String" />
+        <column name="branchType" db-name="branch_type" type="String" />
+        <column name="comments" type="String" localized="true"/>
+        <!-- Order -->
+        <order by="asc">
+            <order-column name="branchNumOrder" />
+        </order>
+        <!--Find by-->
+        <finder name="City" return-type="Collection">
+            <finder-column name="city" comparator="LIKE"/>
+        </finder>
+        <finder name="BranchType" return-type="Collection">
+            <finder-column name="branchType"/>
+        </finder>
+        <finder name="BranchTypeInCity" return-type="Collection">
+            <finder-column name="branchType" />
+            <finder-column name="city" comparator="LIKE"/>
+        </finder>
+    </entity>
+
 </service-builder>

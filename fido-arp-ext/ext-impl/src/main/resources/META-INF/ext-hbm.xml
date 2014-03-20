@@ -4,6 +4,8 @@
 <hibernate-mapping default-lazy="false" auto-import="false">
 	<import class="com.fidoarp.catalog.model.App" />
 	<import class="com.fidoarp.catalog.model.AppStatus" />
+	<import class="com.fidoarp.catalog.model.Dictionary" />
+	<import class="com.fidoarp.catalog.model.FidoBranch" />
 	<import class="com.fidoarp.catalog.model.ProductType" />
 	<class name="com.fidoarp.catalog.model.impl.AppImpl" table="fido_app">
 		<cache usage="read-write" />
@@ -31,6 +33,44 @@
 		<property name="appStatusCode" type="com.liferay.portal.dao.orm.hibernate.StringType" column="code" />
 		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+	</class>
+	<class name="com.fidoarp.catalog.model.impl.DictionaryImpl" table="fido_dict">
+		<cache usage="read-write" />
+		<id name="id" column="ID" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="code" type="com.liferay.portal.dao.orm.hibernate.StringType" column="DICT_CODE" />
+		<property name="parentId" type="com.liferay.portal.dao.orm.hibernate.StringType" column="PARENT_ID" />
+		<property name="otherParentId" type="com.liferay.portal.dao.orm.hibernate.StringType" column="PARENT2_ID" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="sort" type="com.liferay.portal.dao.orm.hibernate.LongType" />
+	</class>
+	<class name="com.fidoarp.catalog.model.impl.FidoBranchImpl" table="fido_branch">
+		<cache usage="read-write" />
+		<id name="fidoBranchId" column="id" type="java.lang.String">
+			<generator class="assigned" />
+		</id>
+		<property name="branchNum" type="com.liferay.portal.dao.orm.hibernate.StringType" column="branch_num" />
+		<property name="branchNumOrder" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="branch_num_order" />
+		<property name="name" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="schedule" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="phones" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="faceLocation" type="com.liferay.portal.dao.orm.hibernate.StringType" column="face_location" />
+		<property name="zipCode" type="com.liferay.portal.dao.orm.hibernate.StringType" column="zip_code" />
+		<property name="country" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="region" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="district" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="citytype" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="city" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="streetType" type="com.liferay.portal.dao.orm.hibernate.StringType" column="street_type" />
+		<property name="street" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="house" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="block" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="apartment" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="latitude" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="longitude" type="com.liferay.portal.dao.orm.hibernate.StringType" />
+		<property name="branchType" type="com.liferay.portal.dao.orm.hibernate.StringType" column="branch_type" />
+		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 	<class name="com.fidoarp.catalog.model.impl.ProductTypeImpl" table="fido_product_type">
 		<cache usage="read-write" />
