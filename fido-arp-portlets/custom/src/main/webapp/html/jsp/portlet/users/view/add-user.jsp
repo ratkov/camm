@@ -12,7 +12,7 @@
             </label>
 
             <div>
-                <input class="form-control"  id="<portlet:namespace/>firstName" type="text" name="firstName" required>
+                <input class="form-control required"  id="<portlet:namespace/>firstName" type="text" name="firstName">
             </div>
         </div>
         <div class="form-group">
@@ -21,7 +21,7 @@
             </label>
 
             <div>
-                <input id="<portlet:namespace/>middleName" type="text" class="form-control" name="middleName" required>
+                <input id="<portlet:namespace/>middleName" type="text" class="form-control required" name="middleName">
             </div>
         </div>
         <div class="form-group">
@@ -30,7 +30,7 @@
             </label>
 
             <div>
-                <input id="<portlet:namespace/>lastName" type="text" class="form-control" name="lastName" required>
+                <input id="<portlet:namespace/>lastName" type="text" class="form-control required" name="lastName">
             </div>
         </div>
         <div class="form-group">
@@ -39,7 +39,7 @@
             </label>
 
             <div>
-                <input id="<portlet:namespace/>login" type="text" name="login" class="form-control" required>
+                <input id="<portlet:namespace/>login" type="text" name="login" class="form-control required">
             </div>
         </div>
         <div class="form-group">
@@ -48,7 +48,7 @@
             </label>
 
             <div>
-                <input id="<portlet:namespace/>email" type="text" name="email" class="form-control" required>
+                <input id="<portlet:namespace/>email" type="text" name="email" class="form-control required">
             </div>
         </div>
         <div class="form-group">

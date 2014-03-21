@@ -14,6 +14,12 @@ ValidationProcessor = Class.extend({
             }
         );
 
+        $.validator.addMethod(
+            "alphanumeric", function (value, element) {
+                return this.optional(element) || /^[_a-zA-_Z0-9]+$/.test(value);
+            }
+        );
+
         $(".userContent").each(function () {
             var form = $(this);
 
@@ -42,7 +48,8 @@ ValidationProcessor = Class.extend({
                     login: {
                         required: true,
                         minlength: 4,
-                        maxlength: 20
+                        maxlength: 20,
+                        alphanumeric: true
                     },
                     email: {
                         required: true,
@@ -72,7 +79,8 @@ ValidationProcessor = Class.extend({
                     login: {
                         required: errorCode.loginRequired,
                         minlength: errorCode.loginMinLength,
-                        maxlength: errorCode.loginMaxLength
+                        maxlength: errorCode.loginMaxLength,
+                        alphanumeric: errorCode.loginRegexp
                     },
                     email: {
                         required: errorCode.emailRequired,

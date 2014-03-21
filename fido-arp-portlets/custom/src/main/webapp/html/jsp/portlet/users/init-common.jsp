@@ -39,6 +39,7 @@
                 "loginRequired" : "<liferay-ui:message key="user.validation.login.required"/>",
                 "loginMinLength" : "<liferay-ui:message key="user.validation.login.min.length"/>",
                 "loginMaxLength" : "<liferay-ui:message key="user.validation.login.max.length"/>",
+                "loginRegexp" : "<liferay-ui:message key="user.validation.wrong.format"/>",
 
                 "emailRequired": "<liferay-ui:message key="user.validation.email.required"/>",
                 "emailFormatError": "<liferay-ui:message key="user.validation.email.wrong.format"/>"
@@ -48,6 +49,9 @@
 
             $('#ok').button('option', 'label', '<liferay-ui:message key="status.change"/>');
             $('#cancel').button('option', 'label', '<liferay-ui:message key="status.cancel"/>');
+
+            $('#change-password-ok').button('option', 'label', '<liferay-ui:message key="change.password.change"/>');
+            $('#change-password-cancel').button('option', 'label', '<liferay-ui:message key="change.password.cancel"/>');
         });
 
     </script>

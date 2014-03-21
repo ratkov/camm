@@ -16,9 +16,7 @@ import com.liferay.util.portlet.PortletProps;
 import org.apache.commons.lang.StringUtils;
 
 import javax.portlet.*;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class UsersUtil {
 
@@ -75,7 +73,7 @@ public class UsersUtil {
         PortletURL iteratorURL= renderResponse.createRenderURL();
 
         SearchContainer<User> searchContainer = new SearchContainer<User>(renderRequest, null,
-                null, SearchContainer.DEFAULT_CUR_PARAM, ParamUtil.getInteger(renderRequest, SearchContainer.DEFAULT_DELTA_PARAM, 5),
+                null, SearchContainer.DEFAULT_CUR_PARAM, ParamUtil.getInteger(renderRequest, SearchContainer.DEFAULT_DELTA_PARAM, 10),
                 iteratorURL, null, LanguageUtil.get(portletConfig, currentLocale, "No UserGroups were Found"));
 
         int total = 0;
@@ -125,6 +123,44 @@ public class UsersUtil {
 
         return result;
     }
+
+    public static String changePassword(String userId) {
+
+        String result = resources.getString("user.change.password.error");
+
+        if (StringUtils.isNotBlank(userId)) {
+
+            try {
+
+                User user = UserLocalServiceUtil.getUser(Long.parseLong(userId));
+                String password = PwdGenerator.getPassword();
+                Calendar calendar = GregorianCalendar.getInstance();
+                Date date = calendar.getTime();
+                String dig = user.getDigest(password);
+
+                user.setDigest(dig);
+                user.setPasswordModifiedDate(date);
+                user.setComments(null);
+
+                boolean sendEmail = sendPassword(user.getEmailAddress(), password);
+
+                if (sendEmail) {
+                    UserLocalServiceUtil.updateUser(user);
+                    UserLocalServiceUtil.updatePassword(user.getUserId(), password, password, false);
+                    result = null;
+                } else {
+                    result = resources.getString("user.send.email.error");
+                }
+
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+
+        }
+
+        return result;
+    }
+
 
     // TODO Need create email template
     private static boolean sendPassword(String email, String password) {

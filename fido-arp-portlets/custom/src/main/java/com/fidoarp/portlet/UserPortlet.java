@@ -84,6 +84,16 @@ public class UserPortlet extends FidoMVCPortlet {
             if (message != null) {
                 resultMap.put("changeStatusError", message);
             }
+
+        } else if (StringUtils.equals(action, "passwordRecoveryAction")) {
+
+            String userId = resourceRequest.getParameter("userId");
+            message = UsersUtil.changePassword(userId);
+
+            if (message != null) {
+                resultMap.put("changePasswordError", message);
+            }
+
         }
 
         jsonFeed.put("resultMap", JSONFactoryUtil.

@@ -2,7 +2,7 @@
 
 <input type="hidden" value="${passwordUrl}" id="<portlet:namespace/>passwordUrl">
 
-<liferay-ui:search-container emptyResultsMessage="No users were found" delta="1"
+<liferay-ui:search-container emptyResultsMessage="No users were found" delta="10"
                              searchContainer="${userSearchContainer}">
 
     <liferay-ui:search-container-results results="<%=searchContainer.getResults() %>"

@@ -5,6 +5,7 @@ UsersProcessor = Class.extend({
 
         var $this = this,
             $statusDialog = $('#' + namespace + 'dialog-status'),
+            $passwordDialog = $('#' + namespace + 'dialog-password'),
             $form = $('#' + namespace + 'statusForm');
 
         $statusDialog.dialog({
@@ -26,6 +27,10 @@ UsersProcessor = Class.extend({
 
                                 if (parsedMessage.length == 0) {
                                     $statusForm.hide();
+
+                                    $('#ok').hide();
+                                    $('#cancel').text("OK");
+
                                     $content.show();
                                 } else {
                                     $('#' + $this.namespace + 'changeStatusError')
@@ -38,6 +43,60 @@ UsersProcessor = Class.extend({
                 },
                 {
                     id: "cancel",
+                    click: function () {
+                        window.location.reload();
+                    }
+                }
+            ]
+
+        });
+
+        $passwordDialog.dialog({
+            closeOnEscape: false,
+            modal: true,
+            autoOpen: false,
+            resizable: false,
+            height: 250,
+            width: 450,
+            buttons: [
+                {
+                    id: "change-password-ok",
+                    click: function (e) {
+
+                        var $url = $('#' + namespace + 'passwordUrl').val(),
+                            $userId = $('#' + namespace + 'dialog-password-userId').val();
+
+                        $.ajax({
+                            type: "POST",
+                            url: $url,
+                            data: {
+                                "userId": $userId
+                            },
+                            success: function (data) {
+                                var parsedMessage = $.parseJSON($.parseJSON(data).resultMap),
+                                    $dialogContent = $('#' + namespace + 'change-password-info'),
+                                    $success = $('#' + namespace + 'change-password-successContent');
+
+                                if (parsedMessage.length == 0) {
+                                    $dialogContent.hide();
+
+                                    $('#change-password-ok').hide();
+                                    $('#change-password-cancel').text("OK");
+
+                                    $success.show();
+                                } else {
+                                    $('#' + $this.namespace + 'changePasswordError')
+                                        .empty()
+                                        .append(parsedMessage[0].value).show().addClass('alert alert-danger');
+                                }
+                            }
+
+                        });
+
+                    }
+                },
+                {
+                    id: "change-password-cancel",
                     click: function () {
                         window.location.reload();
                     }
@@ -108,7 +167,7 @@ UsersProcessor = Class.extend({
 
             var $loginName = $(e.target).parents("tr").find("td[id*='col-user.login'] ").text().trim(),
                 $userId = $(e.target).parents("tr").find("td[id*='col-id'] ").text().trim(),
-                $dialogTitle = $('.ui-dialog-title'),
+                $dialogTitle = $('#ui-id-1'),
                 $inputIdField = $('#' + namespace + 'userId');
 
             $dialogTitle.append($loginName);
@@ -116,21 +175,20 @@ UsersProcessor = Class.extend({
 
         });
 
-//        $('#' + namespace + 'usersSearchContainer table').on('click', "td[id*='col-user.password.recovery']", function (e) {
-//            e.preventDefault();
-//
-//            var $url = $('#' + namespace + 'passwordUrl').val();
-//
-//            $.ajax({
-//                url: $url,
-//                type: "POST",
-//                success: function (data) {
-//
-//                }
-//
-//            });
-//
-//        });
+        $(document).on('click', '#' + namespace + "usersSearchContainer table td[id*='col-user.password.recovery']", function (e) {
+            e.preventDefault();
+
+            $passwordDialog.dialog("open");
+
+            var $loginName = $(e.target).parents("tr").find("td[id*='col-user.login'] ").text().trim(),
+                $userId = $(e.target).parents("tr").find("td[id*='col-id'] ").text().trim(),
+                $dialogTitle = $('#ui-id-2'),
+                $inputIdField = $('#' + namespace + 'dialog-password-userId');
+
+            $dialogTitle.append($loginName);
+            $inputIdField.val($userId);
+
+        });
 
     },
 
@@ -151,7 +209,7 @@ UsersProcessor = Class.extend({
                     } else {
                         $('#' + $this.namespace + 'addUserError')
                             .empty()
-                            .append(parsedMessage[0].value).show().addClass('error');
+                            .append(parsedMessage[0].value).show().addClass('alert alert-danger');
 
                         link.removeAttr("disabled");
                     }

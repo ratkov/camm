@@ -50,5 +50,22 @@
         </div>
 
     </div>
+
+    <div id="<portlet:namespace/>dialog-password" class="change-password" style="display: none" title="<liferay-ui:message key="user.change.password"/>&#58;&nbsp;">
+
+        <div class="">
+            <label class="" id="<portlet:namespace/>changePasswordError"></label>
+        </div>
+        <input type="hidden" name="userId" value="" id="<portlet:namespace/>dialog-password-userId">
+
+        <div id="<portlet:namespace/>change-password-info">
+            <liferay-ui:message key="user.change.password.info"/>
+        </div>
+
+        <div id="<portlet:namespace/>change-password-successContent" style="display: none">
+            <liferay-ui:message key="user.change.password.successfully"/>
+        </div>
+
+    </div>
 </div>
 
