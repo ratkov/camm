@@ -12,7 +12,7 @@ function loadDictionary(){
     });
 
     if($(currentContent).find("select[name*='region']").not(".autoload").length > 0){
-        $(currentContent).find("select[name*='region']").trigger("change");
+        $(currentContent).find("select[name*='region']").not(":hidden").trigger("change");
     }
 }
 
@@ -45,12 +45,6 @@ function selectEvents(){
     });
     $dict.on("change","select[data-dictionary='fidoDepartmentsCities']", function(e){
         getDepartmentName(e.target);
-    });
-    $dict.on("change","select#locationName", function(e){
-        getDepartmentAddress(e.target);
-    });
-    $dict.on("change","select#locationDelivery",function(e){
-        getDepartmentAddressByCourier(e.target)
     });
 }
 
@@ -154,91 +148,6 @@ function getZipCode(street){
     }
 }
 
-function getDepartmentName(city){
-    var url = $("#urlResource").val();
-    var list = $("#departments-address-list");
-    var template = $.trim($("#department-address").html());
-    if($(city).val() != null){
-        window.gMaps.set("cities",[$(city).val()]);
-        jQuery.ajax({
-            type:"POST"
-            ,url: url
-            ,data:{
-                city : $(city).val()
-            },
-            success: function(json){
-                list.html("");
-                var select = findNextElement(city, "select#locationName");
-                select.removeOption(/./);
-                window.gMaps._removeMarkers();
-                if(json.length > 0){
-                    for(var i = 0; i < json.length; i++){
-                       var department = json[i];
-                       var html = new $(template);
-                       $(html).find(".street-depart").html(department.street);
-                       var option = $("<option></option>").attr("value", department.id).text(department.name + ", " + department.street);
-                       $(html).data("department", department.id);
-                       $(html).find(".coordinate").data("latitude", department.latitude).data("longitude", department.longitude);
-                       $(html).find(".phone-depart").html(department.phone);
-                       $(html).find(".schedule-depart").html(department.schedule);
-                       select.append(option);
-                       list.append(html[0]);
-                       if(select.data("selected") == ""){
-                           window.gMaps._selectAddressByCoordinate(department.latitude, department.longitude, department.name);
-                       }
-                    }
-
-                    if(select.data("selected") != ""){
-                        select.val(select.data("selected"));
-                    }
-                    $(select).trigger("change").trigger("refresh");
-                }
-            }
-        });
-     }
-}
-
-function getDepartmentAddress(department){
-    var selectCity = findPrevElement(department, "select[data-dictionary='fidoDepartmentsCities']");
-    if($(department).val() != null){
-        window.gMaps._removeMarkers();
-        $(".department-section").each(function(){
-           if($(this).data("department") == $(department).val()){
-               $(this).show();
-               var latitude = $(this).find(".coordinate").data("latitude");
-               var longitude = $(this).find(".coordinate").data("longitude");
-               window.gMaps._selectAddressByCoordinate(latitude, longitude, $(department).find("option:selected").text());
-           }else{
-               $(this).hide();
-           }
-        });
-    }
-}
-
-function getDepartmentAddressByCourier(locationName){
-    $(document.body).append("<div id='modal-window' style='display: block;'></div>");
-    var url = $("#urlChangeDeliveryAddress").val();
-    var data = {
-        locationName : $(locationName).val(),
-        quoteProductId: $("#quoteProductId").val()
-    };
-    jQuery.ajax({
-        type:"POST"
-        ,url: url
-        ,data:data
-        ,success:function(data){
-            $("#address-delivery").html(data);
-            styling();
-            //for selects
-            loadDictionary();
-            $("#modal-window").remove();
-        }
-        ,error: function(){
-            $("#modal-window").remove();
-        }
-    });
-}
-
 //for event or simple call
 function initSelect(select, newData){
     var url = $("#urlResource").val();
@@ -279,7 +188,6 @@ function canLoad($select){
 
 function loadJsonSelect(url, data, select){
     var $select = $(select);
-    $select.siblings(".sbHolder").addClass("disableHolder");
     if($select.parents("fieldset")){
         $select.parents("fieldset").addClass("loader");
     }
@@ -324,8 +232,6 @@ function loadJsonSelect(url, data, select){
                 }else if($select.data("dictionary").indexOf('fidoStreetType') > -1){
                     $select.trigger("change");
                 }else if($select.data("dictionary").indexOf('fidoStreet') > -1 && $select.data("dictionary").indexOf('fidoStreetType') == -1){
-                    $select.trigger("change");
-                }else if($select.data("dictionary").indexOf('fidoDepartmentsCities') > -1){
                     $select.trigger("change");
                 }
                 $select.parents("fieldset").removeClass("loader");

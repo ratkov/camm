@@ -129,13 +129,13 @@ span.tip:before {
     display: none;
 }
 
-.checkout-portlet .t_content .checkRow{
+.validateForm .t_content .checkRow{
     padding-left: 0;
 }
 
-.checkout-portlet .nextStep.regsBtn.nxStepGrey,
-.checkout-portlet .nextStep.regsBtn,
-.checkout-portlet .nextStep.regsBtn:hover{
+.validateForm .nextStep.regsBtn.nxStepGrey,
+.validateForm .nextStep.regsBtn,
+.validateForm .nextStep.regsBtn:hover{
     background: none repeat scroll 0 0 #0689B9;
     color: #FFFFFF !important;
     display: inline-block;
@@ -149,7 +149,7 @@ span.tip:before {
     text-shadow: 0 0 0 #000;
 }
 
-.checkout-portlet .regStep + .regStep{
+.validateForm .regStep + .regStep{
     margin-left: 20px;
 }
 
@@ -162,37 +162,50 @@ label.error {
 .to-uppercase{
     text-transform: uppercase;
 }
+.validateForm .pretRad{
+    display: block !important;
+    position: absolute;
+    left: -9999px;
+    top:-9999px;
+}
+.validateForm .pretCheck{
+    display: block !important;
+    position: absolute;
+    left: -9999px;
+    top:-9999px;
+}
 
-.checkout-portlet .regStep a.cur {
+
+.validateForm .regStep a.cur {
     color: #38393D;
 }
 
-.checkout-portlet .tar{
+.validateForm .tar{
     text-align: right;
 }
 
-.checkout-portlet .chosen-disabled{
+.validateForm .chosen-disabled{
     opacity: 1 !important;
     filter: alpha(opacity=100) !important;
 }
-.checkout-portlet .chosen-container-single.chosen-disabled .chosen-single {
+.validateForm .chosen-container-single.chosen-disabled .chosen-single {
     background-color: #fff;
     border: 1px solid #CCCCCC;
     color: #888;
 }
-.checkout-portlet .regRow input:disabled {
+.validateForm .regRow input:disabled {
     background: none repeat scroll 0 0 #FFFFFF;
     border: 1px solid #CCCCCC;
     color: #888888;
 }
 
-.checkout-portlet .jq-selectbox.sel-5 ul{
+.validateForm .jq-selectbox.sel-5 ul{
     max-height: 145px !important;
 }
 
-.checkout-portlet .enterField > div.day,
-.checkout-portlet .enterField > div.month,
-.checkout-portlet .enterField > div.year{
+.validateForm .enterField > div.day,
+.validateForm .enterField > div.month,
+.validateForm .enterField > div.year{
     float: left;
 }
 
@@ -268,6 +281,7 @@ label.error {
     color: #fff !important;
     text-decoration: none !important;
     background: #0689b9;
+    margin: 0 11px 0 0;
     padding: 11px 30px;
 }
 
@@ -601,7 +615,7 @@ input.inpPhone {
     letter-spacing: -0.5px;
     vertical-align: top;
     text-align: left;
-    padding-left: 5px;
+    padding-left: 15px;
 }
 
 .prettycheckbox a.checked{ background-position: -60px -586px; }
@@ -802,4 +816,49 @@ input.inpPhone {
 }
 .no-borderradius .backMain:hover {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6e8601', endColorstr='#b4db00',GradientType=0 );
+}
+
+
+.validateForm .regRow input.number{
+    border-radius:0;
+    margin-right:0;
+    float:none;
+}
+
+.validateForm .regRow.display-inline{
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+
+.validateForm .regRow.display-inline.second label{
+    width: auto;
+    margin: 0 0 0 8px;
+}
+
+.validateForm .regRow input.aui-w25{
+    width: 40px;
+}
+.validateForm .regRow input.aui-w50{
+    width: 145px;
+}
+.validateForm .regRow input.aui-w30 {
+    width: 65px;
+}
+
+.validateForm .display-inline .selField .sbHolder,
+.validateForm .display-inline .selField .sbOptions{
+    width: 137px;
+}
+
+.validateForm .t_content .regRow .prettycheckbox label {
+    min-width: 100px;
+}
+
+.validateForm .nextStep{
+    text-transform: uppercase;
+}
+
+.loader{
+    background: url("../images/pic/ajax-loader.gif") no-repeat scroll 0 0 transparent;
 }

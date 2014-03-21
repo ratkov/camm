@@ -1385,6 +1385,7 @@ output {
   height: 34px;
   padding: 6px 12px;
   font-size: 14px;
+  min-height: 1.8em;
   line-height: 1.42857143;
   color: #555;
   background-color: #fff;
@@ -1700,6 +1701,7 @@ select[multiple].input-lg {
   border: 1px solid transparent;
   border-radius: 4px;
   text-decoration: none;
+    text-shadow: none;
 }
 .btn:focus,
 .btn:active:focus,
@@ -1708,12 +1710,14 @@ select[multiple].input-lg {
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
   background-image: none;
+    text-shadow: none;
 }
 .btn:hover,
 .btn:focus {
   color: #333;
   text-decoration: none;
   background-image: none;
+    text-shadow: none;
 }
 .btn:active,
 .btn.active {

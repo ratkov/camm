@@ -2,13 +2,19 @@ package com.fidoarp.portlet;
 
 import com.fidoarp.catalog.model.ProductType;
 import com.fidoarp.catalog.service.ProductTypeLocalServiceUtil;
+import com.fidoarp.dictionary.Dictionaries;
+import com.fidoarp.model.questionnaire.DetailsPair;
 import com.fidoarp.util.VelocityFormUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
+import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.model.Organization;
 import com.liferay.portal.service.OrganizationLocalServiceUtil;
 import com.liferay.portal.service.ServiceContext;
@@ -27,6 +33,7 @@ public class PartnerProductTypePortlet extends FidoMVCPortlet {
      * The Constant LOG.
      */
     private static final Log log = LogFactoryUtil.getLog(PartnerProductTypePortlet.class);
+    private final Dictionaries dictionaries = new Dictionaries();
 
     @Override
     public void render(RenderRequest renderRequest, RenderResponse renderResponse) throws PortletException, IOException {
@@ -84,6 +91,36 @@ public class PartnerProductTypePortlet extends FidoMVCPortlet {
         }
         super.doView(renderRequest, renderResponse);
     }
+
+    @Override
+    public void serveResource(ResourceRequest resourceRequest,
+                              ResourceResponse resourceResponse) throws IOException, PortletException {
+        //needs for load dictionary by ajax
+        String dictionary = ParamUtil.getString(resourceRequest, "dictionary");
+        if(StringUtils.isNotEmpty(dictionary) && StringUtils.isNotBlank(dictionary)){
+
+            List<DetailsPair> detailsPairs = dictionaries.get(dictionary).execute(resourceRequest);
+            JSONArray jsonFeed = convertListToJsonValues(detailsPairs);
+
+            resourceResponse.setContentType("application/json");
+            resourceResponse.setCharacterEncoding("UTF-8");
+            resourceResponse.getWriter().write(jsonFeed.toString());
+        }
+    }
+
+    private JSONArray convertListToJsonValues(List<DetailsPair> list) {
+        JSONArray values = JSONFactoryUtil.getJSONFactory().createJSONArray();
+        if (list != null) {
+            for (DetailsPair pair : list) {
+                JSONObject obj = JSONFactoryUtil.getJSONFactory().createJSONObject();
+                obj.put("id", pair.getLeft());
+                obj.put("value", pair.getRight());
+                values.put(obj);
+            }
+        }
+        return values;
+    }
+
 
     private boolean changeStatus(RenderRequest renderRequest, RenderResponse renderResponse) throws com.liferay.portal.kernel.exception.PortalException, SystemException, PortletException, IOException {
         Long productTypeId = GetterUtil.getLong(renderRequest.getParameter("productTypeId"), 0);

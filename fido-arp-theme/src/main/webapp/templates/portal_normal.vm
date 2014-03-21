@@ -63,6 +63,7 @@ $theme.include($body_top_include)
     #js($checkbox)
     #js($liTabs)
     #js($chosen)
+    #js($prettyCheckable)
 </div>
 
 $theme.include($body_bottom_include)

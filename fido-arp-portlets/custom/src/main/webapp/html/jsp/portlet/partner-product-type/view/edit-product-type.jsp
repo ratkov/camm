@@ -1,6 +1,6 @@
 <%@include file="../init-common.jsp"%>
 
-<form class="validateForm" action="${saveProductType}" method="post">
+<form class="validateForm" data-url="${saveProductType}" method="post" data-locale="${themeDisplay.locale}">
     <c:if test="${not empty error}">
         <div class="alert alert-error"><liferay-ui:message key="${error}"/></div>
     </c:if>
@@ -30,7 +30,7 @@
     <div class="form-group">
         <label class="control-label"><liferay-ui:message key="partner.product.type.template" /></label>
         <div>
-            <select id='productTemplate' name='productTemplate' class="form-control required">
+            <select id='productTemplate' name='productTemplate' class="form-control sel required">
                 <c:forEach items="${ddmTemplates}" var="template">
                     <c:choose>
                         <c:when test="${productType.templateId ne 0}">
@@ -47,7 +47,7 @@
     <div class="form-group">
         <label class="control-label"><liferay-ui:message key="partner.product.type.status" /></label>
         <div>
-            <select id='productStatus' name='productStatus' class="form-control required">
+            <select id='productStatus' name='productStatus' class="form-control sel required">
                 <option value="true" <c:if test="${productType.status}">selected</c:if>><liferay-ui:message key="partner.product.type.active"/></option>
                 <option value="false" <c:if test="${!productType.status}">selected</c:if>><liferay-ui:message key="partner.product.type.inactive"/></option>
             </select>

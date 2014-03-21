@@ -11,7 +11,7 @@
         #set($children = $fields)
         #parse("/vm/field.vm")
 
-        <div class="tar text-right">
+        <div class="tar">
             <a href="javascript:void(0);" class="nextStep">$continue<span></span></a>
         </div>
     </fieldset>
@@ -29,7 +29,7 @@
                         <a class="t_link #if($i > 0) disable #end" href="#">$field.label</a>
                         <fieldset class="t_content">
                             #parse("/vm/field.vm")
-                            <div class="tar text-right">
+                            <div class="tar">
                                 <a href="javascript:void(0);" class="nextStep">$continue<span></span></a>
                             </div>
                         </fieldset>
@@ -39,7 +39,7 @@
             #end
         #end
         #if($j == 0)
-            <div class="tar text-right">
+            <div class="tar">
                 <a href="javascript:void(0);" class="nextStep">$continue<span></span></a>
             </div>
         #end

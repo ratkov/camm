@@ -1,5 +1,7 @@
 <%@include file="../init-common.jsp"%>
 
-<form>
+<input type="hidden" value="${jsonURL}" id="urlResource"/>
+
+<form class="validateForm" data-locale="uk_UA">
   ${templateHtml}
 </form>

@@ -2,6 +2,7 @@
 
 <portlet:renderURL var="mainViewUrl" portletMode="view" windowState="${normal}" />
 <portlet:actionURL  var="saveProductType" name="saveProductType" />
+<portlet:resourceURL var="jsonURL" id="jsonURL"/>
 
 <portlet:renderURL var="editProduct" windowState="${exclusive}" portletMode="view">
     <portlet:param name="action" value="edit"/>

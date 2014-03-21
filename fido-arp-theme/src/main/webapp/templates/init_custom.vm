@@ -7,3 +7,4 @@ This file allows you to override and define new Velocity variables.
 #set ($checkbox = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/jquery.checkbox.js")))
 #set ($liTabs = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/jquery.liTabs.js")))
 #set ($chosen = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/chosen.jquery.js")))
+#set ($prettyCheckable = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/prettyCheckable.js")))

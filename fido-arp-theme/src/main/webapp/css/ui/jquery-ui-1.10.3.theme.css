@@ -123,11 +123,11 @@
   filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
 }
 
-input, textarea {
-  -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Safari 4 */
-  -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* Firefox 3.6 */
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-}
+/*input, textarea {*/
+  /*-webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); *//* Safari 4 */
+  /*-moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); *//* Firefox 3.6 */
+  /*box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);*/
+/*}*/
 
 /*
  * jQuery UI Menu 1.10.3

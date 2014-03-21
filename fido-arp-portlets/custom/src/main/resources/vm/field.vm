@@ -21,35 +21,35 @@
         #set($isToday = 'data-today="true"')
     #end
     #if($fieldRow.type.equalsIgnoreCase("checkbox"))
-        <div class="regRow" $showIf>
-            <label></label>
-            <div class="enterField">
-                <input type="$fieldRow.type" id="$fieldRow.name" class="pretCheck $classStyle" name="$fieldRow.name"
-                    #if($fieldRow.value == "true") checked="checked" #end
-                    #if($fieldRow.hasChildren())
-                       data-children="true"
-                    #end
-                    value="$fieldRow.value"
-                    data-label="$fieldRow.label" />
-                #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
-            </div>
+    <div class="regRow" $showIf>
+        <label></label>
+        <div class="enterField">
+            <input type="$fieldRow.type" id="$fieldRow.name" class="pretCheck $classStyle" name="$fieldRow.name"
+                #if($fieldRow.value == "true") checked="checked" #end
+                #if($fieldRow.hasChildren())
+                   data-children="true"
+                #end
+                   value="$fieldRow.value"
+                   data-label="$fieldRow.label" />
+            #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
         </div>
+    </div>
         #if($fieldRow.hasChildren())
-            <div #if($fieldRow.value == "" || $fieldRow.value == "false") style="display: none;" #end class="children-list">
-                #set($children = $fieldRow.children)
+        <div #if($fieldRow.value == "" || $fieldRow.value == "false") style="display: none;" #end class="children-list">
+            #set($children = $fieldRow.children)
                 #parse("/vm/field.vm")
-            </div>
+        </div>
         #end
     #elseif($fieldRow.type.equalsIgnoreCase("ddm-paragraph"))
     <div class="regTitle">$fieldRow.label</div>
     #else
-    <div class="regRow #if( $fieldRow.label.contains("||") ) change-label #end #if($counterInline % 2 == 0) second #end #if($classStyle.contains("display-inline")) display-inline #set($counterInline = $counterInline + 1) #end" $showIf>
+    <div class="regRow  #if( $fieldRow.label.contains("||") ) change-label #end #if($counterInline % 2 == 0) second #end #if($classStyle.contains("display-inline")) display-inline #set($counterInline = $counterInline + 1) #end" $showIf>
         #if( $fieldRow.label.contains("||") )
             #set($arr = $fieldRow.label.split("\|\|"))
             #set($ic = 1)
             #foreach($lab in $arr)
-               <label for="$fieldRow.name" class="label$ic" #if($ic != 1) style="display: none;" #end>$lab</label>
-               #set($ic = $ic + 1)
+                <label for="$fieldRow.name" class="label$ic" #if($ic != 1) style="display: none;" #end>$lab</label>
+                #set($ic = $ic + 1)
             #end
         #else
             <label for="$fieldRow.name">$fieldRow.label</label>
@@ -60,7 +60,7 @@
             #set($minsize = $fieldRow.minsize)
             <div class="enterField">
                 <input type="text" name="$fieldRow.name" id="$fieldRow.name" class="$classStyle" value="$esc.escapeHtml($fieldRow.value)"
-                        maxlength="$maxsize" minlength="$minsize" />
+                       maxlength="$maxsize" minlength="$minsize" />
                 #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
             </div>
         #elseif($fieldRow.type.equalsIgnoreCase("ddm-date"))
@@ -75,7 +75,7 @@
                 #set($valDate = 'data-value="' + $fieldRow.value + '"')
             #end
             <div class="enterField tac cls dateChooser" data-locale="$locale" data-name="$fieldRow.name" $isToday
-                  $valDate data-start="$minsize" data-end="$maxsize">
+                $valDate data-start="$minsize" data-end="$maxsize">
                 <div class="day">
                     #set($nameD = $fieldRow.name + "Day")
                     <select class="selDate $classStyle" name="$nameD" id="$nameD"></select>
@@ -137,7 +137,7 @@
                         <div class="enterField $rowSelect">
                             <select class="$classStyle" name="$fieldRow.name" id="$fieldRow.name"  data-placeholder=" "
                                     data-dictionary="$option.value"
-                                    #if($fieldRow.value != "") data-selected="$fieldRow.value" #end></select>
+                                #if(!$fieldRow.value.contains("[")) data-selected="$fieldRow.value" #end></select>
 
                             #if($fieldRow.tip != "")<span class="tip">$fieldRow.tip</span>#end
                         </div>

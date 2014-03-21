@@ -1,4 +1,8 @@
-
+var months =  {
+    "uk_UA" : { monthNames: ['Січень','Лютий','Березень','Квітень','Травень','Червень','Липень','Серпень','Вересень','Жовтень','Листопад','Грудень'] },
+    "ru_RU" : { monthNames: ['Январь','Февраль','Март','Апрель','Май','Июнь', 'Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'] },
+    "en_US" : { monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"] }
+};
 
 function applyDate(){
     var currentContent = $(".quest-template").find("fieldset").not(":hidden");

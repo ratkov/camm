@@ -53,7 +53,7 @@ public class VelocityFormUtil {
 
             //because questionnaires must be in ukrainian language
             // languageId will be uk_UA
-//            languageId = "uk_UA";
+            languageId = "uk_UA";
             Locale locale = LocaleUtil.fromLanguageId(languageId);
             FieldsUtil fieldsUtil = new FieldsUtil();
             List<Field> fields = fieldsUtil.getFields(templateId, languageId, defaultLanguageId, jsonObjectStr, portletRequest);
