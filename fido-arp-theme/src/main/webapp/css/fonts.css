@@ -1,0 +1,53 @@
+@font-face {
+    font-family: 'Plumb';
+    src: url('fonts/plum.eot');
+    src: url('fonts/plum.eot?#iefix') format('embedded-opentype'),
+    url('fonts/plum.woff') format('woff'),
+    url('fonts/plum.ttf') format('truetype'),
+    url('fonts/plum.svg#plumbregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'plumbmedium';
+    src: url('fonts/plumm.eot');
+    src: url('fonts/plumm.eot?#iefix') format('embedded-opentype'),
+    url('fonts/plumm.woff') format('woff'),
+    url('fonts/plumm.ttf') format('truetype'),
+    url('fonts/plumm.svg#plumbmedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Plumb Medium';
+    src: url('fonts/plumm.eot');
+    src: url('fonts/plumm.eot?#iefix') format('embedded-opentype'),
+    url('fonts/plumm.woff') format('woff'),
+    url('fonts/plumm.ttf') format('truetype'),
+    url('fonts/plumm.svg#plumbmedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PlumbC Bold';
+    src: url('fonts/plumbcbold.eot');
+    src: url('fonts/plumbcbold.eot?#iefix') format('embedded-opentype'),
+    url('fonts/plumbcbold.woff') format('woff'),
+    url('fonts/plumbcbold.ttf') format('truetype'),
+    url('fonts/plumbcbold.svg#plumbcbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PlumbC';
+    src: url('fonts/PlumbC.eot');
+    src: url('fonts/PlumbC.eot?#iefix') format('embedded-opentype'),
+    url('fonts/PlumbC.woff') format('woff'),
+    url('fonts/PlumbC.ttf') format('truetype'),
+    url('fonts/PlumbC.svg#plumbcregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}

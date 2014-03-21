@@ -12,23 +12,14 @@
 	<portlet>
 		<portlet-name>fido_arp_queues</portlet-name>
 		<instanceable>false</instanceable>
-        <header-portlet-css>/html/css/bootstrap.css</header-portlet-css>
-        <header-portlet-css>/html/css/ui/jquery-ui-1.10.3.theme.css</header-portlet-css>
-        <header-portlet-css>/html/css/ui/jquery-ui-1.10.3.custom.css</header-portlet-css>
-        <header-portlet-css>/html/css/ui/jquery.ui.1.10.3.ie.css</header-portlet-css>
         <header-portlet-css>/html/css/queues.css</header-portlet-css>
-        <footer-portlet-javascript>/html/js/jquery-1.9.1.min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/html/js/jquery-ui-1.10.4.custom.min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/html/js/queues/jquery.liTabs.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/queues/queues.js</footer-portlet-javascript>
         <css-class-wrapper>fido-arp-queues-portlet</css-class-wrapper>
 	</portlet>
     <portlet>
         <portlet-name>fido_arp_partner_product_type</portlet-name>
         <instanceable>false</instanceable>
-        <header-portlet-css>/html/css/bootstrap.css</header-portlet-css>
         <header-portlet-css>/html/css/main.css</header-portlet-css>
-        <footer-portlet-javascript>/html/js/jquery-1.9.1.min.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.serialize-object.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/partner-product-type/partner-product-type.js</footer-portlet-javascript>
@@ -37,19 +28,12 @@
     <portlet>
         <portlet-name>fido_arp_users</portlet-name>
         <instanceable>false</instanceable>
-        <header-portlet-css>/html/css/bootstrap.css</header-portlet-css>
-        <header-portlet-css>/html/css/ui/jquery-ui-1.10.3.theme.css</header-portlet-css>
-        <header-portlet-css>/html/css/ui/jquery-ui-1.10.3.custom.css</header-portlet-css>
-        <header-portlet-css>/html/css/ui/jquery.ui.1.10.3.ie.css</header-portlet-css>
         <header-portlet-css>/html/css/main.css</header-portlet-css>
-        <footer-portlet-javascript>/html/js/jquery-1.9.1.min.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/html/js/jquery-ui-1.10.4.custom.min.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.form.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/class.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/html/js/main.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/users/users.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/html/js/validation.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/users/validation.js</footer-portlet-javascript>
         <css-class-wrapper>fido-arp-users-portlet</css-class-wrapper>
     </portlet>
 

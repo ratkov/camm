@@ -1,0 +1,8 @@
+#*
+This file allows you to override and define new Velocity variables.
+*#
+#set ($jquery = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/jquery-1.11.0.min.js")))
+#set ($jqueryUi = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/jquery-ui-1.10.4.custom.min.js")))
+#set ($formstyler = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/jquery.formstyler.min.js")))
+#set ($checkbox = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/jquery.checkbox.js")))
+#set ($liTabs = $htmlUtil.escape($portalUtil.getStaticResourceURL($request,"$javascript_folder/jquery.liTabs.js")))

@@ -65,6 +65,7 @@
         <module>fido-arp-portlets</module>
         <module>fido-arp-ext</module>
         <module>fido-arp-hook</module>
+        <module>fido-arp-theme</module>
         <module>web-services</module>
     </modules>
 </project>
