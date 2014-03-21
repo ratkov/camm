@@ -62,6 +62,7 @@ $theme.include($body_top_include)
     #js($formstyler)
     #js($checkbox)
     #js($liTabs)
+    #js($chosen)
 </div>
 
 $theme.include($body_bottom_include)

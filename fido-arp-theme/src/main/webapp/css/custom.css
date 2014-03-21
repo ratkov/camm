@@ -258,6 +258,11 @@ hr, .separator {
     -ms-transition: none;
     -o-transition: none;
     transition: none;
+    box-shadow:none;
+}
+
+#navigation .child-menu li.selected a {
+    box-shadow:none;
 }
 
 .ie7 #navigation .child-menu li a {

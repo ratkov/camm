@@ -30,7 +30,7 @@ UsersProcessor = Class.extend({
                                 } else {
                                     $('#' + $this.namespace + 'changeStatusError')
                                         .empty()
-                                        .append(parsedMessage[0].value).show().addClass('error');
+                                        .append(parsedMessage[0].value).show().addClass('alert alert-danger');
                                 }
                             }
                         });

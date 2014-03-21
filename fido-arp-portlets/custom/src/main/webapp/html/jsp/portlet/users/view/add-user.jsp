@@ -3,7 +3,7 @@
 <div id="<portlet:namespace/>addUserForm" style="display: none">
     <form role="form" id="<portlet:namespace/>usersForm" action="${usersUrl}" method="POST" class="userContent">
         <div>
-            <label id="<portlet:namespace/>addUserError" class="alert alert-danger"></label>
+            <label id="<portlet:namespace/>addUserError"></label>
         </div>
 
         <div class="form-group">

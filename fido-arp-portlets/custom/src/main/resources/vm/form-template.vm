@@ -12,7 +12,7 @@
         #parse("/vm/field.vm")
 
         <div class="tar text-right">
-            <a href="javascript:void(0);" class="nextStep btn btn-primary">$continue<span></span></a>
+            <a href="javascript:void(0);" class="nextStep">$continue<span></span></a>
         </div>
     </fieldset>
 </div>
@@ -30,7 +30,7 @@
                         <fieldset class="t_content">
                             #parse("/vm/field.vm")
                             <div class="tar text-right">
-                                <a href="javascript:void(0);" class="nextStep btn btn-primary">$continue<span></span></a>
+                                <a href="javascript:void(0);" class="nextStep">$continue<span></span></a>
                             </div>
                         </fieldset>
                     </div>
@@ -40,7 +40,7 @@
         #end
         #if($j == 0)
             <div class="tar text-right">
-                <a href="javascript:void(0);" class="nextStep btn btn-primary">$continue<span></span></a>
+                <a href="javascript:void(0);" class="nextStep">$continue<span></span></a>
             </div>
         #end
     </div>

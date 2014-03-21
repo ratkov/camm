@@ -10,9 +10,9 @@
 <c:if test="${not empty info}">
     <div class="alert alert-info"><liferay-ui:message key="${info}"/></div>
 </c:if>
-<div class="row-fluid clearfix">
+<div class="clearfix">
     <label for="partner" class="col-sm-2 control-label"><liferay-ui:message key="partner.product.type.partner" /></label>
-    <div class="col-sm-8">
+    <div class="col-sm-6">
         <select id="partner" class="form-control" data-url="${changePartner}">
             <c:forEach items="${partners}" var="partner">
                 <option value="${partner.organizationId}"

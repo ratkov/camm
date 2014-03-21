@@ -5,7 +5,7 @@
     <div class="row-fluid clearfix">
         <label class="col-sm-2 control-label"><liferay-ui:message key="user.partners"/>&#58;</label>
 
-        <div id="<portlet:namespace/>partnersBlock" class="col-sm-8">
+        <div id="<portlet:namespace/>partnersBlock" class="col-sm-6">
             <select id="<portlet:namespace/>partners" name="partners" data-url="${filterUserURL}" class="form-control">
                 <option value="0"><liferay-ui:message key="user.partners.all"/></option>
                 <c:forEach items="${partners}" var="partner">

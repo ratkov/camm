@@ -1707,11 +1707,13 @@ select[multiple].input-lg {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
+  background-image: none;
 }
 .btn:hover,
 .btn:focus {
   color: #333;
   text-decoration: none;
+  background-image: none;
 }
 .btn:active,
 .btn.active {

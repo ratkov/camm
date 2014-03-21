@@ -22,7 +22,11 @@
         <header-portlet-css>/html/css/main.css</header-portlet-css>
         <footer-portlet-javascript>/html/js/jquery.serialize-object.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/jQuery.ajaxQueue.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/dateSelectBoxes.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/dictionary-select.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/partner-product-type/partner-product-type.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/partner-product-type/validation.js</footer-portlet-javascript>
         <css-class-wrapper>fido-arp-partner-product-type</css-class-wrapper>
     </portlet>
     <portlet>
