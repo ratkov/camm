@@ -73,7 +73,7 @@ public class UsersUtil {
         PortletURL iteratorURL= renderResponse.createRenderURL();
 
         SearchContainer<User> searchContainer = new SearchContainer<User>(renderRequest, null,
-                null, SearchContainer.DEFAULT_CUR_PARAM, ParamUtil.getInteger(renderRequest, SearchContainer.DEFAULT_DELTA_PARAM, 10),
+                null, SearchContainer.DEFAULT_CUR_PARAM, ParamUtil.getInteger(renderRequest, SearchContainer.DEFAULT_DELTA_PARAM, 1),
                 iteratorURL, null, LanguageUtil.get(portletConfig, currentLocale, "No UserGroups were Found"));
 
         int total = 0;
@@ -229,7 +229,18 @@ public class UsersUtil {
 
         // Validate user's login
         if (StringUtils.isNotBlank(login)) {
-            // TODO Here will be user's login validation
+
+            try {
+                User user = UserLocalServiceUtil.fetchUserByScreenName(companyId, login);
+
+                if (user != null) {
+                    result = resources.getString("user.validation.login.exist");
+                    return result;
+                }
+
+            } catch (SystemException e) {
+                log.error(e.getMessage(), e);
+            }
 
         } else {
             result = resources.getString("user.validation.login.required");

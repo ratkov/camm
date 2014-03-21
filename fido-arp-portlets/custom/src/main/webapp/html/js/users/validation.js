@@ -16,7 +16,7 @@ ValidationProcessor = Class.extend({
 
         $.validator.addMethod(
             "alphanumeric", function (value, element) {
-                return this.optional(element) || /^[_a-zA-_Z0-9]+$/.test(value);
+                return this.optional(element) || /^[a-zA-Z0-9-_.-]+$/.test(value);
             }
         );
 
@@ -48,7 +48,7 @@ ValidationProcessor = Class.extend({
                     login: {
                         required: true,
                         minlength: 4,
-                        maxlength: 20,
+                        maxlength: 30,
                         alphanumeric: true
                     },
                     email: {
