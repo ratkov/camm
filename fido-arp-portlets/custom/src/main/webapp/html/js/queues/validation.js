@@ -327,53 +327,6 @@ function setValidator(locale){
             }
         });
 
-        $(form).on("click", ".submit", function(event) {
-            event.preventDefault();
-            $(form).valid();
-            if($(form).valid()) {
-                $(document.body).append("<div id='modal-window' class='ui-widget-overlay ui-front' style='display: block;'></div>");
-
-                var listCheckbox = $(form).find('input[type=checkbox]:not(:checked)');
-                var jsonCheckbox = {};
-                var formJson = $(form).serializeObject();
-                if(listCheckbox.length > 0){
-                    listCheckbox.each(function(){
-                        jsonCheckbox[$(this).attr("name")] = $(this).val();
-                    });
-
-                    // re-disabled the set of inputs that you previously enabled
-                    formJson = $.extend( $(form).serializeObject(), jsonCheckbox);
-                }
-
-                var data = formJson;
-                var url = $(form).attr("action");
-                $.ajax({
-                    type:"POST",
-                    url:url,
-                    data:data,
-                    success:function(data){
-                        $("#partnerWrapper").html(data);
-                        $("#modal-window").remove();
-                    }
-                    ,error: function(){
-                        $("#modal-window").remove();
-                    }
-                });
-            } else {
-                if (!v.numberOfInvalids())
-                    return;
-
-                v.errorList[0].element.focus();
-                if($(v.errorList[0].element).offset().top < 0){
-                    $(window).scrollTop( $(v.errorList[0].element).next().offset().top )
-                } else {
-                    $(window).scrollTop( $(v.errorList[0].element).offset().top )
-                }
-            }
-            return false;
-        });
-
-
         $(form).on("click", ".nextStep", function(event) {
             event.preventDefault();
             $(form).valid();
@@ -391,7 +344,51 @@ function setValidator(locale){
 
                     $(document.body).append("<div id='modal-window' style='display: block;'></div>");
 
+                    var listCheckbox = $(form).find('input[type=checkbox]:not(:checked)');
 
+                    var jsonCheckbox = {};
+                    var formJson = $(form).serializeObject();
+
+                    // Find disabled inputs, and remove the "disabled" attribute
+                    var disabled = $(form).find(':input:disabled, select:disabled').removeAttr('disabled');
+
+                    if(listCheckbox.length > 0){
+                        listCheckbox.each(function(){
+                            jsonCheckbox[$(this).attr("name")] = $(this).val();
+                        });
+
+                        // re-disabled the set of inputs that you previously enabled
+                        formJson = $.extend(formJson, jsonCheckbox);
+                    }
+
+                    disabled.attr('disabled','disabled');
+
+                    var data = {
+                        json :  JSON.stringify(formJson),
+                        productTypeId : $("#productId").val()
+                    };
+                    var url = $(form).data("url");
+                    $.ajax({
+                        type:"POST",
+                        url:url,
+                        data:data,
+                        success:function(data){
+                            $("#queues-view").html(data);
+                            styling();
+                            selectEvents();
+                            //for selects
+                            loadDictionary();
+                            checkboxEvent();
+                            showTip();
+                            applyDate();
+                            offChangeFieldEvent();
+                            showProductsType();
+                            $("#modal-window").remove();
+                        }
+                        ,error: function(){
+                            $("#modal-window").remove();
+                        }
+                    })
                 }
             } else {
                 if($(event.target).parents(".t_content").length > 0)

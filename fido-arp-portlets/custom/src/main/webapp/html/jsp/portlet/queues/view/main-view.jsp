@@ -27,6 +27,7 @@
         </tr>
         </thead>
         <tbody>
+        <c:forEach items="${productTypes}" var="productType">
         <tr>
             <td></td>
             <td></td>
@@ -38,6 +39,7 @@
             <td></td>
             <td></td>
         </tr>
+        </c:forEach>
         </tbody>
     </table>
 </div>
@@ -47,9 +49,11 @@
 <script type="text/x-handlebars-template" id="form-select-templates">
     <div>
         <form action="${createNewQuery}" method="post">
-           <c:forEach items="${ddmTemplates}" var="template">
-               <input type="radio" value="${template.templateId}" name="selectedTemplate" />
-            <label>${template.name}</label>
+           <c:forEach items="${productTypes}" var="productType">
+               <div>
+                   <input type="radio" value="${productType.productTypeId}" name="selectedProduct"
+                          class="pretRad" data-label="${productType.name}"/>
+               </div>
            </c:forEach>
            <div class="text-right">
                 <input type="submit" class="btn btn-primary" value='<liferay-ui:message key="global.ok"/>' />
