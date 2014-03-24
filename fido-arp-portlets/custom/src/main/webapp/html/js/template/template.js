@@ -58,6 +58,8 @@ function styling(){
 
     //for date
     applyDate();
+
+    checkboxEvent();
 }
 function setTabs(){
 
@@ -331,10 +333,9 @@ function subchildShow(checkbox) {
     var parents = $(checkbox).parents(".regRow");
     if ($(checkbox).is(":checked")) {
         parents.next(".children-list").show();
-        parents.next(".children-list").find("select, input, textarea").removeClass("hide");
+        loadDictionary();
     } else {
         parents.next(".children-list").hide();
-        parents.next(".children-list").find("select, input, textarea").addClass("hide");
     }
 }
 function disablePrev($container){

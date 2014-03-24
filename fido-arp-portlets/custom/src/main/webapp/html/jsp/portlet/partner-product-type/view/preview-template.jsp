@@ -1,7 +1,8 @@
 <%@include file="../init-common.jsp"%>
 
-<input type="hidden" value="${jsonURL}" id="urlResource"/>
+<input type="hidden" value="${changePartner}" id="backToMain"/>
 
 <form class="validateForm" data-locale="uk_UA">
-  ${templateHtml}
+    <input type="hidden" value="${selPartner}" id="partnerId" />
+    ${templateHtml}
 </form>

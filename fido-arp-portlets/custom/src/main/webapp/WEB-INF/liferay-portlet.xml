@@ -13,7 +13,16 @@
 		<portlet-name>fido_arp_queues</portlet-name>
 		<instanceable>false</instanceable>
         <header-portlet-css>/html/css/queues.css</header-portlet-css>
+        <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/jquery.inputmask.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/template/jquery.serialize-object.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/template/jQuery.ajaxQueue.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/template/dateSelectBoxes.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/template/apply-date.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/template/dictionary-select.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/template/template.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/queues/queues.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/queues/validation.js</footer-portlet-javascript>
         <css-class-wrapper>fido-arp-queues-portlet</css-class-wrapper>
 	</portlet>
     <portlet>
@@ -23,12 +32,12 @@
         <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.inputmask.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/jquery.serialize-object.js</footer-portlet-javascript>
-        <footer-portlet-javascript>/html/js/template/validation.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/jQuery.ajaxQueue.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/dateSelectBoxes.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/apply-date.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/dictionary-select.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/template.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/partner-product-type/validation.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/partner-product-type/partner-product-type.js</footer-portlet-javascript>
         <css-class-wrapper>fido-arp-partner-product-type</css-class-wrapper>
     </portlet>

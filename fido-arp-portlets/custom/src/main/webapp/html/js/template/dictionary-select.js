@@ -11,7 +11,7 @@ function loadDictionary(){
         }
     });
 
-    if($(currentContent).find("select[name*='region']").not(".autoload").length > 0){
+    if($(currentContent).find("select[name*='region']").not(":hidden").not(".autoload").length > 0){
         $(currentContent).find("select[name*='region']").not(":hidden").trigger("change");
     }
 }
@@ -42,9 +42,6 @@ function selectEvents(){
     });
     $dict.on("change","select[data-dictionary='fidoStreet']", function(e){
         getZipCode(e.target);
-    });
-    $dict.on("change","select[data-dictionary='fidoDepartmentsCities']", function(e){
-        getDepartmentName(e.target);
     });
 }
 
@@ -90,7 +87,7 @@ function getDistrict(region){
         var data = {
             region : $(region).val()
         };
-        initSelect(select, data);
+        initSelect(select, data, $(region).val());
     }
 }
 
@@ -100,7 +97,7 @@ function getLocalityType(district){
         var data = {
             district : $(district).val()
         };
-        initSelect(select, data);
+        initSelect(select, data, $(district).val());
     }
 }
 
@@ -112,7 +109,7 @@ function getLocalityName(localityType){
             localityType : $(localityType).val(),
             district : $(fidoDistrict).val()
         };
-        initSelect(select,data);
+        initSelect(select,data, $(localityType).val() + $(fidoDistrict).val());
     }
 }
 
@@ -122,7 +119,7 @@ function getStreetType(localityName){
         var data = {
             localityName : $(localityName).val()
         };
-        initSelect(select,data);
+        initSelect(select,data, $(localityName).val());
     }
 }
 
@@ -134,7 +131,7 @@ function getStreet(streetType){
             streetType : $(streetType).val(),
             localityName : $(fidoLocalityName).val()
         };
-        initSelect(select,data);
+        initSelect(select,data, $(streetType).val() + $(fidoLocalityName).val());
     }
 }
 
@@ -144,15 +141,24 @@ function getZipCode(street){
         var data = {
             street : $(street).val()
         };
-        initSelect(select,data);
+        initSelect(select,data, $(street).val());
     }
 }
 
 //for event or simple call
-function initSelect(select, newData){
+function initSelect(select, newData, parentId){
     var url = $("#urlResource").val();
-    if(select.length > 0){
+    if(select.length > 0 && $(select).not(":hidden")){
         if($(select).data("dictionary")){
+            if(parentId != null){
+                var old = $(select).data("parentId");
+                if(!!old){
+                    if(old == parentId){
+                        return;
+                    }
+                }
+                $(select).data("parentId", parentId);
+            }
             var dict = $(select).data("dictionary");
             var data =  $.extend({ dictionary : dict }, newData);
             loadJsonSelect(url, data, select);
@@ -171,14 +177,14 @@ function canLoad($select){
     }else if($select.data("dictionary").indexOf('fidoLocalityName') > -1){
         influence = findPrevElement($select, "select[data-dictionary='fidoLocalityType']");
         influence2 = findPrevElement($select, "select[data-dictionary='fidoDistrict']");
-        return !!influence.val() || !!influence2.val();
+        return !!influence.val() && !!influence2.val();
     }else if($select.data("dictionary").indexOf('fidoStreetType') > -1){
         influence = findPrevElement($select, "select[data-dictionary='fidoLocalityName']");
         return !!influence.val();
     }else if($select.data("dictionary").indexOf('fidoStreet') > -1 && $select.data("dictionary").indexOf('fidoStreetType') == -1){
         influence = findPrevElement($select, "select[data-dictionary='fidoStreetType']");
         influence2 = findPrevElement($select, "select[data-dictionary='fidoLocalityName']");
-        return !!influence.val() || !!influence2.val();
+        return !!influence.val() && !!influence2.val();
     }else if($select.data("dictionary").indexOf('fidoZipCode') > -1){
         influence = findPrevElement($select, "select[data-dictionary='fidoStreet']");
         return !!influence.val();
@@ -206,8 +212,9 @@ function loadJsonSelect(url, data, select){
                     }
                     $select.append($("<option></option>").attr("value", dataJson[i].id).text(label));
                 }
-                if($select.data("selected") != ""){
-                   $select.val($select.data("selected"));
+                if(!!$select.data("selected")){
+                    if($select.data("selected") != "")
+                        $select.val($select.data("selected"));
                 }
                 if($select.hasClass("sel")){
                     $select.trigger("refresh");

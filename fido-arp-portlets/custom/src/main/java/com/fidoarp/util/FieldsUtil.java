@@ -154,19 +154,21 @@ public class FieldsUtil {
             }
 
             if(jsonObject.getJSONObject("localizationMap").length() > 0){
-                if(jsonObject.getJSONObject("localizationMap").getJSONObject(languageId).length() > 0){
-                    JSONObject jsonLocale = jsonObject.getJSONObject("localizationMap").getJSONObject(languageId);
-                    if(jsonLocale.has("label")){
-                        field.setLabel(jsonLocale.getString("label"));
-                    }
-                    if(jsonLocale.has("tip")){
-                        field.setTip(jsonLocale.getString("tip"));
-                    }
-                    if(jsonLocale.has("showLabel")){
-                        field.setShowLabel(jsonLocale.getBoolean("showLabel"));
-                    }
-                    if(jsonLocale.has("predefinedValue")){
-                        field.setPredefinedValue(jsonLocale.getString("predefinedValue"));
+                if(jsonObject.getJSONObject("localizationMap").getJSONObject(languageId) != null){
+                    if(jsonObject.getJSONObject("localizationMap").getJSONObject(languageId).length() > 0){
+                        JSONObject jsonLocale = jsonObject.getJSONObject("localizationMap").getJSONObject(languageId);
+                        if(jsonLocale.has("label")){
+                            field.setLabel(jsonLocale.getString("label"));
+                        }
+                        if(jsonLocale.has("tip")){
+                            field.setTip(jsonLocale.getString("tip"));
+                        }
+                        if(jsonLocale.has("showLabel")){
+                            field.setShowLabel(jsonLocale.getBoolean("showLabel"));
+                        }
+                        if(jsonLocale.has("predefinedValue")){
+                            field.setPredefinedValue(jsonLocale.getString("predefinedValue"));
+                        }
                     }
                 }
             }

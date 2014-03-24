@@ -390,60 +390,11 @@ function setValidator(locale){
                     offChangeFieldEvent();
 
                     $(document.body).append("<div id='modal-window' style='display: block;'></div>");
-
-                    var listCheckbox = $(form).find('input[type=checkbox]:not(:checked)');
-                    var jsonCheckbox = {};
-                    listCheckbox.each(function(){
-                        jsonCheckbox[$(this).attr("name")] = $(this).val();
-                    });
-
-                    // Find disabled inputs, and remove the "disabled" attribute
-                    var disabled = $(form).find(':input:disabled, select:disabled').removeAttr('disabled');
-
-                    // re-disabled the set of inputs that you previously enabled
-                    var formJson =  $.extend( $(form).serializeObject(), jsonCheckbox);
-
-                    disabled.attr('disabled','disabled');
-
+                    var url = $("#backToMain").val();
                     var data = {
-                        json : JSON.stringify(formJson)
+                        partnerId: $("#partnerId").val()
                     };
-                    var url = $(form).data("url");
-                    $.ajax({
-                        type:"POST",
-                        url:url,
-                        data:data,
-                        success:function(data){
-                            if(isJsonString(data)){
-                                var json = $.parseJSON(data);
-                                var template = $("#form-acquiring-payment");
-                                var formToPost = $.trim(template.html());
-                                var $form = $(formToPost);
-                                $form.attr("action", json["url"]);
-                                for (var key in json) {
-                                    if (json.hasOwnProperty(key)) {
-                                        $form.find("[name*='"+key+"']").val(json[key]);
-                                    }
-                                }
-                                $form.appendTo('body').submit();
-                            } else {
-                                $("#step-section").html(data);
-                                styling();
-                                selectEvents();
-                                //for selects
-                                loadDictionary();
-                                checkboxEvent();
-                                showTip();
-                                setTabs();
-                                applyDate();
-                                offChangeFieldEvent();
-                                $("#modal-window").remove();
-                            }
-                        }
-                        ,error: function(){
-                            $("#modal-window").remove();
-                        }
-                    })
+                    viewMode(url, data, false);
                 }
             } else {
                 if($(event.target).parents(".t_content").length > 0)

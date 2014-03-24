@@ -10,6 +10,8 @@
     border-bottom: 1px solid #aeb2b4;
     font-size: 0;
     text-align: center;
+    margin: 0 0 20px;
+    padding: 5px 0;
 }
 .t_item {
     list-style: none;
@@ -227,6 +229,8 @@ label.error {
 .regRow {
     padding: 8px 0;
     position: relative;
+    clear: both;
+    float: none;
 }
 
 .regRow label {
@@ -826,9 +830,12 @@ input.inpPhone {
 }
 
 .validateForm .regRow.display-inline{
-    display: inline-block;
-    *display: inline;
-    *zoom: 1;
+    clear: left;
+    float: left;
+}
+.validateForm .regRow.display-inline.second{
+    clear: none;
+    float: left;
 }
 
 .validateForm .regRow.display-inline.second label{
