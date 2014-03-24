@@ -179,7 +179,7 @@ public class PartnerProductTypePortlet extends FidoMVCPortlet {
                     ProductTypeLocalServiceUtil.updateProductType(productType);
                 }
                 actionRequest.setAttribute("info", "partner.product.type.data.is.saved.success");
-                actionRequest.setAttribute("partnerId", partnerId);
+                actionResponse.setRenderParameter("partnerId", partnerId.toString());
             }else{
                 actionRequest.setAttribute("error", "partner.product.type.data.is.wrong");
             }

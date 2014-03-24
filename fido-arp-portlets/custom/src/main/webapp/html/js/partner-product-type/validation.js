@@ -346,19 +346,8 @@ function setValidator(locale){
                 }
 
                 var data = formJson;
-                var url = $(form).attr("action");
-                $.ajax({
-                    type:"POST",
-                    url:url,
-                    data:data,
-                    success:function(data){
-                        $("#partnerWrapper").html(data);
-                        $("#modal-window").remove();
-                    }
-                    ,error: function(){
-                        $("#modal-window").remove();
-                    }
-                });
+                var url = $(form).data("url");
+                viewMode(url, data, false);
             } else {
                 if (!v.numberOfInvalids())
                     return;
