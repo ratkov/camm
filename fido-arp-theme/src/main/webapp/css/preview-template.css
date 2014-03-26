@@ -231,6 +231,7 @@ label.error {
     position: relative;
     clear: both;
     float: none;
+    overflow: inherit;
 }
 
 .regRow label {
@@ -256,7 +257,9 @@ label.error {
     line-height: 0;
 }
 
-.regRow input {
+.regRow input[type='text'],
+.regRow input[type='checkbox'],
+.regRow input[type='radio'] {
     display: inline-block;
     *display: inline;
     *zoom: 1;
@@ -273,6 +276,10 @@ label.error {
 .regContent .tar, .loginContent  .tar {
     padding-top: 30px;
     padding-right: 11px;
+}
+
+.regRow .taglib-input-localized{
+   position: relative;
 }
 
 .nextStep {

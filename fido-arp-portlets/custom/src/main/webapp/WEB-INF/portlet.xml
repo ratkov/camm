@@ -33,6 +33,36 @@
         </security-role-ref>
     </portlet>
     <portlet>
+        <portlet-name>fido_app_status</portlet-name>
+        <display-name>FidoARP App Status</display-name>
+        <portlet-class>com.fidoarp.portlet.AppStatusPortlet</portlet-class>
+        <init-param>
+            <name>view-jsp</name>
+            <value>/html/jsp/portlet/app-status/view/view.jsp</value>
+        </init-param>
+        <expiration-cache>0</expiration-cache>
+        <supports>
+            <mime-type>text/html</mime-type>
+        </supports>
+        <supported-locale>uk_UA</supported-locale>
+        <supported-locale>ru_RU</supported-locale>
+        <resource-bundle>i18n.Resource</resource-bundle>
+        <portlet-info>
+            <title>FidoArp App Status</title>
+            <short-title>FidoArp App Status</short-title>
+            <keywords>app status</keywords>
+        </portlet-info>
+        <security-role-ref>
+            <role-name>administrator</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>power-user</role-name>
+        </security-role-ref>
+        <security-role-ref>
+            <role-name>user</role-name>
+        </security-role-ref>
+    </portlet>
+    <portlet>
         <portlet-name>fido_arp_partner_product_type</portlet-name>
         <display-name>FidoARP Partners Product Type</display-name>
         <portlet-class>com.fidoarp.portlet.PartnerProductTypePortlet</portlet-class>

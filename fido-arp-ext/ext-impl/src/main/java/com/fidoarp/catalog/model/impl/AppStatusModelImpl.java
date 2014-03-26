@@ -56,7 +56,7 @@ public class AppStatusModelImpl extends BaseModelImpl<AppStatus>
             { "name", Types.VARCHAR },
             { "description", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table fido_app_status (id LONG not null primary key,code VARCHAR(75) null,name STRING null,description VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table fido_app_status (id LONG not null primary key,code VARCHAR(75) null,name STRING null,description STRING null)";
     public static final String TABLE_SQL_DROP = "drop table fido_app_status";
     public static final String ORDER_BY_JPQL = " ORDER BY appStatus.appStatusId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY fido_app_status.id ASC";
@@ -85,6 +85,7 @@ public class AppStatusModelImpl extends BaseModelImpl<AppStatus>
     private String _name;
     private String _nameCurrentLanguageId;
     private String _description;
+    private String _descriptionCurrentLanguageId;
     private long _columnBitmask;
     private AppStatus _escapedModelProxy;
 
@@ -281,8 +282,86 @@ public class AppStatusModelImpl extends BaseModelImpl<AppStatus>
         }
     }
 
+    public String getDescription(Locale locale) {
+        String languageId = LocaleUtil.toLanguageId(locale);
+
+        return getDescription(languageId);
+    }
+
+    public String getDescription(Locale locale, boolean useDefault) {
+        String languageId = LocaleUtil.toLanguageId(locale);
+
+        return getDescription(languageId, useDefault);
+    }
+
+    public String getDescription(String languageId) {
+        return LocalizationUtil.getLocalization(getDescription(), languageId);
+    }
+
+    public String getDescription(String languageId, boolean useDefault) {
+        return LocalizationUtil.getLocalization(getDescription(), languageId,
+            useDefault);
+    }
+
+    public String getDescriptionCurrentLanguageId() {
+        return _descriptionCurrentLanguageId;
+    }
+
+    @JSON
+    public String getDescriptionCurrentValue() {
+        Locale locale = getLocale(_descriptionCurrentLanguageId);
+
+        return getDescription(locale);
+    }
+
+    public Map<Locale, String> getDescriptionMap() {
+        return LocalizationUtil.getLocalizationMap(getDescription());
+    }
+
     public void setDescription(String description) {
         _description = description;
+    }
+
+    public void setDescription(String description, Locale locale) {
+        setDescription(description, locale, LocaleUtil.getDefault());
+    }
+
+    public void setDescription(String description, Locale locale,
+        Locale defaultLocale) {
+        String languageId = LocaleUtil.toLanguageId(locale);
+        String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+        if (Validator.isNotNull(description)) {
+            setDescription(LocalizationUtil.updateLocalization(
+                    getDescription(), "Description", description, languageId,
+                    defaultLanguageId));
+        } else {
+            setDescription(LocalizationUtil.removeLocalization(
+                    getDescription(), "Description", languageId));
+        }
+    }
+
+    public void setDescriptionCurrentLanguageId(String languageId) {
+        _descriptionCurrentLanguageId = languageId;
+    }
+
+    public void setDescriptionMap(Map<Locale, String> descriptionMap) {
+        setDescriptionMap(descriptionMap, LocaleUtil.getDefault());
+    }
+
+    public void setDescriptionMap(Map<Locale, String> descriptionMap,
+        Locale defaultLocale) {
+        if (descriptionMap == null) {
+            return;
+        }
+
+        Locale[] locales = LanguageUtil.getAvailableLocales();
+
+        for (Locale locale : locales) {
+            String description = descriptionMap.get(locale);
+
+            setDescription(description, locale, defaultLocale);
+        }
     }
 
     public long getColumnBitmask() {
@@ -307,6 +386,8 @@ public class AppStatusModelImpl extends BaseModelImpl<AppStatus>
         throws LocaleException {
         setName(getName(defaultImportLocale), defaultImportLocale,
             defaultImportLocale);
+        setDescription(getDescription(defaultImportLocale),
+            defaultImportLocale, defaultImportLocale);
     }
 
     @Override

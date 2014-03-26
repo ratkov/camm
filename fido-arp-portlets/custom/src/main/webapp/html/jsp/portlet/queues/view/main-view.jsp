@@ -55,6 +55,9 @@
                           class="pretRad" data-label="${productType.getName(locale)}"/>
                </div>
            </c:forEach>
+           <div>
+
+           </div>
            <div class="text-right">
                 <input type="submit" class="btn btn-primary" value='<liferay-ui:message key="global.ok"/>' />
             </div>

@@ -18,7 +18,7 @@ create table fido_app_status (
 	id LONG not null primary key,
 	code VARCHAR(75) null,
 	name STRING null,
-	description VARCHAR(75) null
+	description STRING null
 );
 
 create table fido_branch (

@@ -256,12 +256,122 @@ public class AppStatusWrapper implements AppStatus, ModelWrapper<AppStatus> {
     }
 
     /**
+    * Returns the localized description of this app status in the language. Uses the default language if no localization exists for the requested language.
+    *
+    * @param locale the locale of the language
+    * @return the localized description of this app status
+    */
+    public java.lang.String getDescription(java.util.Locale locale) {
+        return _appStatus.getDescription(locale);
+    }
+
+    /**
+    * Returns the localized description of this app status in the language, optionally using the default language if no localization exists for the requested language.
+    *
+    * @param locale the local of the language
+    * @param useDefault whether to use the default language if no localization exists for the requested language
+    * @return the localized description of this app status. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+    */
+    public java.lang.String getDescription(java.util.Locale locale,
+        boolean useDefault) {
+        return _appStatus.getDescription(locale, useDefault);
+    }
+
+    /**
+    * Returns the localized description of this app status in the language. Uses the default language if no localization exists for the requested language.
+    *
+    * @param languageId the ID of the language
+    * @return the localized description of this app status
+    */
+    public java.lang.String getDescription(java.lang.String languageId) {
+        return _appStatus.getDescription(languageId);
+    }
+
+    /**
+    * Returns the localized description of this app status in the language, optionally using the default language if no localization exists for the requested language.
+    *
+    * @param languageId the ID of the language
+    * @param useDefault whether to use the default language if no localization exists for the requested language
+    * @return the localized description of this app status
+    */
+    public java.lang.String getDescription(java.lang.String languageId,
+        boolean useDefault) {
+        return _appStatus.getDescription(languageId, useDefault);
+    }
+
+    public java.lang.String getDescriptionCurrentLanguageId() {
+        return _appStatus.getDescriptionCurrentLanguageId();
+    }
+
+    public java.lang.String getDescriptionCurrentValue() {
+        return _appStatus.getDescriptionCurrentValue();
+    }
+
+    /**
+    * Returns a map of the locales and localized descriptions of this app status.
+    *
+    * @return the locales and localized descriptions of this app status
+    */
+    public java.util.Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+        return _appStatus.getDescriptionMap();
+    }
+
+    /**
     * Sets the description of this app status.
     *
     * @param description the description of this app status
     */
     public void setDescription(java.lang.String description) {
         _appStatus.setDescription(description);
+    }
+
+    /**
+    * Sets the localized description of this app status in the language.
+    *
+    * @param description the localized description of this app status
+    * @param locale the locale of the language
+    */
+    public void setDescription(java.lang.String description,
+        java.util.Locale locale) {
+        _appStatus.setDescription(description, locale);
+    }
+
+    /**
+    * Sets the localized description of this app status in the language, and sets the default locale.
+    *
+    * @param description the localized description of this app status
+    * @param locale the locale of the language
+    * @param defaultLocale the default locale
+    */
+    public void setDescription(java.lang.String description,
+        java.util.Locale locale, java.util.Locale defaultLocale) {
+        _appStatus.setDescription(description, locale, defaultLocale);
+    }
+
+    public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
+        _appStatus.setDescriptionCurrentLanguageId(languageId);
+    }
+
+    /**
+    * Sets the localized descriptions of this app status from the map of locales and localized descriptions.
+    *
+    * @param descriptionMap the locales and localized descriptions of this app status
+    */
+    public void setDescriptionMap(
+        java.util.Map<java.util.Locale, java.lang.String> descriptionMap) {
+        _appStatus.setDescriptionMap(descriptionMap);
+    }
+
+    /**
+    * Sets the localized descriptions of this app status from the map of locales and localized descriptions, and sets the default locale.
+    *
+    * @param descriptionMap the locales and localized descriptions of this app status
+    * @param defaultLocale the default locale
+    */
+    public void setDescriptionMap(
+        java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+        java.util.Locale defaultLocale) {
+        _appStatus.setDescriptionMap(descriptionMap, defaultLocale);
     }
 
     public boolean isNew() {

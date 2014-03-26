@@ -20,7 +20,7 @@
 		<field name="appStatusId" type="long" />
 		<field name="appStatusCode" type="String" />
 		<field name="name" type="String" localized="true" />
-		<field name="description" type="String" />
+		<field name="description" type="String" localized="true" />
 	</model>
 	<model name="com.fidoarp.catalog.model.Dictionary">
 		<field name="id" type="String" />
@@ -58,7 +58,7 @@
 		<field name="productTypeId" type="long" />
 		<field name="productTypeCode" type="String" />
 		<field name="name" type="String" localized="true" />
-		<field name="description" type="String" />
+		<field name="description" type="String" localized="true" />
 		<field name="status" type="boolean" />
 		<field name="organizationId" type="long" />
 		<field name="templateId" type="long" />

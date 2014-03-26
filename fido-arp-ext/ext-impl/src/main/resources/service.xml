@@ -32,7 +32,7 @@
         <!-- Other fields -->
         <column name="appStatusCode" db-name="code" type="String" />
         <column name="name" db-name="name" type="String" localized="true"/>
-        <column name="description" db-name="description" type="String" />
+        <column name="description" db-name="description" type="String" localized="true"/>
 
         <!-- Order -->
         <order by="asc">
