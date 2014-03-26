@@ -278,12 +278,122 @@ public class ProductTypeWrapper implements ProductType,
     }
 
     /**
+    * Returns the localized description of this product type in the language. Uses the default language if no localization exists for the requested language.
+    *
+    * @param locale the locale of the language
+    * @return the localized description of this product type
+    */
+    public java.lang.String getDescription(java.util.Locale locale) {
+        return _productType.getDescription(locale);
+    }
+
+    /**
+    * Returns the localized description of this product type in the language, optionally using the default language if no localization exists for the requested language.
+    *
+    * @param locale the local of the language
+    * @param useDefault whether to use the default language if no localization exists for the requested language
+    * @return the localized description of this product type. If <code>useDefault</code> is <code>false</code> and no localization exists for the requested language, an empty string will be returned.
+    */
+    public java.lang.String getDescription(java.util.Locale locale,
+        boolean useDefault) {
+        return _productType.getDescription(locale, useDefault);
+    }
+
+    /**
+    * Returns the localized description of this product type in the language. Uses the default language if no localization exists for the requested language.
+    *
+    * @param languageId the ID of the language
+    * @return the localized description of this product type
+    */
+    public java.lang.String getDescription(java.lang.String languageId) {
+        return _productType.getDescription(languageId);
+    }
+
+    /**
+    * Returns the localized description of this product type in the language, optionally using the default language if no localization exists for the requested language.
+    *
+    * @param languageId the ID of the language
+    * @param useDefault whether to use the default language if no localization exists for the requested language
+    * @return the localized description of this product type
+    */
+    public java.lang.String getDescription(java.lang.String languageId,
+        boolean useDefault) {
+        return _productType.getDescription(languageId, useDefault);
+    }
+
+    public java.lang.String getDescriptionCurrentLanguageId() {
+        return _productType.getDescriptionCurrentLanguageId();
+    }
+
+    public java.lang.String getDescriptionCurrentValue() {
+        return _productType.getDescriptionCurrentValue();
+    }
+
+    /**
+    * Returns a map of the locales and localized descriptions of this product type.
+    *
+    * @return the locales and localized descriptions of this product type
+    */
+    public java.util.Map<java.util.Locale, java.lang.String> getDescriptionMap() {
+        return _productType.getDescriptionMap();
+    }
+
+    /**
     * Sets the description of this product type.
     *
     * @param description the description of this product type
     */
     public void setDescription(java.lang.String description) {
         _productType.setDescription(description);
+    }
+
+    /**
+    * Sets the localized description of this product type in the language.
+    *
+    * @param description the localized description of this product type
+    * @param locale the locale of the language
+    */
+    public void setDescription(java.lang.String description,
+        java.util.Locale locale) {
+        _productType.setDescription(description, locale);
+    }
+
+    /**
+    * Sets the localized description of this product type in the language, and sets the default locale.
+    *
+    * @param description the localized description of this product type
+    * @param locale the locale of the language
+    * @param defaultLocale the default locale
+    */
+    public void setDescription(java.lang.String description,
+        java.util.Locale locale, java.util.Locale defaultLocale) {
+        _productType.setDescription(description, locale, defaultLocale);
+    }
+
+    public void setDescriptionCurrentLanguageId(java.lang.String languageId) {
+        _productType.setDescriptionCurrentLanguageId(languageId);
+    }
+
+    /**
+    * Sets the localized descriptions of this product type from the map of locales and localized descriptions.
+    *
+    * @param descriptionMap the locales and localized descriptions of this product type
+    */
+    public void setDescriptionMap(
+        java.util.Map<java.util.Locale, java.lang.String> descriptionMap) {
+        _productType.setDescriptionMap(descriptionMap);
+    }
+
+    /**
+    * Sets the localized descriptions of this product type from the map of locales and localized descriptions, and sets the default locale.
+    *
+    * @param descriptionMap the locales and localized descriptions of this product type
+    * @param defaultLocale the default locale
+    */
+    public void setDescriptionMap(
+        java.util.Map<java.util.Locale, java.lang.String> descriptionMap,
+        java.util.Locale defaultLocale) {
+        _productType.setDescriptionMap(descriptionMap, defaultLocale);
     }
 
     /**

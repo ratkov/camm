@@ -52,7 +52,7 @@
            <c:forEach items="${productTypes}" var="productType">
                <div>
                    <input type="radio" value="${productType.productTypeId}" name="selectedProduct"
-                          class="pretRad" data-label="${productType.name}"/>
+                          class="pretRad" data-label="${productType.getName(locale)}"/>
                </div>
            </c:forEach>
            <div class="text-right">
