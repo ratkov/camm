@@ -12,25 +12,23 @@
     <div class="form-group">
         <label class="control-label"><liferay-ui:message key="partner.product.type.code" /></label>
         <div>
-            <input type='text' class="form-control required" name="productCode" id="productCode" value="${productType.productTypeCode}"/>
+            <input type='text' class="required" name="productCode" id="productCode" value="${productType.productTypeCode}"/>
         </div>
     </div>
     <div class="form-group">
-        <label class="control-label"><liferay-ui:message key="partner.product.type.name" /></label>
-        <div>
-            <input type='text' class="form-control required" name="productName" id="productName"  value="${productType.name}"/>
-        </div>
+        <aui:field-wrapper label='partner.product.type.name' cssClass="control-label">
+            <liferay-ui:input-localized name="productName" xml="${productType.name}" cssClass="required"/>
+        </aui:field-wrapper>
     </div>
     <div class="form-group">
-        <label class="control-label"><liferay-ui:message key="partner.product.type.description" /></label>
-        <div>
-            <textarea class="form-control" name="productDescription" id="productDescription" value="${productType.description}"/>
-        </div>
+        <aui:field-wrapper label='partner.product.type.description' cssClass="control-label">
+            <liferay-ui:input-localized name="productDescription" xml="${productType.description}"/>
+        </aui:field-wrapper>
     </div>
     <div class="form-group">
         <label class="control-label"><liferay-ui:message key="partner.product.type.template" /></label>
         <div>
-            <select id='productTemplate' name='productTemplate' class="form-control sel required">
+            <select id='productTemplate' name='productTemplate' class="sel required">
                 <c:forEach items="${ddmTemplates}" var="template">
                     <c:choose>
                         <c:when test="${productType.templateId ne 0}">
@@ -47,7 +45,7 @@
     <div class="form-group">
         <label class="control-label"><liferay-ui:message key="partner.product.type.status" /></label>
         <div>
-            <select id='productStatus' name='productStatus' class="form-control sel required">
+            <select id='productStatus' name='productStatus' class="sel required">
                 <option value="true" <c:if test="${productType.status}">selected</c:if>><liferay-ui:message key="partner.product.type.active"/></option>
                 <option value="false" <c:if test="${!productType.status}">selected</c:if>><liferay-ui:message key="partner.product.type.inactive"/></option>
             </select>
