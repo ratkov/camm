@@ -364,8 +364,7 @@ function setValidator(locale){
                     disabled.attr('disabled','disabled');
 
                     var data = {
-                        json :  JSON.stringify(formJson),
-                        productTypeId : $("#productId").val()
+                        json :  JSON.stringify(formJson)
                     };
                     var url = $(form).data("url");
                     $.ajax({

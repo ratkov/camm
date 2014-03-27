@@ -1,12 +1,16 @@
 package com.fidoarp.portlet;
 
+import com.fidoarp.catalog.model.App;
 import com.fidoarp.catalog.model.AppStatus;
 import com.fidoarp.catalog.model.ProductType;
+import com.fidoarp.catalog.service.AppLocalService;
+import com.fidoarp.catalog.service.AppLocalServiceUtil;
 import com.fidoarp.catalog.service.AppStatusLocalServiceUtil;
 import com.fidoarp.catalog.service.ProductTypeLocalServiceUtil;
 import com.fidoarp.dictionary.Dictionaries;
 import com.fidoarp.model.questionnaire.DetailsPair;
 import com.fidoarp.util.VelocityFormUtil;
+import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -27,6 +31,7 @@ import javax.portlet.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class QueuePortlet extends FidoMVCPortlet  {
@@ -61,20 +66,38 @@ public class QueuePortlet extends FidoMVCPortlet  {
 
             if(StringUtils.isNotEmpty(action) && StringUtils.isNotBlank(action)){
                 if(action.equals("createNewQuery")){
-                    Long productId = GetterUtil.getLong(renderRequest.getParameter("selectedProduct"), 0);
-                    Long appStatusId = GetterUtil.getLong(renderRequest.getParameter("selectedAppStatus"), 0);
-                    ProductType productType = ProductTypeLocalServiceUtil.getProductType(productId);
-                    VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
-                    StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, "{}");
-                    renderRequest.setAttribute("templateHtml", stringWriter);
-                    renderRequest.setAttribute("productId", productId);
-                    renderRequest.setAttribute("show", "query-form.jsp");
+                    queryForm(renderRequest, serviceContext, user);
                 }
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         super.doView(renderRequest, renderResponse);
+    }
+
+    private void queryForm(RenderRequest renderRequest, ServiceContext serviceContext, User user) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
+        Long productId = GetterUtil.getLong(renderRequest.getParameter("selectedProduct"), 0);
+        Long appStatusId = GetterUtil.getLong(renderRequest.getParameter("selectedAppStatus"), 0);
+        if(productId != 0){
+            ProductType productType = ProductTypeLocalServiceUtil.getProductType(productId);
+            VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
+            StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, "{}");
+            App app = AppLocalServiceUtil.createApp(CounterLocalServiceUtil.increment());
+            app.setOrganizationId(productType.getOrganizationId());
+            app.setUserId(user.getUserId());
+            app.setCreatedDate(new Date());
+            app.setStatusId(appStatusId);
+            AppLocalServiceUtil.addApp(app);
+            renderRequest.setAttribute("templateHtml", stringWriter);
+            renderRequest.setAttribute("productId", productId);
+            renderRequest.setAttribute("app", app);
+            AppStatus appStatus = AppStatusLocalServiceUtil.getAppStatusByCode("PROJECT");
+            if(appStatus != null){
+                long statusProjectId = appStatus.getAppStatusId();
+                renderRequest.setAttribute("isProject", statusProjectId == appStatusId);
+            }
+            renderRequest.setAttribute("show", "query-form.jsp");
+        }
     }
 
     @Override

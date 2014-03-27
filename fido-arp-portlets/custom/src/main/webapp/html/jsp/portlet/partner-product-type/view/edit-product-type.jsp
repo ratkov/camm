@@ -45,8 +45,8 @@
             </select>
         </div>
     </aui:field-wrapper>
-    <div class="form-group">
-        <label></label>
+    <div class="regRow">
+        <label> </label>
         <div class="enterField">
             <button type="submit" class="btn btn-primary submit"><liferay-ui:message key="global.ok"/></button>
             <a href="${mainViewUrl}" class="btn btn-default"><liferay-ui:message key="global.close"/></a>

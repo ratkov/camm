@@ -37,7 +37,7 @@
 }
 .t_include {
     clear: both;
-    overflow: hidden;
+    overflow: inherit;
     position: relative;
     top: -1px;
     z-index: 1;

@@ -69,16 +69,18 @@ public class AppStatusPortlet extends FidoMVCPortlet {
                 AppStatus appStatus = appStatusId == 0
                         ? AppStatusLocalServiceUtil.createAppStatus(CounterLocalServiceUtil.increment())
                         : AppStatusLocalServiceUtil.getAppStatus(appStatusId);
+
+                AppStatus appStatusByCode = AppStatusLocalServiceUtil.getAppStatusByCode(appStatusCode);
+                if(appStatusByCode != null && appStatusId != 0 &&
+                   appStatusByCode.getAppStatusId() != appStatus.getAppStatusId()){
+                    actionRequest.setAttribute("error", "app.status.code.is.not.unique");
+                    actionRequest.setAttribute("action", "edit");
+                    return;
+                }
                 appStatus.setAppStatusCode(appStatusCode);
                 appStatus.setNameMap(appStatusNames);
                 appStatus.setDescriptionMap(appStatusDescriptions);
                 if(appStatusId == 0){
-                    AppStatus appStatusByCode = AppStatusLocalServiceUtil.getAppStatusByCode(appStatusCode);
-                    if(appStatusByCode != null){
-                        actionRequest.setAttribute("error", "app.status.code.is.not.unique");
-                        actionRequest.setAttribute("action", "edit");
-                        return;
-                    }
                     AppStatusLocalServiceUtil.addAppStatus(appStatus);
                 } else {
                     AppStatusLocalServiceUtil.updateAppStatus(appStatus);
