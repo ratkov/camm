@@ -4,8 +4,11 @@
 <input type="hidden" value="${changeStatus}" id="changeStatus"/>
 <input type="hidden" value="${previewProduct}" id="previewProduct"/>
 
+<h1>
+    <liferay-ui:message key="partner.product.type.list"/>
+</h1>
 <c:if test="${not empty error}">
-    <div class="alert alert-error"><liferay-ui:message key="${error}"/></div>
+    <div class="alert alert-danger"><liferay-ui:message key="${error}"/></div>
 </c:if>
 <c:if test="${not empty info}">
     <div class="alert alert-info"><liferay-ui:message key="${info}"/></div>
@@ -39,7 +42,7 @@
         <tbody>
             <c:forEach items="${partnerProductTypes}" var="partnerProductType">
             <tr>
-                <td>${partnerProductType.name}</td>
+                <td>${partnerProductType.getName(locale)}</td>
                 <td>
                     <c:choose>
                         <c:when test="${partnerProductType.status}">

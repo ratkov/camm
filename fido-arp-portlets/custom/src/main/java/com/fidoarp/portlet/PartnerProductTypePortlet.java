@@ -14,6 +14,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.model.Organization;
 import com.liferay.portal.service.OrganizationLocalServiceUtil;
@@ -27,6 +28,8 @@ import javax.portlet.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class PartnerProductTypePortlet extends FidoMVCPortlet {
     /**
@@ -154,26 +157,33 @@ public class PartnerProductTypePortlet extends FidoMVCPortlet {
     public void saveProductType(ActionRequest actionRequest, ActionResponse actionResponse){
         try {
             String productCode = GetterUtil.getString(actionRequest.getParameter("productCode"), "");
-            String productName = GetterUtil.getString(actionRequest.getParameter("productName"), "");
-            String productDescription = GetterUtil.getString(actionRequest.getParameter("productDescription"), "");
+            Map<Locale, String> productNames = LocalizationUtil.getLocalizationMap(actionRequest, "productName");
+            Map<Locale, String> productDescriptions = LocalizationUtil.getLocalizationMap(actionRequest, "productDescription");
             Boolean productStatus = GetterUtil.getBoolean(actionRequest.getParameter("productStatus"), false);
             Long partnerId = GetterUtil.getLong(actionRequest.getParameter("partnerId"), 0);
             Long productTypeId = GetterUtil.getLong(actionRequest.getParameter("productTypeId"), 0);
             Long productTemplate = GetterUtil.getLong(actionRequest.getParameter("productTemplate"), 0);
 
+            actionResponse.setWindowState(LiferayWindowState.NORMAL);
+
             if(StringUtils.isNotBlank(productCode) && StringUtils.isNotEmpty(productCode) &&
-                StringUtils.isNotBlank(productName) && StringUtils.isNotEmpty(productName) &&
-                partnerId != 0 &&  productTemplate != 0){
+                productNames.size() > 0 && partnerId != 0 &&  productTemplate != 0){
                 ProductType productType = productTypeId == 0
                             ? ProductTypeLocalServiceUtil.createProductType(CounterLocalServiceUtil.increment())
                             : ProductTypeLocalServiceUtil.getProductType(productTypeId);
                 productType.setProductTypeCode(productCode);
-                productType.setName(productName);
-                productType.setDescription(productDescription);
+                productType.setNameMap(productNames);
+                productType.setDescriptionMap(productDescriptions);
                 productType.setStatus(productStatus);
                 productType.setTemplateId(productTemplate);
                 productType.setOrganizationId(partnerId);
                 if(productTypeId == 0){
+                    ProductType productTypeByCode = ProductTypeLocalServiceUtil.getProductTypeByCode(productCode);
+                    if(productTypeByCode != null){
+                        actionRequest.setAttribute("error", "app.status.code.is.not.unique");
+                        actionRequest.setAttribute("action", "edit");
+                        return;
+                    }
                     ProductTypeLocalServiceUtil.addProductType(productType);
                 } else {
                     ProductTypeLocalServiceUtil.updateProductType(productType);
@@ -184,7 +194,6 @@ public class PartnerProductTypePortlet extends FidoMVCPortlet {
                 actionRequest.setAttribute("error", "partner.product.type.data.is.wrong");
             }
             actionRequest.setAttribute("action", "edit");
-            actionResponse.setWindowState(LiferayWindowState.EXCLUSIVE);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

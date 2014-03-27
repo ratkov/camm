@@ -1,6 +1,8 @@
 package com.fidoarp.portlet;
 
+import com.fidoarp.catalog.model.AppStatus;
 import com.fidoarp.catalog.model.ProductType;
+import com.fidoarp.catalog.service.AppStatusLocalServiceUtil;
 import com.fidoarp.catalog.service.ProductTypeLocalServiceUtil;
 import com.fidoarp.dictionary.Dictionaries;
 import com.fidoarp.model.questionnaire.DetailsPair;
@@ -47,16 +49,20 @@ public class QueuePortlet extends FidoMVCPortlet  {
             List<ProductType> productTypes = new ArrayList<ProductType>();
             long[] listOrganizations = user.getOrganizationIds();
             for (long organizationId : listOrganizations){
-                productTypes.addAll(ProductTypeLocalServiceUtil.getListProductTypeByOrganizationId(organizationId));
+                productTypes.addAll(ProductTypeLocalServiceUtil.getListProductTypeByOrganizationIdStatus(organizationId, true));
             }
 
+            List<AppStatus> appStatuses = AppStatusLocalServiceUtil.getAppStatuses(-1, -1);
+
             renderRequest.setAttribute("productTypes", productTypes);
+            renderRequest.setAttribute("appStatuses", appStatuses);
 
             String action = GetterUtil.getString(renderRequest.getParameter("action"), "");
 
             if(StringUtils.isNotEmpty(action) && StringUtils.isNotBlank(action)){
                 if(action.equals("createNewQuery")){
                     Long productId = GetterUtil.getLong(renderRequest.getParameter("selectedProduct"), 0);
+                    Long appStatusId = GetterUtil.getLong(renderRequest.getParameter("selectedAppStatus"), 0);
                     ProductType productType = ProductTypeLocalServiceUtil.getProductType(productId);
                     VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
                     StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, "{}");

@@ -36,4 +36,22 @@ public class ProductTypeLocalServiceImpl extends ProductTypeLocalServiceBaseImpl
         return null;
     }
 
+    public List<ProductType> getListProductTypeByOrganizationIdStatus(long organizationId, boolean status){
+        try {
+            return productTypePersistence.findByOrganizationIdStatus(organizationId, status);
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ProductType getProductTypeByCode(String code){
+        try {
+            return productTypePersistence.findByCode(code);
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+        return null;
+    }
+
 }

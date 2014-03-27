@@ -254,6 +254,11 @@ public class AppStatusLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    public static com.fidoarp.catalog.model.AppStatus getAppStatusByCode(
+        java.lang.String code) {
+        return getService().getAppStatusByCode(code);
+    }
+
     public static AppStatusLocalService getService() {
         if (_service == null) {
             _service = (AppStatusLocalService) PortalBeanLocatorUtil.locate(AppStatusLocalService.class.getName());

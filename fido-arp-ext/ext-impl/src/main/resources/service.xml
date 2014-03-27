@@ -25,6 +25,10 @@
         <finder return-type="Collection" name="OrganizationId" unique="true">
             <finder-column name="organizationId" />
         </finder>
+        <finder return-type="Collection" name="OrganizationIdStatus" unique="true">
+            <finder-column name="organizationId" />
+            <finder-column name="status" />
+        </finder>
     </entity>
     <entity name="AppStatus" table="fido_app_status" uuid="false" local-service="true" remote-service="false">
         <!-- PK fields -->

@@ -2,4 +2,5 @@
 
 <div id="partnerWrapper">
     <c:import url="main-view.jsp" />
+    <hr/>
 </div>

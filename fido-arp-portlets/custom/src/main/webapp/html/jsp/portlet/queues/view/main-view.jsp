@@ -56,7 +56,12 @@
                </div>
            </c:forEach>
            <div>
-
+               <label><liferay-ui:message key="queues.query.status"/></label>
+                <select  name="selectedAppStatus">
+                <c:forEach items="${appStatuses}" var="appStatus">
+                   <option value="${appStatus.appStatusId}">${appStatus.getName(locale)}</option>
+                </c:forEach>
+                </select>
            </div>
            <div class="text-right">
                 <input type="submit" class="btn btn-primary" value='<liferay-ui:message key="global.ok"/>' />

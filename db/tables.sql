@@ -1,92 +1,92 @@
-create table fido_app (
-	id NUMBER(30,0) not null primary key,
-	user_id NUMBER(30,0),
-	organization_id NUMBER(30,0),
-	created_date DATE null,
-	description VARCHAR(75) null,
-	status_id NUMBER(30,0),
-	status_change_date DATE null,
-	client_name VARCHAR(75) null,
-	client_okpo VARCHAR(75) null,
-	contact_phone VARCHAR(75) null,
-	credit_amount INTEGER,
-	comments VARCHAR(75) null,
-	questionnaire VARCHAR(75) null
+CREATE TABLE FIDO_APP (
+	ID NUMBER(30,0) NOT NULL PRIMARY KEY,
+	USER_ID NUMBER(30,0),
+	ORGANIZATION_ID NUMBER(30,0),
+	CREATED_DATE DATE,
+	DESCRIPTION VARCHAR2(4000 CHAR),
+	STATUS_ID NUMBER(30,0),
+	STATUS_CHANGE_DATE DATE,
+	CLIENT_NAME VARCHAR2(1200 CHAR),
+	CLIENT_OKPO VARCHAR2(600 CHAR),
+	CONTACT_PHONE VARCHAR2(600 CHAR),
+	CREDIT_AMOUNT INTEGER,
+	COMMENTS VARCHAR2(1200 CHAR),
+	QUESTIONNAIRE CLOB
 );
-comment on table fido_product_type is 'Заявки на кредит';
-alter table fido_app add constraint pk_fido_app primary key (id);
-alter table fido_app add constraint fk_fido_organization foreign key (organization_id) references organization(id);
-alter table fido_app add constraint fk_fido_app_status foreign key (status_id) references fido_app_status(id);
-alter table fido_app add constraint fk_fido_app_user foreign key (user_id) references user(id);
+COMMENT ON TABLE FIDO_APP IS 'ЗАЯВКИ НА КРЕДИТ';
+ALTER TABLE FIDO_APP ADD CONSTRAINT PK_FIDO_APP PRIMARY KEY (ID);
+ALTER TABLE FIDO_APP ADD CONSTRAINT FK_FIDO_ORGANIZATION FOREIGN KEY (ORGANIZATION_ID) REFERENCES ORGANIZATION_(ORGANIZATIONID);
+ALTER TABLE FIDO_APP ADD CONSTRAINT FK_FIDO_APP_STATUS FOREIGN KEY (STATUS_ID) REFERENCES FIDO_APP_STATUS(ID);
+ALTER TABLE FIDO_APP ADD CONSTRAINT FK_FIDO_APP_USER FOREIGN KEY (USER_ID) REFERENCES USER_(USERID);;
 /
 
 
-create table fido_app_status (
-	id NUMBER(30,0) not null primary key,
-	code VARCHAR(75) null,
-	name VARCHAR(75) null,
-	description VARCHAR(75) null
+CREATE TABLE FIDO_APP_STATUS (
+	ID NUMBER(30,0) NOT NULL PRIMARY KEY,
+	CODE VARCHAR2(75 CHAR),
+	NAME VARCHAR2(800 CHAR),
+	DESCRIPTION VARCHAR2(1200 CHAR)
 );
-comment on table fido_app_status is 'Статусы заявки';
-alter table fido_app_status add constraint pk_fido_app_status primary key (id);
-create unique index uq_fido_app_status on fido_app_status (code);
+COMMENT ON TABLE FIDO_APP_STATUS IS 'СТАТУСЫ ЗАЯВКИ';
+ALTER TABLE FIDO_APP_STATUS ADD CONSTRAINT PK_FIDO_APP_STATUS PRIMARY KEY (ID);
+CREATE UNIQUE INDEX UQ_FIDO_APP_STATUS ON FIDO_APP_STATUS (CODE);
 /
 
-create table fido_product_type (
-	id NUMBER(30,0) not null primary key,
-	code VARCHAR(75) null,
-	name VARCHAR(75) null,
-	description VARCHAR(75) null,
-	status NUMBER(1,0) null,
-	organization_id NUMBER(30,0),
-	template_id NUMBER(30,0)
+CREATE TABLE FIDO_PRODUCT_TYPE (
+	ID NUMBER(30,0) NOT NULL PRIMARY KEY,
+	CODE VARCHAR2(75 CHAR),
+	NAME VARCHAR2(800 CHAR),
+	DESCRIPTION VARCHAR2(1200 CHAR),
+	STATUS NUMBER(1,0),
+	ORGANIZATION_ID NUMBER(30,0),
+	TEMPLATE_ID NUMBER(30,0)
 );
-comment on table fido_product_type is 'Кредитные продукты и подвязанные шаблоны';
-alter table fido_product_type add constraint pk_fido_app_status primary key (id);
-create unique index uq_fido_product_type on fido_product_type (organization_id, code);
-alter table fido_product_type add constraint fido_prod_type_organiz foreign key (organization_id) references organization(id);
-alter table fido_product_type add constraint fido_prod_type_organiz foreign key (template_id) references ddmtemplate(id);
+COMMENT ON TABLE FIDO_PRODUCT_TYPE IS 'КРЕДИТНЫЕ ПРОДУКТЫ И ПОДВЯЗАННЫЕ ШАБЛОНЫ';
+ALTER TABLE FIDO_PRODUCT_TYPE ADD CONSTRAINT PK_FIDO_PRODUCT_TYPE PRIMARY KEY (ID);
+CREATE UNIQUE INDEX UQ_FIDO_PRODUCT_TYPE ON FIDO_PRODUCT_TYPE (ORGANIZATION_ID, CODE);
+ALTER TABLE FIDO_PRODUCT_TYPE ADD CONSTRAINT FIDO_PROD_TYPE_ORGANIZ FOREIGN KEY (ORGANIZATION_ID) REFERENCES ORGANIZATION_(ORGANIZATIONID);
+ALTER TABLE FIDO_PRODUCT_TYPE ADD CONSTRAINT FIDO_PROD_TYPE_ORGANIZ FOREIGN KEY (TEMPLATE_ID) REFERENCES DDMTEMPLATE(TEMPLATEID);
 /
 
-create table fido_dict
+CREATE TABLE FIDO_DICT
 (
-  dict_code  varchar2(50),
-  id         varchar2(50),
-  parent_id  varchar2(50),
-  parent2_id varchar2(50),
-  name       varchar2(3000),
-  sort       number(30)
+  DICT_CODE  VARCHAR2(50),
+  ID         VARCHAR2(50),
+  PARENT_ID  VARCHAR2(50),
+  PARENT2_ID VARCHAR2(50),
+  NAME       VARCHAR2(3000),
+  SORT       NUMBER(30)
 );
-comment on table fido_dict is 'Кэш справочников';
-create index indx_fido_dict_prnt on fido_dict (dict_code, parent_id, parent2_id);
-create unique index uq_fido_dict on fido_dict (dict_code, id, parent_id);
+COMMENT ON TABLE FIDO_DICT IS 'КЭШ СПРАВОЧНИКОВ';
+CREATE INDEX INDX_FIDO_DICT_PRNT ON FIDO_DICT (DICT_CODE, PARENT_ID, PARENT2_ID);
+CREATE UNIQUE INDEX UQ_FIDO_DICT ON FIDO_DICT (DICT_CODE, ID, PARENT_ID);
 
--- table for divisions/branches
-create table fido_branch
+-- TABLE FOR DIVISIONS/BRANCHES
+CREATE TABLE FIDO_BRANCH
 (
-  id 			varchar2(30),
-  branch_num	varchar2(128),
-  name			varchar2(1024),
-  schedule		varchar2(1024),
-  phones		varchar2(128),
-  face_location	varchar2(1024),
-  zip_code    	varchar2(128),
-  country     	varchar2(128),
-  region      	varchar2(128),
-  district    	varchar2(128),
-  citytype    	varchar2(128),
-  city        	varchar2(128),
-  street_type 	varchar2(128),
-  street      	varchar2(128),
-  house       	varchar2(128),
-  block		  	varchar2(128),
-  apartment   	varchar2(128),
-  latitude		varchar2(30),
-  longitude		varchar2(30),
-  branch_type	varchar2(30) default 'DIVISION', -- 'DIVISION' - отделение ,'ATM' - банкомат
-  comments 		varchar2(3000)
+  ID 			VARCHAR2(30),
+  BRANCH_NUM	VARCHAR2(128),
+  NAME			VARCHAR2(1024),
+  SCHEDULE		VARCHAR2(1024),
+  PHONES		VARCHAR2(128),
+  FACE_LOCATION	VARCHAR2(1024),
+  ZIP_CODE    	VARCHAR2(128),
+  COUNTRY     	VARCHAR2(128),
+  REGION      	VARCHAR2(128),
+  DISTRICT    	VARCHAR2(128),
+  CITYTYPE    	VARCHAR2(128),
+  CITY        	VARCHAR2(128),
+  STREET_TYPE 	VARCHAR2(128),
+  STREET      	VARCHAR2(128),
+  HOUSE       	VARCHAR2(128),
+  BLOCK		  	VARCHAR2(128),
+  APARTMENT   	VARCHAR2(128),
+  LATITUDE		VARCHAR2(30),
+  LONGITUDE		VARCHAR2(30),
+  BRANCH_TYPE	VARCHAR2(30) DEFAULT 'DIVISION', -- 'DIVISION' - ОТДЕЛЕНИЕ ,'ATM' - БАНКОМАТ
+  COMMENTS 		VARCHAR2(3000)
 );
 
-comment on table fido_branch is 'Отделения/банкоматы';
-alter table fido_branch add constraint pk_fido_branch primary key (id);
-alter table fido_branch add constraint ckc_fido_branch_branch_type  check (branch_type in ('DIVISION','ATM'));
+COMMENT ON TABLE FIDO_BRANCH IS 'ОТДЕЛЕНИЯ/БАНКОМАТЫ';
+ALTER TABLE FIDO_BRANCH ADD CONSTRAINT PK_FIDO_BRANCH PRIMARY KEY (ID);
+ALTER TABLE FIDO_BRANCH ADD CONSTRAINT CKC_FIDO_BRANCH_BRANCH_TYPE  CHECK (BRANCH_TYPE IN ('DIVISION','ATM'));

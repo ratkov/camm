@@ -254,6 +254,17 @@ public class ProductTypeLocalServiceWrapper implements ProductTypeLocalService,
         return _productTypeLocalService.getListProductTypeByOrganizationId(organizationId);
     }
 
+    public java.util.List<com.fidoarp.catalog.model.ProductType> getListProductTypeByOrganizationIdStatus(
+        long organizationId, boolean status) {
+        return _productTypeLocalService.getListProductTypeByOrganizationIdStatus(organizationId,
+            status);
+    }
+
+    public com.fidoarp.catalog.model.ProductType getProductTypeByCode(
+        java.lang.String code) {
+        return _productTypeLocalService.getProductTypeByCode(code);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

@@ -245,6 +245,11 @@ public class AppStatusLocalServiceWrapper implements AppStatusLocalService,
         _appStatusLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    public com.fidoarp.catalog.model.AppStatus getAppStatusByCode(
+        java.lang.String code) {
+        return _appStatusLocalService.getAppStatusByCode(code);
+    }
+
     /**
      * @deprecated Renamed to {@link #getWrappedService}
      */

@@ -77,6 +77,7 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
             true);
     public static long ORGANIZATIONID_COLUMN_BITMASK = 1L;
     public static long PRODUCTTYPECODE_COLUMN_BITMASK = 2L;
+    public static long STATUS_COLUMN_BITMASK = 4L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
                 "lock.expiration.time.com.fidoarp.catalog.model.ProductType"));
     private static ClassLoader _classLoader = ProductType.class.getClassLoader();
@@ -91,6 +92,8 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
     private String _description;
     private String _descriptionCurrentLanguageId;
     private boolean _status;
+    private boolean _originalStatus;
+    private boolean _setOriginalStatus;
     private long _organizationId;
     private long _originalOrganizationId;
     private boolean _setOriginalOrganizationId;
@@ -403,7 +406,19 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
     }
 
     public void setStatus(boolean status) {
+        _columnBitmask |= STATUS_COLUMN_BITMASK;
+
+        if (!_setOriginalStatus) {
+            _setOriginalStatus = true;
+
+            _originalStatus = _status;
+        }
+
         _status = status;
+    }
+
+    public boolean getOriginalStatus() {
+        return _originalStatus;
     }
 
     public long getOrganizationId() {
@@ -539,6 +554,10 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
         ProductTypeModelImpl productTypeModelImpl = this;
 
         productTypeModelImpl._originalProductTypeCode = productTypeModelImpl._productTypeCode;
+
+        productTypeModelImpl._originalStatus = productTypeModelImpl._status;
+
+        productTypeModelImpl._setOriginalStatus = false;
 
         productTypeModelImpl._originalOrganizationId = productTypeModelImpl._organizationId;
 

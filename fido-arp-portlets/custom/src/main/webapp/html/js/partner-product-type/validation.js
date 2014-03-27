@@ -316,38 +316,19 @@ function setValidator(locale){
                 });
             }
         });
-        $(form).on("submit", function(e) {
-            e.preventDefault();
-            return false;
-        }).on("keydown keypress keyup", function(e) {
+        $(form).on("keydown keypress keyup", function(e) {
             var KEY_ENTER = 13;
             if (e.keyCode == KEY_ENTER) {
                 e.preventDefault();
                 return false;
             }
         });
-
         $(form).on("click", ".submit", function(event) {
             event.preventDefault();
             $(form).valid();
             if($(form).valid()) {
-                $(document.body).append("<div id='modal-window' class='ui-widget-overlay ui-front' style='display: block;'></div>");
-
-                var listCheckbox = $(form).find('input[type=checkbox]:not(:checked)');
-                var jsonCheckbox = {};
-                var formJson = $(form).serializeObject();
-                if(listCheckbox.length > 0){
-                    listCheckbox.each(function(){
-                        jsonCheckbox[$(this).attr("name")] = $(this).val();
-                    });
-
-                    // re-disabled the set of inputs that you previously enabled
-                    formJson = $.extend( $(form).serializeObject(), jsonCheckbox);
-                }
-
-                var data = formJson;
-                var url = $(form).data("url");
-                viewMode(url, data, false);
+                $(".flag-selector").click();
+                $(form).submit();
             } else {
                 if (!v.numberOfInvalids())
                     return;
@@ -388,7 +369,7 @@ function setValidator(locale){
             } else {
                 if($(event.target).parents(".t_content").length > 0)
                     $(event.target).parents(".t_content").removeClass('success');
-//                v.focusInvalid();
+
                 if (!v.numberOfInvalids())
                     return;
 

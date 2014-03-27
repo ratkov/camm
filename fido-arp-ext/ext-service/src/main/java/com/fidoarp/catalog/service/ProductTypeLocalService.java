@@ -232,4 +232,12 @@ public interface ProductTypeLocalService extends BaseLocalService,
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.fidoarp.catalog.model.ProductType> getListProductTypeByOrganizationId(
         long organizationId);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.fidoarp.catalog.model.ProductType> getListProductTypeByOrganizationIdStatus(
+        long organizationId, boolean status);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.fidoarp.catalog.model.ProductType getProductTypeByCode(
+        java.lang.String code);
 }

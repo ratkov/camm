@@ -259,6 +259,18 @@ public class ProductTypeLocalServiceUtil {
         return getService().getListProductTypeByOrganizationId(organizationId);
     }
 
+    public static java.util.List<com.fidoarp.catalog.model.ProductType> getListProductTypeByOrganizationIdStatus(
+        long organizationId, boolean status) {
+        return getService()
+                   .getListProductTypeByOrganizationIdStatus(organizationId,
+            status);
+    }
+
+    public static com.fidoarp.catalog.model.ProductType getProductTypeByCode(
+        java.lang.String code) {
+        return getService().getProductTypeByCode(code);
+    }
+
     public static ProductTypeLocalService getService() {
         if (_service == null) {
             _service = (ProductTypeLocalService) PortalBeanLocatorUtil.locate(ProductTypeLocalService.class.getName());

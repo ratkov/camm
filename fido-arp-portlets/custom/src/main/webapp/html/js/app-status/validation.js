@@ -66,6 +66,7 @@ function setValidatorStatus(locale){
             event.preventDefault();
             $(form).valid();
             if($(form).valid()) {
+                $(".flag-selector").click();
                 $(form).submit();
             } else {
                 if (!v.numberOfInvalids())

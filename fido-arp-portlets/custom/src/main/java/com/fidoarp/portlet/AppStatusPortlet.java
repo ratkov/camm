@@ -1,6 +1,7 @@
 package com.fidoarp.portlet;
 
 import com.fidoarp.catalog.model.AppStatus;
+import com.fidoarp.catalog.service.AppStatusLocalService;
 import com.fidoarp.catalog.service.AppStatusLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -61,7 +62,10 @@ public class AppStatusPortlet extends FidoMVCPortlet {
             Map<Locale, String> appStatusDescriptions = LocalizationUtil.getLocalizationMap(actionRequest, "appStatusDescription");
             Long appStatusId = GetterUtil.getLong(actionRequest.getParameter("appStatusId"), 0);
 
-            if(StringUtils.isNotBlank(appStatusCode) && StringUtils.isNotEmpty(appStatusCode) && appStatusNames.size() > 0){
+            actionResponse.setWindowState(LiferayWindowState.NORMAL);
+
+            if(StringUtils.isNotBlank(appStatusCode) && StringUtils.isNotEmpty(appStatusCode)
+                && appStatusNames.size() > 0){
                 AppStatus appStatus = appStatusId == 0
                         ? AppStatusLocalServiceUtil.createAppStatus(CounterLocalServiceUtil.increment())
                         : AppStatusLocalServiceUtil.getAppStatus(appStatusId);
@@ -69,15 +73,21 @@ public class AppStatusPortlet extends FidoMVCPortlet {
                 appStatus.setNameMap(appStatusNames);
                 appStatus.setDescriptionMap(appStatusDescriptions);
                 if(appStatusId == 0){
+                    AppStatus appStatusByCode = AppStatusLocalServiceUtil.getAppStatusByCode(appStatusCode);
+                    if(appStatusByCode != null){
+                        actionRequest.setAttribute("error", "app.status.code.is.not.unique");
+                        actionRequest.setAttribute("action", "edit");
+                        return;
+                    }
                     AppStatusLocalServiceUtil.addAppStatus(appStatus);
                 } else {
                     AppStatusLocalServiceUtil.updateAppStatus(appStatus);
                 }
-                actionRequest.setAttribute("info", "partner.product.type.data.is.saved.success");
+                actionRequest.setAttribute("info", "app.status.data.is.saved.success");
             }else{
-                actionRequest.setAttribute("error", "partner.product.type.data.is.wrong");
+                actionRequest.setAttribute("error", "app.status.data.is.wrong");
+                actionRequest.setAttribute("action", "edit");
             }
-            actionRequest.setAttribute("action", "edit");
 
         } catch (Exception e) {
             log.error(e.getMessage(), e);

@@ -224,4 +224,8 @@ public interface AppStatusLocalService extends BaseLocalService,
     * @param beanIdentifier the Spring bean ID for this bean
     */
     public void setBeanIdentifier(java.lang.String beanIdentifier);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public com.fidoarp.catalog.model.AppStatus getAppStatusByCode(
+        java.lang.String code);
 }

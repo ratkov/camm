@@ -2,4 +2,5 @@
 
 <div id="appStatusWrapper">
     <c:import url="main-view.jsp" />
+    <hr/>
 </div>

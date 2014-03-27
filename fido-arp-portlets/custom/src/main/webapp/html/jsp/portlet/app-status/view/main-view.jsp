@@ -2,10 +2,10 @@
 
 <input type="hidden" value="${editAppStatus}" id="editAppStatus"/>
 <h1>
-    <liferay-ui:message key="partner.status.status.list"/>
+    <liferay-ui:message key="app.status.status.list"/>
 </h1>
 <c:if test="${not empty error}">
-    <div class="alert alert-error"><liferay-ui:message key="${error}"/></div>
+    <div class="alert alert-danger"><liferay-ui:message key="${error}"/></div>
 </c:if>
 <c:if test="${not empty info}">
     <div class="alert alert-info"><liferay-ui:message key="${info}"/></div>
@@ -20,10 +20,10 @@
     <table class="table table-striped table-hover">
         <thead>
         <tr>
-            <th><liferay-ui:message key="partner.status.id" /></th>
-            <th><liferay-ui:message key="partner.status.code" /></th>
-            <th><liferay-ui:message key="partner.status.name" /></th>
-            <th><liferay-ui:message key="partner.status.description" /></th>
+            <th><liferay-ui:message key="app.status.id" /></th>
+            <th><liferay-ui:message key="app.status.code" /></th>
+            <th><liferay-ui:message key="app.status.name" /></th>
+            <th><liferay-ui:message key="app.status.description" /></th>
             <th></th>
         </tr>
         </thead>
