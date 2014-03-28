@@ -86,6 +86,33 @@ ValidationProcessor = Class.extend({
                         required: errorCode.emailRequired,
                         email: errorCode.emailFormatError
                     }
+                },
+                showErrors: function (errorMap, errorList) {
+                    if (errorList.length) {
+                        var s = errorList.shift();
+                        var n = [];
+                        n.push(s);
+                        this.errorList = n;
+                    }
+                    this.defaultShowErrors();
+                },
+                highlight: function (element) {
+                    $(element).closest('.regRow').addClass('errorP');
+                    if ($(element).hasClass('sel')) {
+                        $(element).parent().children('.sbHolder').addClass('error');
+                    } else {
+                        $(element).addClass('error');
+                    }
+                },
+                unhighlight: function (element) {
+                    $(element).closest('.regRow').removeClass('errorP');
+                    $(element).removeClass('error');
+                    $(element).parent().children('.sbHolder').removeClass('error');
+                },
+                invalidHandler: function (form, validator) {
+                    $(".userContent").each(function () {
+                        $(this).addClass('invalidForm');
+                    });
                 }
             });
         });

@@ -8,7 +8,7 @@
         <select id="<portlet:namespace/>partners" name="partners" data-url="${filterUserURL}" class="form-control">
             <option value="0"><liferay-ui:message key="user.partners.all"/></option>
             <c:forEach items="${partners}" var="partner">
-                <option value="${partner.organizationId}">
+                <option value="${partner.organizationId}" <c:if test="${selectedPartnerId == partner.organizationId}">selected</c:if>>
                         ${partner.name}
                 </option>
             </c:forEach>

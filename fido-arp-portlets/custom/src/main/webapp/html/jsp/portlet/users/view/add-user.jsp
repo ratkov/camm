@@ -42,74 +42,74 @@
 
     <input type="hidden" id="userId" name="userId" value="${currentUser.userId}"/>
 
-    <div class="form-group">
+    <div class="regRow">
         <label for="<portlet:namespace/>firstName">
             <liferay-ui:message key="user.first.name"/>&#58;&nbsp;&nbsp;*
         </label>
 
-        <div>
+        <div class="enterField">
             <input class="form-control required" id="<portlet:namespace/>firstName" type="text" name="firstName"
                    value="${currentUser.firstName}">
         </div>
     </div>
-    <div class="form-group">
+    <div class="regRow">
         <label for="<portlet:namespace/>middleName">
             <liferay-ui:message key="user.middle.name"/>&#58;&nbsp;&nbsp;*
         </label>
 
-        <div>
+        <div class="enterField">
             <input id="<portlet:namespace/>middleName" type="text" class="form-control required" name="middleName"
                    value="${currentUser.middleName}">
         </div>
     </div>
-    <div class="form-group">
+    <div class="regRow">
         <label for="<portlet:namespace/>lastName">
             <liferay-ui:message key="user.last.name"/>&#58;&nbsp;&nbsp;*
         </label>
 
-        <div>
+        <div class="enterField">
             <input id="<portlet:namespace/>lastName" type="text" class="form-control required" name="lastName"
                    value="${currentUser.lastName}">
         </div>
     </div>
-    <div class="form-group">
+    <div class="regRow">
         <label for="<portlet:namespace/>login">
             <liferay-ui:message key="user.login"/>&#58;&nbsp;&nbsp;*
         </label>
 
-        <div>
+        <div class="enterField">
             <input id="<portlet:namespace/>login" type="text" name="login" class="form-control required"
                    value="${currentUser.screenName}">
         </div>
     </div>
-    <div class="form-group">
+    <div class="regRow">
         <label for="<portlet:namespace/>email">
             <liferay-ui:message key="user.email"/>&#58;&nbsp;&nbsp;*
         </label>
 
-        <div>
+        <div class="enterField">
             <input id="<portlet:namespace/>email" type="text" name="email" class="form-control required"
                    value="${currentUser.emailAddress}">
         </div>
     </div>
-    <div class="form-group">
+    <div class="regRow">
         <label>
             <liferay-ui:message key="user.partners"/>&#58;&nbsp;&nbsp;
         </label>
 
-        <div>
+        <div class="enterField">
             <select name="partnerId" class="form-control">
                 <c:forEach items="${partners}" var="partner">
-                    <option value="${partner.organizationId}">
-                            ${partner.name}
+                    <option value="${partner.organizationId}" <c:if test="${currentUser.organizationIds[0] == partner.organizationId}">selected</c:if>>
+                        ${partner.name}
                     </option>
                 </c:forEach>
             </select>
         </div>
     </div>
 
-    <div class="form-group">
-        <div>
+    <div class="regRow">
+        <div class="enterField">
             <a href="javascript:void(0);" id="<portlet:namespace/>addUser" class="btn btn-primary"><liferay-ui:message key="user.save"/></a>
             <a href="${mainViewUrl}" class="btn btn-primary"><liferay-ui:message key="user.cancel"/></a>
         </div>

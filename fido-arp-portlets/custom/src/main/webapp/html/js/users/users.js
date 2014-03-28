@@ -111,6 +111,11 @@ UsersProcessor = Class.extend({
             var $partner = $("#" + namespace + "partners option:selected").val(),
                 $url = $("#" + namespace + "partners").data("url");
 
+            if (history.pushState) {
+                var $param = $partner == 0 ? '' : $partner;
+                history.pushState(null, document.title, window.location.pathname + "?partner/" + $param);
+            }
+
             $.ajax({
                 data: {
                     partnerId: $partner

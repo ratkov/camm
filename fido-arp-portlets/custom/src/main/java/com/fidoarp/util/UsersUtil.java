@@ -11,6 +11,7 @@ import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
+import com.liferay.portal.util.PortalUtil;
 import com.liferay.util.PwdGenerator;
 import com.liferay.util.portlet.PortletProps;
 import org.apache.commons.lang.StringUtils;
@@ -83,35 +84,35 @@ public class UsersUtil {
 
         List<User> userList = null;
         int total = 0;
+        long partnerId = 0;
 
         try {
+            String url = PortalUtil.getCurrentURL(renderRequest);
 
-            String action = renderRequest.getParameter("action");
+            if (renderRequest.getParameter("partnerId") == null) {
 
-            if (StringUtils.equals("filterUser", action)) {
-
-                String partnerId = renderRequest.getParameter("partnerId");
-
-                total = StringUtils.equals("0", partnerId)
-                        ? UserLocalServiceUtil.getUsersCount()
-                        : UserLocalServiceUtil.getOrganizationUsersCount(Long.parseLong(partnerId));
-
-                userList = StringUtils.equals("0", partnerId)
-                        ? UserLocalServiceUtil.getUsers(0, total)
-                        : UserLocalServiceUtil.getOrganizationUsers(Long.parseLong(partnerId));
-
-
-                renderRequest.setAttribute("userList", userList);
-
+                String urlParam = StringUtils.substringAfter(url, "partner/");
+                partnerId = urlParam.equals("") ? 0 : Long.parseLong(urlParam);
             } else {
-                total = UserLocalServiceUtil.getUsersCount();
-                userList = UserLocalServiceUtil.getUsers(0, total);
+                partnerId = Long.parseLong(renderRequest.getParameter("partnerId"));
             }
+
+            total = partnerId == 0
+                    ? UserLocalServiceUtil.getUsersCount()
+                    : UserLocalServiceUtil.getOrganizationUsersCount(partnerId);
+
+            userList = partnerId == 0
+                    ? UserLocalServiceUtil.getUsers(0, total)
+                    : UserLocalServiceUtil.getOrganizationUsers(partnerId);
+
+
 
         } catch (SystemException e) {
             log.error("Could not get users cause " + e.getMessage());
         }
 
+        renderRequest.setAttribute("selectedPartnerId", partnerId);
+        renderRequest.setAttribute("userList", userList);
         renderRequest.setAttribute("total", total);
         renderRequest.setAttribute("userList", userList);
 
