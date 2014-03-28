@@ -109,6 +109,7 @@
     </div>
 
     <div class="regRow">
+        <label></label>
         <div class="enterField">
             <a href="javascript:void(0);" id="<portlet:namespace/>addUser" class="btn btn-primary"><liferay-ui:message key="user.save"/></a>
             <a href="${mainViewUrl}" class="btn btn-primary"><liferay-ui:message key="user.cancel"/></a>
