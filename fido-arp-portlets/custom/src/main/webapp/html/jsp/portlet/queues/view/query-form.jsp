@@ -4,7 +4,7 @@
 
 <div id="query-form">
     <div class="regTitle">
-        <label><liferay-ui:message key="queues.query"/> <liferay-ui:message key="queues.#"/> ${app.appId}</label>
+        <label><liferay-ui:message key="queues.query"/> <liferay-ui:message key="queues.#"/> ${appId}</label>
     </div>
     <c:if test="${isProject}">
         <div>
@@ -16,8 +16,9 @@
         <hr/>
     </c:if>
     <form class="validateForm" data-locale="uk_UA" data-url="${saveQuery}">
-        <input type="hidden" value="${productId}" id="productId" />
-        <input type="hidden" value="${app.appId}" id="appId" />
+        <input type="hidden" value="${productId}" id="productId" name="productId"/>
+        <input type="hidden" value="${appId}" id="appId" name="appId"/>
+        <input type="hidden" value="${appStatusId}" id="appStatusId" name="appStatusId"/>
         ${templateHtml}
     </form>
 </div>

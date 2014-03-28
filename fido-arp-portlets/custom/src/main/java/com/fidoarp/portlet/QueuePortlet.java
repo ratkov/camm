@@ -8,7 +8,9 @@ import com.fidoarp.catalog.service.AppLocalServiceUtil;
 import com.fidoarp.catalog.service.AppStatusLocalServiceUtil;
 import com.fidoarp.catalog.service.ProductTypeLocalServiceUtil;
 import com.fidoarp.dictionary.Dictionaries;
+import com.fidoarp.model.AppWrapper;
 import com.fidoarp.model.questionnaire.DetailsPair;
+import com.fidoarp.util.FieldsUtil;
 import com.fidoarp.util.VelocityFormUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -31,6 +33,7 @@ import javax.portlet.*;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -58,15 +61,21 @@ public class QueuePortlet extends FidoMVCPortlet  {
             }
 
             List<AppStatus> appStatuses = AppStatusLocalServiceUtil.getAppStatuses(-1, -1);
+            List<App> apps = AppLocalServiceUtil.getApps(-1, -1);
+            List<AppWrapper> appWrappers = new ArrayList<AppWrapper>();
+            for(App app : apps){
+                appWrappers.add(new AppWrapper(app, serviceContext.getLocale()));
+            }
 
             renderRequest.setAttribute("productTypes", productTypes);
             renderRequest.setAttribute("appStatuses", appStatuses);
+            renderRequest.setAttribute("apps", appWrappers);
 
             String action = GetterUtil.getString(renderRequest.getParameter("action"), "");
 
             if(StringUtils.isNotEmpty(action) && StringUtils.isNotBlank(action)){
                 if(action.equals("createNewQuery")){
-                    queryForm(renderRequest, serviceContext, user);
+                    queryForm(renderRequest, serviceContext);
                 }
             }
         } catch (Exception e) {
@@ -75,22 +84,17 @@ public class QueuePortlet extends FidoMVCPortlet  {
         super.doView(renderRequest, renderResponse);
     }
 
-    private void queryForm(RenderRequest renderRequest, ServiceContext serviceContext, User user) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
+    private void queryForm(RenderRequest renderRequest, ServiceContext serviceContext) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
         Long productId = GetterUtil.getLong(renderRequest.getParameter("selectedProduct"), 0);
         Long appStatusId = GetterUtil.getLong(renderRequest.getParameter("selectedAppStatus"), 0);
         if(productId != 0){
             ProductType productType = ProductTypeLocalServiceUtil.getProductType(productId);
             VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
             StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, "{}");
-            App app = AppLocalServiceUtil.createApp(CounterLocalServiceUtil.increment());
-            app.setOrganizationId(productType.getOrganizationId());
-            app.setUserId(user.getUserId());
-            app.setCreatedDate(new Date());
-            app.setStatusId(appStatusId);
-            AppLocalServiceUtil.addApp(app);
             renderRequest.setAttribute("templateHtml", stringWriter);
             renderRequest.setAttribute("productId", productId);
-            renderRequest.setAttribute("app", app);
+            renderRequest.setAttribute("appId", CounterLocalServiceUtil.increment());
+            renderRequest.setAttribute("appStatusId", appStatusId);
             AppStatus appStatus = AppStatusLocalServiceUtil.getAppStatusByCode("PROJECT");
             if(appStatus != null){
                 long statusProjectId = appStatus.getAppStatusId();
@@ -131,11 +135,55 @@ public class QueuePortlet extends FidoMVCPortlet  {
 
     public void saveQuery(ActionRequest actionRequest, ActionResponse actionResponse){
         try{
-            String productCode = GetterUtil.getString(actionRequest.getParameter("json"), "");
-            Long productTypeId = GetterUtil.getLong(actionRequest.getParameter("productTypeId"), 0);
+            ServiceContext serviceContext = ServiceContextFactory.getInstance(QueuePortlet.class.getName(), actionRequest);
             actionResponse.setWindowState(LiferayWindowState.EXCLUSIVE);
+
+            String json = GetterUtil.getString(actionRequest.getParameter("json"), "");
+            JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
+
+            long appId = jsonObject.getLong("appId", 0);
+            long productId = jsonObject.getLong("productId", 0);
+            long appStatusId = jsonObject.getLong("appStatusId", 0);
+
+            if(appId != 0 && productId != 0){
+                ProductType productType = ProductTypeLocalServiceUtil.getProductType(productId);
+                long templateId = productType.getTemplateId();
+                String validation = new FieldsUtil().validateTemplate(jsonObject, templateId);
+                if(StringUtils.isEmpty(validation) || StringUtils.isBlank(validation)){
+                    App app = AppLocalServiceUtil.createApp(appId);
+
+                    app.setOrganizationId(productType.getOrganizationId());
+                    app.setCreatedDate(new Date());
+                    app.setStatusId(appStatusId);
+                    app.setUserId(serviceContext.getUserId());
+                    //set whole questionnaire
+                    JSONObject questionnaire = new FieldsUtil().mergeStructure(jsonObject, templateId, 0);
+                    app.setQuestionnaire(questionnaire.toString());
+                    //set client name
+                    String lastName = jsonObject.getString("lastName", "");
+                    String firstName = jsonObject.getString("firstName", "");
+                    String middleName = jsonObject.getString("middleName", "");
+                    app.setClientName(lastName  + " " + firstName + " "+ middleName);
+                    //set client okpo
+                    String clientOkpo = jsonObject.getString("identificationNumber", "");
+                    app.setClientOkpo(clientOkpo);
+                    //set sum
+                    Integer loanSumUAH = jsonObject.getInt("loanSumUAH", 0);
+                    app.setCreditAmount(loanSumUAH);
+                    //set phone
+                    String contactPhone = jsonObject.getString("mobilePhone", "");
+                    app.setContactPhone(contactPhone);
+
+                    AppLocalServiceUtil.addApp(app);
+
+                    actionRequest.setAttribute("info", "queues.data.is.saved.success");
+                }else{
+                    actionRequest.setAttribute("error", validation);
+                }
+            }
+
         }catch (Exception e){
-           log.error(e.getMessage(), e);
+           log.error("QueuePortlet.saveQuery() error: " + Arrays.toString(e.getStackTrace()), e);
         }
     }
 }

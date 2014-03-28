@@ -27,17 +27,17 @@
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${productTypes}" var="productType">
+        <c:forEach items="${apps}" var="app">
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>${app.appId}</td>
+            <td>${app.createdDate}</td>
+            <td>${app.clientName}</td>
+            <td>${app.clientOkpo}</td>
+            <td>${app.contactPhone}</td>
+            <td>${app.creditAmount}</td>
+            <td>${app.status}</td>
+            <td>${app.comments}</td>
+            <td>${app.user}</td>
         </tr>
         </c:forEach>
         </tbody>

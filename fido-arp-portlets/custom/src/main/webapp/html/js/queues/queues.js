@@ -17,8 +17,9 @@ function showProductsType() {
 jQuery(document).ready(function(){
    showProductsType();
 
-    if($("#query-form").length > 0){
+    if($("#query-form").length){
         setTabs();
-        setValidator($("#query-form").find(".validateForm").data("locale"));
+        var locale = $("#query-form").find(".validateForm").data("locale");
+        setValidator(locale);
     }
 });

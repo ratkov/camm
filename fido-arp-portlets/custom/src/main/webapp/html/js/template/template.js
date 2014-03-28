@@ -1,11 +1,3 @@
-function removeErrorInWrapper(){
-    var $selectWrapp = $(".jq-selectbox-wrapper");
-    if($selectWrapp.length > 0){
-        var newVar = $selectWrapp.find("span").is(":hidden");
-        if(newVar.length > 0) newVar.remove();
-    }
-}
-
 function styling(){
     if($('.pretCheck').length) {
         $('.pretCheck').prettyCheckable();
@@ -14,29 +6,6 @@ function styling(){
     if($('.pretRad').length) {
         $('.pretRad').prettyCheckable();
     }
-
-    removeErrorInWrapper();
-
-    var stepCur = $("#step-section .rightContent > div").data("current");
-    var index = 0;
-    var $step = $("#step-menu");
-    $step.find(".regStep").each(function(){
-        if($(this).find("a").data("step") == stepCur){
-            index = $(this).index();
-        }
-    });
-    $step.find(".regStep").each(function(){
-        if($(this).index() > index){
-            $(this).find("a").addClass("disable");
-            $(this).find("a").removeClass("cur");
-        }else if($(this).index() == index){
-            $(this).find("a").addClass("cur");
-            $(this).off("click");
-        }else{
-            $(this).find("a").removeClass("disable");
-            $(this).find("a").removeClass("cur");
-        }
-    });
 
     if ($('.sel').length) {
         $('.sel').styler({
@@ -52,18 +21,19 @@ function styling(){
         });
     }
 
-    if( $("input[type='checkbox'][data-children='true']").length > 0 ){
+    if( $("input[type='checkbox'][data-children='true']").length){
         subchildShow($("input[type='checkbox'][data-children='true']"));
     }
 
-    //for date
     applyDate();
 
     checkboxEvent();
-}
-function setTabs(){
 
-    styling();
+    removeErrorInWrapper();
+
+}
+
+function setTabs(){
 
     if($(".quest-template").length){
         if($(".quest-template").find(".t_content").length > 0){
@@ -82,7 +52,11 @@ function setTabs(){
                     onChangeFieldEvent();
                 }
             });
+
+            styling();
         }
+    }else{
+        styling();
     }
 }
 
@@ -93,14 +67,17 @@ function showTip(){
         $(this).find(".tip").hide();
     });
 }
-
-
 function dateFromISO8601(isostr) {
     var parts = isostr.match(/\d+/g);
     return new Date(parts[0], parts[1] - 1, parts[2], parts[3], parts[4], parts[5]);
 }
-
-
+function removeErrorInWrapper(){
+    var $selectWrapp = $(".jq-selectbox-wrapper");
+    if($selectWrapp.length > 0){
+        var newVar = $selectWrapp.find("span").is(":hidden");
+        if(newVar.length > 0) newVar.remove();
+    }
+}
 function checkShowFields($container){
     $container.find(".regRow").each(function(){
         if($(this).data("show")){
@@ -154,10 +131,7 @@ function checkShowFields($container){
         }
     });
 }
-
-
 function checkRequiredField(regRow){
-
     var showIf = $(regRow).data("show");
     var fields = [showIf];
     var isShow = false;

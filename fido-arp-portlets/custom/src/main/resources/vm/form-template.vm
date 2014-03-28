@@ -6,7 +6,7 @@
 #end
 
 #if($i == 0)
-<div class="quest-template dict-load liferay-form-quest">
+<div class="quest-template dict-load liferay-form-quest clearfix">
     <fieldset>
         #set($children = $fields)
         #parse("/vm/field.vm")
@@ -17,7 +17,7 @@
     </fieldset>
 </div>
 #else
-    <div class="t_wrap quest-template dict-load liferay-form-quest">
+    <div class="t_wrap quest-template dict-load liferay-form-quest clearfix">
         #set($j = 0)
         #foreach($field in $fields)
             #if($field.hasChildren() && $field.type.indexOf("fieldset") > -1)

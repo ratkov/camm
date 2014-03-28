@@ -1,5 +1,7 @@
 package com.fidoarp.util;
 
+import com.fidoarp.catalog.model.App;
+import com.fidoarp.catalog.service.AppLocalServiceUtil;
 import com.fidoarp.dictionary.Dictionaries;
 import com.fidoarp.model.questionnaire.DetailsPair;
 import com.fidoarp.model.questionnaire.Field;
@@ -381,7 +383,7 @@ public class FieldsUtil {
         return fieldNames;
     }
 
-    public String validateTemplate(JSONObject json, long ddmTemplateId, boolean isPensionerProduct){
+    public String validateTemplate(JSONObject json, long ddmTemplateId){
         try{
             DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.getDDMTemplate(ddmTemplateId);
 
@@ -410,9 +412,6 @@ public class FieldsUtil {
 
                         if (fieldValueDate != null) {
                             fieldValue = String.valueOf(getGregorianDate(fieldValueDate));
-                            if(fieldName.equals("dateBirth")){
-                                dateBirth = fieldValueDate;
-                            }
                         }else{
                             fieldValue = json.getString(fieldName);
                         }
@@ -422,7 +421,7 @@ public class FieldsUtil {
 
                     if(StringUtils.isEmpty(fieldValue)){
                         log.error("FieldsUtil.validateTemplate() error: " + fieldName + " is empty");
-                        return "checkout.error.data.is.wrong";
+                        return "queues.data.is.wrong";
                     }
                 }
             }
@@ -432,7 +431,7 @@ public class FieldsUtil {
             log.error(e.getStackTrace(), e);
         }
 
-        return "checkout.error.data.is.wrong";
+        return "queues.data.is.wrong";
     }
 
     private boolean checkPensioner(Date dateBirth, int age){
@@ -455,7 +454,7 @@ public class FieldsUtil {
     }
 
 
-    public JSONObject mergeStructure(JSONObject json, long ddmTemplateId, long userId, boolean client){
+    public JSONObject mergeStructure(JSONObject json, long ddmTemplateId, long appId){
         try{
 
             DDMTemplate ddmTemplate = DDMTemplateLocalServiceUtil.getDDMTemplate(ddmTemplateId);
@@ -469,8 +468,10 @@ public class FieldsUtil {
             List<String> skipNames = getSkippedFields(getJSONTemplate(ddmTemplateId), json);
 
             JSONObject jsonObject = JSONFactoryUtil.getJSONFactory().createJSONObject();
-
-            JSONObject oldQuestionnaire = getJsonQuestionary(userId, client);
+            JSONObject oldQuestionnaire = null;
+            if(appId != 0){
+                oldQuestionnaire = getJsonQuestionnaire(appId);
+            }
 
             for (String fieldName : fieldNames){
                 String fieldValue = "";
@@ -537,8 +538,20 @@ public class FieldsUtil {
         return null;
     }
 
-    private JSONObject getJsonQuestionary(long userId, boolean client) throws SystemException, JSONException {
-        return null;
+    private JSONObject getJsonQuestionnaire(long appId) throws SystemException, JSONException {
+        JSONObject oldQuestionnaire = null;
+        try {
+            App app = AppLocalServiceUtil.getApp(appId);
+            String questionary = app.getQuestionnaire();
+            if(StringUtils.isEmpty(questionary) || StringUtils.isBlank(questionary)){
+                questionary = "{}";
+            }
+            oldQuestionnaire = JSONFactoryUtil.createJSONObject(questionary);
+
+        } catch (PortalException e) {
+            log.error("FieldsUtil.getJsonQuestionnaire() error: " + Arrays.toString(e.getStackTrace()), e);
+        }
+        return oldQuestionnaire;
     }
 
     public Date getValueDate(int fieldValueMonth, int fieldValueYear, int fieldValueDay) {
