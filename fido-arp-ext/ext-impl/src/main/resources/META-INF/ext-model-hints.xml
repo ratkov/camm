@@ -8,6 +8,7 @@
 		<field name="createdDate" type="Date" />
 		<field name="description" type="String" localized="true" />
 		<field name="statusId" type="long" />
+		<field name="productTypeId" type="long" />
 		<field name="statusChangeDate" type="Date" />
 		<field name="clientName" type="String" />
 		<field name="clientOkpo" type="String" />

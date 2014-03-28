@@ -24,6 +24,7 @@ public class AppCacheModel implements CacheModel<App>, Serializable {
     public long createdDate;
     public String description;
     public long statusId;
+    public long productTypeId;
     public long statusChangeDate;
     public String clientName;
     public String clientOkpo;
@@ -34,7 +35,7 @@ public class AppCacheModel implements CacheModel<App>, Serializable {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(27);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{appId=");
         sb.append(appId);
@@ -48,6 +49,8 @@ public class AppCacheModel implements CacheModel<App>, Serializable {
         sb.append(description);
         sb.append(", statusId=");
         sb.append(statusId);
+        sb.append(", productTypeId=");
+        sb.append(productTypeId);
         sb.append(", statusChangeDate=");
         sb.append(statusChangeDate);
         sb.append(", clientName=");
@@ -87,6 +90,7 @@ public class AppCacheModel implements CacheModel<App>, Serializable {
         }
 
         appImpl.setStatusId(statusId);
+        appImpl.setProductTypeId(productTypeId);
 
         if (statusChangeDate == Long.MIN_VALUE) {
             appImpl.setStatusChangeDate(null);

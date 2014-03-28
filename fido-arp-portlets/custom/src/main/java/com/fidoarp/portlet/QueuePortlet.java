@@ -74,7 +74,7 @@ public class QueuePortlet extends FidoMVCPortlet  {
             String action = GetterUtil.getString(renderRequest.getParameter("action"), "");
 
             if(StringUtils.isNotEmpty(action) && StringUtils.isNotBlank(action)){
-                if(action.equals("createNewQuery")){
+                if(action.equals("queryForm")){
                     queryForm(renderRequest, serviceContext);
                 }
             }
@@ -85,23 +85,42 @@ public class QueuePortlet extends FidoMVCPortlet  {
     }
 
     private void queryForm(RenderRequest renderRequest, ServiceContext serviceContext) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
-        Long productId = GetterUtil.getLong(renderRequest.getParameter("selectedProduct"), 0);
-        Long appStatusId = GetterUtil.getLong(renderRequest.getParameter("selectedAppStatus"), 0);
-        if(productId != 0){
-            ProductType productType = ProductTypeLocalServiceUtil.getProductType(productId);
-            VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
-            StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, "{}");
-            renderRequest.setAttribute("templateHtml", stringWriter);
-            renderRequest.setAttribute("productId", productId);
-            renderRequest.setAttribute("appId", CounterLocalServiceUtil.increment());
-            renderRequest.setAttribute("appStatusId", appStatusId);
-            AppStatus appStatus = AppStatusLocalServiceUtil.getAppStatusByCode("PROJECT");
-            if(appStatus != null){
-                long statusProjectId = appStatus.getAppStatusId();
-                renderRequest.setAttribute("isProject", statusProjectId == appStatusId);
+        Long appId = GetterUtil.getLong(renderRequest.getParameter("appId"), 0);
+        Long appStatusId;
+        ProductType productType = null;
+        if(appId == 0){
+            Long productId = GetterUtil.getLong(renderRequest.getParameter("selectedProduct"), 0);
+            appStatusId = GetterUtil.getLong(renderRequest.getParameter("selectedAppStatus"), 0);
+            if(productId != 0){
+                productType = ProductTypeLocalServiceUtil.getProductType(productId);
+
+                VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
+                StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, "{}");
+                renderRequest.setAttribute("templateHtml", stringWriter);
+                renderRequest.setAttribute("productId", productId);
+                renderRequest.setAttribute("appId", CounterLocalServiceUtil.increment());
+                renderRequest.setAttribute("appStatusId", appStatusId);
             }
-            renderRequest.setAttribute("show", "query-form.jsp");
+        }else{
+            App app = AppLocalServiceUtil.getApp(appId);
+            appStatusId = app.getStatusId();
+            productType = ProductTypeLocalServiceUtil.getProductType(app.getProductTypeId());
+
+            VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
+            StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, app.getQuestionnaire());
+            renderRequest.setAttribute("templateHtml", stringWriter);
+            renderRequest.setAttribute("productId", app.getProductTypeId());
+            renderRequest.setAttribute("appId", app.getAppId());
+            renderRequest.setAttribute("appStatusId", app.getStatusId());
         }
+
+        AppStatus appStatus = AppStatusLocalServiceUtil.getAppStatusByCode("PROJECT");
+        if(appStatus != null){
+            long statusProjectId = appStatus.getAppStatusId();
+            renderRequest.setAttribute("isProject", statusProjectId == appStatusId);
+        }
+
+        renderRequest.setAttribute("show", "query-form.jsp");
     }
 
     @Override
@@ -152,12 +171,13 @@ public class QueuePortlet extends FidoMVCPortlet  {
                 if(StringUtils.isEmpty(validation) || StringUtils.isBlank(validation)){
                     App app = AppLocalServiceUtil.createApp(appId);
 
+                    app.setProductTypeId(productId);
                     app.setOrganizationId(productType.getOrganizationId());
                     app.setCreatedDate(new Date());
                     app.setStatusId(appStatusId);
                     app.setUserId(serviceContext.getUserId());
                     //set whole questionnaire
-                    JSONObject questionnaire = new FieldsUtil().mergeStructure(jsonObject, templateId, 0);
+                    JSONObject questionnaire = new FieldsUtil().mergeStructure(jsonObject, templateId, appId);
                     app.setQuestionnaire(questionnaire.toString());
                     //set client name
                     String lastName = jsonObject.getString("lastName", "");
@@ -174,7 +194,11 @@ public class QueuePortlet extends FidoMVCPortlet  {
                     String contactPhone = jsonObject.getString("mobilePhone", "");
                     app.setContactPhone(contactPhone);
 
-                    AppLocalServiceUtil.addApp(app);
+                    if(AppLocalServiceUtil.getApp(appId) == null){
+                        AppLocalServiceUtil.addApp(app);
+                    }else{
+                        AppLocalServiceUtil.updateApp(app);
+                    }
 
                     actionRequest.setAttribute("info", "queues.data.is.saved.success");
                 }else{

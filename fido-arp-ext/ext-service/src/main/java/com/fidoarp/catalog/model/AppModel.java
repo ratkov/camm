@@ -236,6 +236,20 @@ public interface AppModel extends BaseModel<App> {
     public void setStatusId(long statusId);
 
     /**
+     * Returns the product type ID of this app.
+     *
+     * @return the product type ID of this app
+     */
+    public long getProductTypeId();
+
+    /**
+     * Sets the product type ID of this app.
+     *
+     * @param productTypeId the product type ID of this app
+     */
+    public void setProductTypeId(long productTypeId);
+
+    /**
      * Returns the status change date of this app.
      *
      * @return the status change date of this app

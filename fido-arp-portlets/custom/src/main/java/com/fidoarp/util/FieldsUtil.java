@@ -468,10 +468,8 @@ public class FieldsUtil {
             List<String> skipNames = getSkippedFields(getJSONTemplate(ddmTemplateId), json);
 
             JSONObject jsonObject = JSONFactoryUtil.getJSONFactory().createJSONObject();
-            JSONObject oldQuestionnaire = null;
-            if(appId != 0){
-                oldQuestionnaire = getJsonQuestionnaire(appId);
-            }
+
+            JSONObject oldQuestionnaire = getJsonQuestionnaire(appId);
 
             for (String fieldName : fieldNames){
                 String fieldValue = "";
@@ -542,12 +540,13 @@ public class FieldsUtil {
         JSONObject oldQuestionnaire = null;
         try {
             App app = AppLocalServiceUtil.getApp(appId);
-            String questionary = app.getQuestionnaire();
-            if(StringUtils.isEmpty(questionary) || StringUtils.isBlank(questionary)){
-                questionary = "{}";
+            if(app != null){
+                String questionnaire = app.getQuestionnaire();
+                if(StringUtils.isNotEmpty(questionnaire) && StringUtils.isNotBlank(questionnaire)){
+                    return JSONFactoryUtil.createJSONObject(questionnaire);
+                }
             }
-            oldQuestionnaire = JSONFactoryUtil.createJSONObject(questionary);
-
+            return JSONFactoryUtil.createJSONObject();
         } catch (PortalException e) {
             log.error("FieldsUtil.getJsonQuestionnaire() error: " + Arrays.toString(e.getStackTrace()), e);
         }

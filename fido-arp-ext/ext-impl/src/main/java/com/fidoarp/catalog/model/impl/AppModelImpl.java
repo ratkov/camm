@@ -59,6 +59,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
             { "created_date", Types.TIMESTAMP },
             { "description", Types.VARCHAR },
             { "status_id", Types.BIGINT },
+            { "product_type_id", Types.BIGINT },
             { "status_change_date", Types.TIMESTAMP },
             { "client_name", Types.VARCHAR },
             { "client_okpo", Types.VARCHAR },
@@ -67,7 +68,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
             { "comments", Types.VARCHAR },
             { "questionnaire", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table fido_app (id LONG not null primary key,user_id LONG,organization_id LONG,created_date DATE null,description STRING null,status_id LONG,status_change_date DATE null,client_name VARCHAR(75) null,client_okpo VARCHAR(75) null,contact_phone VARCHAR(75) null,credit_amount INTEGER,comments STRING null,questionnaire VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table fido_app (id LONG not null primary key,user_id LONG,organization_id LONG,created_date DATE null,description STRING null,status_id LONG,product_type_id LONG,status_change_date DATE null,client_name VARCHAR(75) null,client_okpo VARCHAR(75) null,contact_phone VARCHAR(75) null,credit_amount INTEGER,comments STRING null,questionnaire VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table fido_app";
     public static final String ORDER_BY_JPQL = " ORDER BY app.appId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY fido_app.id ASC";
@@ -100,6 +101,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     private String _description;
     private String _descriptionCurrentLanguageId;
     private long _statusId;
+    private long _productTypeId;
     private Date _statusChangeDate;
     private String _clientName;
     private String _clientOkpo;
@@ -148,6 +150,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
         attributes.put("createdDate", getCreatedDate());
         attributes.put("description", getDescription());
         attributes.put("statusId", getStatusId());
+        attributes.put("productTypeId", getProductTypeId());
         attributes.put("statusChangeDate", getStatusChangeDate());
         attributes.put("clientName", getClientName());
         attributes.put("clientOkpo", getClientOkpo());
@@ -195,6 +198,12 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
         if (statusId != null) {
             setStatusId(statusId);
+        }
+
+        Long productTypeId = (Long) attributes.get("productTypeId");
+
+        if (productTypeId != null) {
+            setProductTypeId(productTypeId);
         }
 
         Date statusChangeDate = (Date) attributes.get("statusChangeDate");
@@ -390,6 +399,14 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
     public void setStatusId(long statusId) {
         _statusId = statusId;
+    }
+
+    public long getProductTypeId() {
+        return _productTypeId;
+    }
+
+    public void setProductTypeId(long productTypeId) {
+        _productTypeId = productTypeId;
     }
 
     public Date getStatusChangeDate() {
@@ -591,6 +608,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
         appImpl.setCreatedDate(getCreatedDate());
         appImpl.setDescription(getDescription());
         appImpl.setStatusId(getStatusId());
+        appImpl.setProductTypeId(getProductTypeId());
         appImpl.setStatusChangeDate(getStatusChangeDate());
         appImpl.setClientName(getClientName());
         appImpl.setClientOkpo(getClientOkpo());
@@ -689,6 +707,8 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
         appCacheModel.statusId = getStatusId();
 
+        appCacheModel.productTypeId = getProductTypeId();
+
         Date statusChangeDate = getStatusChangeDate();
 
         if (statusChangeDate != null) {
@@ -744,7 +764,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
     @Override
     public String toString() {
-        StringBundler sb = new StringBundler(27);
+        StringBundler sb = new StringBundler(29);
 
         sb.append("{appId=");
         sb.append(getAppId());
@@ -758,6 +778,8 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
         sb.append(getDescription());
         sb.append(", statusId=");
         sb.append(getStatusId());
+        sb.append(", productTypeId=");
+        sb.append(getProductTypeId());
         sb.append(", statusChangeDate=");
         sb.append(getStatusChangeDate());
         sb.append(", clientName=");
@@ -778,7 +800,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     }
 
     public String toXmlString() {
-        StringBundler sb = new StringBundler(43);
+        StringBundler sb = new StringBundler(46);
 
         sb.append("<model><model-name>");
         sb.append("com.fidoarp.catalog.model.App");
@@ -807,6 +829,10 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
         sb.append(
             "<column><column-name>statusId</column-name><column-value><![CDATA[");
         sb.append(getStatusId());
+        sb.append("]]></column-value></column>");
+        sb.append(
+            "<column><column-name>productTypeId</column-name><column-value><![CDATA[");
+        sb.append(getProductTypeId());
         sb.append("]]></column-value></column>");
         sb.append(
             "<column><column-name>statusChangeDate</column-name><column-value><![CDATA[");

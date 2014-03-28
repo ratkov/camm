@@ -381,7 +381,7 @@ function setValidator(locale){
                             showTip();
                             applyDate();
                             offChangeFieldEvent();
-                            showProductsType();
+                            setEvents();
                             $("#modal-window").remove();
                         }
                         ,error: function(){

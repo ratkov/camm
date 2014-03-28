@@ -17,6 +17,7 @@
 		<property name="createdDate" type="org.hibernate.type.TimestampType" column="created_date" />
 		<property name="description" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="statusId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="status_id" />
+		<property name="productTypeId" type="com.liferay.portal.dao.orm.hibernate.LongType" column="product_type_id" />
 		<property name="statusChangeDate" type="org.hibernate.type.TimestampType" column="status_change_date" />
 		<property name="clientName" type="com.liferay.portal.dao.orm.hibernate.StringType" column="client_name" />
 		<property name="clientOkpo" type="com.liferay.portal.dao.orm.hibernate.StringType" column="client_okpo" />

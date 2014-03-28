@@ -5,6 +5,7 @@ create table fido_app (
 	created_date DATE null,
 	description STRING null,
 	status_id LONG,
+	product_type_id LONG,
 	status_change_date DATE null,
 	client_name VARCHAR(75) null,
 	client_okpo VARCHAR(75) null,

@@ -39,6 +39,7 @@ public class AppWrapper implements App, ModelWrapper<App> {
         attributes.put("createdDate", getCreatedDate());
         attributes.put("description", getDescription());
         attributes.put("statusId", getStatusId());
+        attributes.put("productTypeId", getProductTypeId());
         attributes.put("statusChangeDate", getStatusChangeDate());
         attributes.put("clientName", getClientName());
         attributes.put("clientOkpo", getClientOkpo());
@@ -85,6 +86,12 @@ public class AppWrapper implements App, ModelWrapper<App> {
 
         if (statusId != null) {
             setStatusId(statusId);
+        }
+
+        Long productTypeId = (Long) attributes.get("productTypeId");
+
+        if (productTypeId != null) {
+            setProductTypeId(productTypeId);
         }
 
         Date statusChangeDate = (Date) attributes.get("statusChangeDate");
@@ -384,6 +391,24 @@ public class AppWrapper implements App, ModelWrapper<App> {
     */
     public void setStatusId(long statusId) {
         _app.setStatusId(statusId);
+    }
+
+    /**
+    * Returns the product type ID of this app.
+    *
+    * @return the product type ID of this app
+    */
+    public long getProductTypeId() {
+        return _app.getProductTypeId();
+    }
+
+    /**
+    * Sets the product type ID of this app.
+    *
+    * @param productTypeId the product type ID of this app
+    */
+    public void setProductTypeId(long productTypeId) {
+        _app.setProductTypeId(productTypeId);
     }
 
     /**

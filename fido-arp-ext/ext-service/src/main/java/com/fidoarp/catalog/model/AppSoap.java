@@ -19,6 +19,7 @@ public class AppSoap implements Serializable {
     private Date _createdDate;
     private String _description;
     private long _statusId;
+    private long _productTypeId;
     private Date _statusChangeDate;
     private String _clientName;
     private String _clientOkpo;
@@ -39,6 +40,7 @@ public class AppSoap implements Serializable {
         soapModel.setCreatedDate(model.getCreatedDate());
         soapModel.setDescription(model.getDescription());
         soapModel.setStatusId(model.getStatusId());
+        soapModel.setProductTypeId(model.getProductTypeId());
         soapModel.setStatusChangeDate(model.getStatusChangeDate());
         soapModel.setClientName(model.getClientName());
         soapModel.setClientOkpo(model.getClientOkpo());
@@ -140,6 +142,14 @@ public class AppSoap implements Serializable {
 
     public void setStatusId(long statusId) {
         _statusId = statusId;
+    }
+
+    public long getProductTypeId() {
+        return _productTypeId;
+    }
+
+    public void setProductTypeId(long productTypeId) {
+        _productTypeId = productTypeId;
     }
 
     public Date getStatusChangeDate() {

@@ -365,6 +365,7 @@ public class AppPersistenceImpl extends BasePersistenceImpl<App>
         appImpl.setCreatedDate(app.getCreatedDate());
         appImpl.setDescription(app.getDescription());
         appImpl.setStatusId(app.getStatusId());
+        appImpl.setProductTypeId(app.getProductTypeId());
         appImpl.setStatusChangeDate(app.getStatusChangeDate());
         appImpl.setClientName(app.getClientName());
         appImpl.setClientOkpo(app.getClientOkpo());

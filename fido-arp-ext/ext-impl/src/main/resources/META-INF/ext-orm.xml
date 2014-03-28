@@ -26,6 +26,9 @@
 			<basic name="statusId">
 				<column name="STATUS_ID" />
 			</basic>
+			<basic name="productTypeId">
+				<column name="PRODUCT_TYPE_ID" />
+			</basic>
 			<basic name="statusChangeDate">
 				<column name="STATUS_CHANGE_DATE" />
 				<temporal>TIMESTAMP</temporal>

@@ -1,5 +1,6 @@
 <%@include file="../init-common.jsp"%>
 
+<input type="hidden" id="queryFormEdit" value="${queryFormEdit}"/>
 <div class="navbar">
     <div class="navbar-left">
         <a id="createNewQuery" href="javascript:void(0);" class="btn btn-primary"><liferay-ui:message key="queues.create.new.query"/></a>
@@ -29,7 +30,7 @@
         <tbody>
         <c:forEach items="${apps}" var="app">
         <tr>
-            <td>${app.appId}</td>
+            <td><a href="javascript:void(0);" class="edit-query">${app.appId}</a></td>
             <td>${app.createdDate}</td>
             <td>${app.clientName}</td>
             <td>${app.clientOkpo}</td>
@@ -48,7 +49,7 @@
 
 <script type="text/x-handlebars-template" id="form-select-templates">
     <div>
-        <form action="${createNewQuery}" method="post">
+        <form action="${queryFormAdd}" method="post">
            <c:forEach items="${productTypes}" var="productType">
                <div>
                    <input type="radio" value="${productType.productTypeId}" name="selectedProduct"

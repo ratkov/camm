@@ -58,6 +58,7 @@
         <column name="createdDate" db-name="created_date" type="Date" />
         <column name="description" db-name="description" type="String" localized="true"/>
         <column name="statusId" db-name="status_id" type="long" />
+        <column name="productTypeId" db-name="product_type_id" type="long" />
         <column name="statusChangeDate" db-name="status_change_date" type="Date" />
         <column name="clientName" db-name="client_name" type="String" />
         <column name="clientOkpo" db-name="client_okpo" type="String" />
