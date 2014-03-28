@@ -1,12 +1,12 @@
-.fido-arp-partner-product-type .table .btn-default {
+.table .btn-default {
     line-height: 1em;
     padding: 2px 5px;
 }
 
-.changeStatus{
-    color: darkred;
+.btn.changeStatus{
+    color: #8b0000;
 }
 
 .changeStatus .glyphicon-ok-circle{
-    color:green;
+    color: #008000;
 }

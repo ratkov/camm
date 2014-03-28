@@ -169,38 +169,45 @@ public class QueuePortlet extends FidoMVCPortlet  {
                 long templateId = productType.getTemplateId();
                 String validation = new FieldsUtil().validateTemplate(jsonObject, templateId);
                 if(StringUtils.isEmpty(validation) || StringUtils.isBlank(validation)){
-                    App app = AppLocalServiceUtil.createApp(appId);
-
-                    app.setProductTypeId(productId);
-                    app.setOrganizationId(productType.getOrganizationId());
-                    app.setCreatedDate(new Date());
-                    app.setStatusId(appStatusId);
-                    app.setUserId(serviceContext.getUserId());
-                    //set whole questionnaire
-                    JSONObject questionnaire = new FieldsUtil().mergeStructure(jsonObject, templateId, appId);
-                    app.setQuestionnaire(questionnaire.toString());
-                    //set client name
-                    String lastName = jsonObject.getString("lastName", "");
-                    String firstName = jsonObject.getString("firstName", "");
-                    String middleName = jsonObject.getString("middleName", "");
-                    app.setClientName(lastName  + " " + firstName + " "+ middleName);
-                    //set client okpo
-                    String clientOkpo = jsonObject.getString("identificationNumber", "");
-                    app.setClientOkpo(clientOkpo);
-                    //set sum
-                    Integer loanSumUAH = jsonObject.getInt("loanSumUAH", 0);
-                    app.setCreditAmount(loanSumUAH);
-                    //set phone
-                    String contactPhone = jsonObject.getString("mobilePhone", "");
-                    app.setContactPhone(contactPhone);
-
-                    if(AppLocalServiceUtil.getApp(appId) == null){
-                        AppLocalServiceUtil.addApp(app);
-                    }else{
-                        AppLocalServiceUtil.updateApp(app);
+                    App app = null;
+                    boolean isNew = false;
+                    try{
+                        if(AppLocalServiceUtil.getApp(appId) != null)
+                            app = AppLocalServiceUtil.getApp(appId);
+                    }catch(Exception e){
+                        app = AppLocalServiceUtil.createApp(appId);
+                        isNew = true;
                     }
 
-                    actionRequest.setAttribute("info", "queues.data.is.saved.success");
+                    if(app != null){
+                        app.setProductTypeId(productId);
+                        app.setOrganizationId(productType.getOrganizationId());
+                        app.setCreatedDate(new Date());
+                        app.setStatusId(appStatusId);
+                        app.setUserId(serviceContext.getUserId());
+                        //set whole questionnaire
+                        JSONObject questionnaire = new FieldsUtil().mergeStructure(jsonObject, templateId, appId);
+                        app.setQuestionnaire(questionnaire.toString());
+                        //set client name
+                        String lastName = jsonObject.getString("lastName", "");
+                        String firstName = jsonObject.getString("firstName", "");
+                        String middleName = jsonObject.getString("middleName", "");
+                        app.setClientName(lastName  + " " + firstName + " "+ middleName);
+                        //set client okpo
+                        String clientOkpo = jsonObject.getString("identificationNumber", "");
+                        app.setClientOkpo(clientOkpo);
+                        //set sum
+                        Integer loanSumUAH = jsonObject.getInt("loanSumUAH", 0);
+                        app.setCreditAmount(loanSumUAH);
+                        //set phone
+                        String contactPhone = jsonObject.getString("mobilePhone", "");
+                        app.setContactPhone(contactPhone);
+                        if(isNew)
+                            AppLocalServiceUtil.addApp(app);
+                        else
+                            AppLocalServiceUtil.updateApp(app);
+                        actionRequest.setAttribute("info", "queues.data.is.saved.success");
+                    }
                 }else{
                     actionRequest.setAttribute("error", validation);
                 }

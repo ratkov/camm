@@ -539,7 +539,12 @@ public class FieldsUtil {
     private JSONObject getJsonQuestionnaire(long appId) throws SystemException, JSONException {
         JSONObject oldQuestionnaire = null;
         try {
-            App app = AppLocalServiceUtil.getApp(appId);
+            App app = null;
+            try{
+                app = AppLocalServiceUtil.getApp(appId);
+            }catch (Exception e){
+                //nothing happen
+            }
             if(app != null){
                 String questionnaire = app.getQuestionnaire();
                 if(StringUtils.isNotEmpty(questionnaire) && StringUtils.isNotBlank(questionnaire)){
