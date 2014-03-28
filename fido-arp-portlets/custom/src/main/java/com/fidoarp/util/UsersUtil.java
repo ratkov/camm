@@ -1,12 +1,12 @@
 package com.fidoarp.util;
 
 import com.fidoarp.UserStatus;
-import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.SystemException;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.*;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
@@ -15,7 +15,8 @@ import com.liferay.util.PwdGenerator;
 import com.liferay.util.portlet.PortletProps;
 import org.apache.commons.lang.StringUtils;
 
-import javax.portlet.*;
+import javax.portlet.RenderRequest;
+import javax.portlet.ResourceRequest;
 import java.util.*;
 
 public class UsersUtil {
@@ -24,7 +25,7 @@ public class UsersUtil {
 
     public static ResourceBundle resources;
 
-    public static String addNewUser (ResourceRequest resourceRequest) {
+    public static String saveUser (ResourceRequest resourceRequest) {
         ThemeDisplay themeDisplay = (ThemeDisplay) resourceRequest.getAttribute(WebKeys.THEME_DISPLAY);
 
         String firstName = resourceRequest.getParameter("firstName");
@@ -32,32 +33,45 @@ public class UsersUtil {
         String lastName = resourceRequest.getParameter("lastName");
         String email = resourceRequest.getParameter("email");
         String login = resourceRequest.getParameter("login");
+        String userId = resourceRequest.getParameter("userId");
 
-        String validationResult = validateUser(firstName, middleName, lastName, login, email, themeDisplay.getCompanyId());
+        String validationResult = validateUser(userId, firstName, middleName, lastName, login, email, themeDisplay.getCompanyId());
 
         if (validationResult == null) {
 
             try {
-                String partnerId = resourceRequest.getParameter("partnerId");
-                String password = PwdGenerator.getPassword();
 
-                int status = UserStatus.DISABLED.getStatus();
+                User user;
+                String partnerId = resourceRequest.getParameter("partnerId");
+
                 long [] organizationIds = {Long.parseLong(partnerId)};
 
-                User user = UserLocalServiceUtil.addUser(themeDisplay.getUserId(),
-                        themeDisplay.getCompanyId(),
-                        false, password, password,
-                        true, login, email, 0, StringUtils.EMPTY,
-                        LocaleUtil.getMostRelevantLocale(), firstName, middleName, lastName, 0,
-                        0, true, 1, 1, 1970, "",
-                        null, organizationIds, null, null, false, new ServiceContext());
+                if (StringUtils.equals(userId, "0")) {
+                    String password = PwdGenerator.getPassword();
+                    int status = UserStatus.ACTIVE.getStatus();
 
-                ExpandoUtils.addUserValues(user, "status", status);
+                    user = UserLocalServiceUtil.addUser(themeDisplay.getUserId(),
+                            themeDisplay.getCompanyId(),
+                            false, password, password,
+                            true, login, email, 0, StringUtils.EMPTY,
+                            LocaleUtil.getMostRelevantLocale(), firstName, middleName, lastName, 0,
+                            0, true, 1, 1, 1970, "",
+                            null, organizationIds, null, null, false, new ServiceContext());
 
-                sendPassword(email, password);
+                    ExpandoUtils.addUserValues(user, "status", status);
+
+                    sendPassword(email, password);
+
+                } else {
+                    UserLocalServiceUtil.updateUser(Long.parseLong(userId), "", "", "", false,
+                            "", "", login, email, 0, "", LocaleUtil.getMostRelevantLocale().toString(),
+                            null, null, null, firstName, middleName, lastName, 0, 0, true, 1, 1, 1970,
+                            null, "", "", "", "", "", "", "", "", "", "", null, organizationIds, null,
+                            null, null, new ServiceContext());
+                }
 
             } catch (Exception e) {
-                log.error("Could not create user cause: " + e.getMessage());
+                log.error(e.getMessage(), e);
             }
 
         }
@@ -65,17 +79,9 @@ public class UsersUtil {
         return validationResult;
     }
 
-    public static void searchContainerData(RenderRequest renderRequest, RenderResponse renderResponse, Locale currentLocale) {
+    public static void searchUsers(RenderRequest renderRequest) {
 
-        PortletConfig portletConfig = (PortletConfig)renderRequest.getAttribute(JavaConstants.JAVAX_PORTLET_CONFIG);
         List<User> userList = null;
-
-        PortletURL iteratorURL= renderResponse.createRenderURL();
-
-        SearchContainer<User> searchContainer = new SearchContainer<User>(renderRequest, null,
-                null, SearchContainer.DEFAULT_CUR_PARAM, ParamUtil.getInteger(renderRequest, SearchContainer.DEFAULT_DELTA_PARAM, 1),
-                iteratorURL, null, LanguageUtil.get(portletConfig, currentLocale, "No UserGroups were Found"));
-
         int total = 0;
 
         try {
@@ -86,28 +92,28 @@ public class UsersUtil {
 
                 String partnerId = renderRequest.getParameter("partnerId");
 
-                userList = StringUtils.equals("0", partnerId)
-                        ? UserLocalServiceUtil.getUsers(searchContainer.getStart(), searchContainer.getEnd())
-                        : UserLocalServiceUtil.getOrganizationUsers(Long.parseLong(partnerId));
-
                 total = StringUtils.equals("0", partnerId)
                         ? UserLocalServiceUtil.getUsersCount()
                         : UserLocalServiceUtil.getOrganizationUsersCount(Long.parseLong(partnerId));
 
+                userList = StringUtils.equals("0", partnerId)
+                        ? UserLocalServiceUtil.getUsers(0, total)
+                        : UserLocalServiceUtil.getOrganizationUsers(Long.parseLong(partnerId));
+
+
                 renderRequest.setAttribute("userList", userList);
 
             } else {
-                userList = UserLocalServiceUtil.getUsers(searchContainer.getStart(), searchContainer.getEnd());
                 total = UserLocalServiceUtil.getUsersCount();
+                userList = UserLocalServiceUtil.getUsers(0, total);
             }
 
         } catch (SystemException e) {
             log.error("Could not get users cause " + e.getMessage());
         }
 
-        searchContainer.setTotal(total);
-        searchContainer.setResults(userList);
-        renderRequest.setAttribute("userSearchContainer", searchContainer);
+        renderRequest.setAttribute("total", total);
+        renderRequest.setAttribute("userList", userList);
 
     }
 
@@ -171,7 +177,7 @@ public class UsersUtil {
         return FidoARPUtils.sendMail(form, email, subject, body);
     }
 
-    private static String validateUser(String firstName, String middleName, String lastName,
+    private static String validateUser(String userId, String firstName, String middleName, String lastName,
                                        String login, String email, long companyId) {
 
         String result = null;
@@ -234,8 +240,12 @@ public class UsersUtil {
                 User user = UserLocalServiceUtil.fetchUserByScreenName(companyId, login);
 
                 if (user != null) {
-                    result = resources.getString("user.validation.login.exist");
-                    return result;
+
+                    if (user.getUserId() != Long.parseLong(userId)) {
+
+                        result = resources.getString("user.validation.login.exist");
+                        return result;
+                    }
                 }
 
             } catch (SystemException e) {
@@ -262,8 +272,12 @@ public class UsersUtil {
                     User user = UserLocalServiceUtil.fetchUserByEmailAddress(companyId, email);
 
                     if (user != null) {
-                        result = resources.getString("user.validation.email.exist");
-                        return result;
+
+                        if (user.getUserId() != Long.parseLong(userId)) {
+                            result = resources.getString("user.validation.email.exist");
+                            return result;
+
+                        }
                     }
 
                 } catch (SystemException e) {

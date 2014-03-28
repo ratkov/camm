@@ -2,52 +2,37 @@
 
 <input type="hidden" value="${passwordUrl}" id="<portlet:namespace/>passwordUrl">
 
-<liferay-ui:search-container emptyResultsMessage="No users were found" delta="10"
-                             searchContainer="${userSearchContainer}">
-
-    <liferay-ui:search-container-results results="<%=searchContainer.getResults() %>"
-                                         total="<%=searchContainer.getTotal() %>"/>
-
-    <liferay-ui:search-container-row
-            className="com.liferay.portal.model.User"
-            modelVar="user"
-            >
-
-        <liferay-ui:search-container-column-text
-                name="ID"
-                value="${user.userId}"
-                />
-
-        <liferay-ui:search-container-column-text
-                name="user.name"
-                value="${user.fullName}"
-                />
-
-        <liferay-ui:search-container-column-text
-                name="user.login"
-                value="${user.screenName}"
-                />
-
-        <liferay-ui:search-container-column-text
-                name="user.email"
-                value="${user.emailAddress}"
-                />
-
-        <liferay-ui:search-container-column-text
-                name="user.status"
-                value="${userStatus[user.expandoBridge.attributes['status']]}"
-                href="javascript:void(0);"
-                />
-
-        <liferay-ui:search-container-column-text
-                name="user.password.recovery"
-                value="${pswdGenerate}"
-                href="javascript:void(0);"
-                />
-
-    </liferay-ui:search-container-row>
-
-    <!-- Iterating the Results -->
-    <liferay-ui:search-iterator/>
-
-</liferay-ui:search-container>
+<div class="panel panel-default">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th><liferay-ui:message key="user.name"/></th>
+            <th><liferay-ui:message key="user.login"/></th>
+            <th><liferay-ui:message key="user.email"/></th>
+            <th><liferay-ui:message key="user.status"/></th>
+            <th><liferay-ui:message key="user.password.recovery"/></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <c:forEach items="${userList}" var="user">
+            <tr>
+                <td id="id">${user.userId}</td>
+                <td>${user.fullName}</td>
+                <td id="login">${user.screenName}</td>
+                <td>${user.emailAddress}</td>
+                <td><a href="javascript:void(0);" id="<portlet:namespace/>changeStatus">${userStatus[user.expandoBridge.attributes['status']]}</a></td>
+                <td><a href="javascript:void(0);" id="<portlet:namespace/>generatePassword">${pswdGenerate}</a></td>
+                <td class="text-right">
+                    <a href="javascript:void(0);" class="btn btn-default editUser"
+                       data-partner="${user.organizationIds[0]}"
+                       data-id="${user.userId}">
+                        <i class="glyphicon glyphicon-edit"></i>
+                    </a>
+                </td>
+            </tr>
+        </c:forEach>
+        </tbody>
+    </table>
+</div>

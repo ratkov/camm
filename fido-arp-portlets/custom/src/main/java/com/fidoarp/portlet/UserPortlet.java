@@ -2,15 +2,19 @@ package com.fidoarp.portlet;
 
 import com.fidoarp.UserStatus;
 import com.fidoarp.util.UsersUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.Organization;
+import com.liferay.portal.model.User;
 import com.liferay.portal.service.OrganizationLocalServiceUtil;
+import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import org.apache.commons.lang.StringUtils;
 
@@ -23,7 +27,7 @@ public class UserPortlet extends FidoMVCPortlet {
     private static Log log = LogFactoryUtil.getLog(UserPortlet.class);
 
     @Override
-    public void doView(final RenderRequest renderRequest, final RenderResponse renderResponse) throws IOException, PortletException {
+    public void render(final RenderRequest renderRequest, final RenderResponse renderResponse) throws IOException, PortletException {
 
         ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
         Locale currentLocale = themeDisplay.getLocale();
@@ -33,26 +37,29 @@ public class UserPortlet extends FidoMVCPortlet {
 
         try {
 
-            // TODO Need to implement the functionality to sort users by "status"
-            UsersUtil.searchContainerData(renderRequest, renderResponse, currentLocale);
+            UsersUtil.searchUsers(renderRequest);
             partners = OrganizationLocalServiceUtil.getOrganizations(-1, -1);
 
             String action = renderRequest.getParameter("action");
 
             renderRequest.setAttribute("pswdGenerate", UsersUtil.resources.getString("user.password.generate"));
             renderRequest.setAttribute("userStatus", UserStatus.values());
+            renderRequest.setAttribute("currentLocale", currentLocale);
 
-            if (StringUtils.equals("filterUser", action)) {
+            if (StringUtils.equals("addUser", action)) {
+
+                if (addView(renderRequest, renderResponse, partners)) return;
+
+            } else if (StringUtils.equals("filterUser", action)) {
                 getPortletContext().getRequestDispatcher("/html/jsp/portlet/users/view/user-table.jsp").include(renderRequest, renderResponse);
                 return;
             }
 
-        } catch (SystemException e) {
-            log.error("Could not get organizations cause " + e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
 
         renderRequest.setAttribute("partners", partners);
-        renderRequest.setAttribute("currentLocale", currentLocale);
 
         super.doView(renderRequest, renderResponse);
     }
@@ -68,7 +75,7 @@ public class UserPortlet extends FidoMVCPortlet {
         String message = null;
 
         if (StringUtils.equals(action, "addUserAction")) {
-            message = UsersUtil.addNewUser(resourceRequest);
+            message = UsersUtil.saveUser(resourceRequest);
 
             if (message != null) {
                 resultMap.put("addUserError", message);
@@ -102,6 +109,25 @@ public class UserPortlet extends FidoMVCPortlet {
         log.info("jsonFeed.toString()===" + jsonFeed.toString());
         resourceResponse.getWriter().write(jsonFeed.toString());
 
+    }
+
+    private boolean addView(RenderRequest renderRequest, RenderResponse renderResponse, List<Organization> partners) throws SystemException, PortalException, PortletException, IOException {
+
+        Long userId = GetterUtil.getLong(renderRequest.getParameter("userId"), 0);
+        User user;
+
+        if (userId == 0) {
+            user = UserLocalServiceUtil.createUser(0);
+
+        } else {
+            user = UserLocalServiceUtil.getUser(userId);
+        }
+
+        renderRequest.setAttribute("partners", partners);
+        renderRequest.setAttribute("currentUser", user);
+        getPortletContext().getRequestDispatcher("/html/jsp/portlet/users/view/add-user.jsp").include(renderRequest, renderResponse);
+
+        return true;
     }
 
 }

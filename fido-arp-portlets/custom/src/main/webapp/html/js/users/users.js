@@ -127,29 +127,27 @@ UsersProcessor = Class.extend({
 
         $(document).on('click','#' + namespace + 'showUserForm', function(e) {
             e.preventDefault();
+            $(document.body).append("<div id='modal-window' class='ui-widget-overlay ui-front' style='display: block;'></div>");
 
-            var $userBlock = $('#' + namespace + 'addUserForm'),
-                $form = $('#' + namespace + 'usersForm'),
-                $addText = $('.add'),
-                $cancelText = $('.cancel');
+            var url = $("#addUser").val(),
+                data = {userId: null};
 
-            if ($userBlock.is(":hidden")) {
-                $userBlock.show();
-                $addText.hide();
-                $cancelText.show();
+            $this.viewMode(url, data);
 
-            } else {
-                $('.error').empty();
+        });
 
-                $form[0].reset();
-                $userBlock.hide();
-                $cancelText.hide();
-                $addText.show();
-            }
+        $(document).on("click", ".editUser", function (e) {
+            $(document.body).append("<div id='modal-window' class='ui-widget-overlay ui-front' style='display: block;'></div>");
+            var url = $("#addUser").val();
+            var data = {
+                userId: $(this).data("id"),
+                partnerId: $(this).data("partner")
+            };
+            $this.viewMode(url, data);
         });
 
         // Add new user
-        $('#' + namespace + 'addUser').on('click', $.proxy(function (e) {
+        $(document).on('click', '#' + namespace + 'addUser', $.proxy(function (e) {
             e.preventDefault();
 
             var $userForm = $('#' + namespace + 'usersForm'),
@@ -159,14 +157,13 @@ UsersProcessor = Class.extend({
 
         }, this));
 
-
-        $(document).on('click', '#' + namespace + "usersSearchContainer table td[id*='col-user.status']", function (e) {
+        $(document).on('click', '#' + namespace + "changeStatus", function (e) {
             e.preventDefault();
 
             $statusDialog.dialog("open");
 
-            var $loginName = $(e.target).parents("tr").find("td[id*='col-user.login'] ").text().trim(),
-                $userId = $(e.target).parents("tr").find("td[id*='col-id'] ").text().trim(),
+            var $loginName = $(e.target).parents("tr").find("td[id*='login'] ").text().trim(),
+                $userId = $(e.target).parents("tr").find("td[id*='id'] ").text().trim(),
                 $dialogTitle = $('#ui-id-1'),
                 $inputIdField = $('#' + namespace + 'userId');
 
@@ -175,13 +172,13 @@ UsersProcessor = Class.extend({
 
         });
 
-        $(document).on('click', '#' + namespace + "usersSearchContainer table td[id*='col-user.password.recovery']", function (e) {
+        $(document).on('click', '#' + namespace + "generatePassword", function (e) {
             e.preventDefault();
 
             $passwordDialog.dialog("open");
 
-            var $loginName = $(e.target).parents("tr").find("td[id*='col-user.login'] ").text().trim(),
-                $userId = $(e.target).parents("tr").find("td[id*='col-id'] ").text().trim(),
+            var $loginName = $(e.target).parents("tr").find("td[id*='login'] ").text().trim(),
+                $userId = $(e.target).parents("tr").find("td[id*='id'] ").text().trim(),
                 $dialogTitle = $('#ui-id-2'),
                 $inputIdField = $('#' + namespace + 'dialog-password-userId');
 
@@ -217,5 +214,21 @@ UsersProcessor = Class.extend({
                 }
             });
         }
+    },
+
+    viewMode: function (url, data) {
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: data,
+            success: function (data) {
+                $("#userWrapper").html(data);
+                $("#modal-window").remove();
+            },
+            error: function () {
+                $("#modal-window").remove();
+            }
+        });
     }
+
 });

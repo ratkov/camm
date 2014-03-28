@@ -1,71 +1,45 @@
 <%@include file="../init-common.jsp"%>
 
-<div>
+<liferay-util:html-bottom>
 
-    <div class="row-fluid clearfix">
-        <label class="col-sm-2 control-label"><liferay-ui:message key="user.partners"/>&#58;</label>
+    <script type="text/javascript">
 
-        <div id="<portlet:namespace/>partnersBlock" class="col-sm-6">
-            <select id="<portlet:namespace/>partners" name="partners" data-url="${filterUserURL}" class="form-control">
-                <option value="0"><liferay-ui:message key="user.partners.all"/></option>
-                <c:forEach items="${partners}" var="partner">
-                    <option value="${partner.organizationId}">
-                            ${partner.name}
-                    </option>
-                </c:forEach>
-            </select>
-        </div>
-        <div class="col-sm-2">
-            <a href="javascript:void(0);" id="<portlet:namespace/>showUserForm" class="btn btn-primary">
-                <div class="add"><liferay-ui:message key="user.add"/></div>
-                <div class="cancel" style="display: none"><liferay-ui:message key="user.cancel"/></div>
-            </a>
-        </div>
-    </div>
+        jQuery(document).ready(function () {
+            window.page = new UsersProcessor('<portlet:namespace/>');
 
-    <hr/>
+            var errors = {
+                "firstNameRequired": "<liferay-ui:message key="user.validation.first.name.required"/>",
+                "firstNameRegexp": "<liferay-ui:message key="user.validation.first.name.failure"/>",
 
-    <div id="<portlet:namespace/>userTable">
-        <%@include file="user-table.jsp" %>
-    </div>
+                "middleNameRequired": "<liferay-ui:message key="user.validation.middle.name.required"/>",
+                "middleNameRegexp": "<liferay-ui:message key="user.validation.middle.name.failure"/>",
 
-    <%@include file="add-user.jsp" %>
+                "lastNameRequired": "<liferay-ui:message key="user.validation.last.name.required"/>",
+                "lastNameRegexp": "<liferay-ui:message key="user.validation.last.name.failure"/>",
 
-    <div id="<portlet:namespace/>dialog-status" style="display: none" title="<liferay-ui:message key="user.change.status"/>&#58;&nbsp;">
+                "nameMinLength": "<liferay-ui:message key="user.validation.full.name.min.length"/>",
+                "nameMaxLength": "<liferay-ui:message key="user.validation.full.name.max.length"/>",
 
-        <form id="<portlet:namespace/>statusForm" action="${statusUrl}" method="POST">
-            <div class="">
-                <label class="" id="<portlet:namespace/>changeStatusError"></label>
-            </div>
-            <input type="hidden" name="userId" value="" id="<portlet:namespace/>userId">
+                "loginRequired" : "<liferay-ui:message key="user.validation.login.required"/>",
+                "loginMinLength" : "<liferay-ui:message key="user.validation.login.min.length"/>",
+                "loginMaxLength" : "<liferay-ui:message key="user.validation.login.max.length"/>",
+                "loginRegexp" : "<liferay-ui:message key="user.validation.wrong.format"/>",
 
-            <div><input type="radio" name="status" value="0"/> <liferay-ui:message key="user.status.active"/></div>
-            <div><input type="radio" name="status" value="1"/> <liferay-ui:message key="user.status.blocked"/></div>
-            <div><input type="radio" name="status" value="2"/> <liferay-ui:message key="user.status.disabled"/></div>
+                "emailRequired": "<liferay-ui:message key="user.validation.email.required"/>",
+                "emailFormatError": "<liferay-ui:message key="user.validation.email.wrong.format"/>"
+            };
 
-        </form>
+            $('#ok').button('option', 'label', '<liferay-ui:message key="status.change"/>');
+            $('#cancel').button('option', 'label', '<liferay-ui:message key="status.cancel"/>');
 
-        <div id="<portlet:namespace/>successContent" style="display: none">
-            <liferay-ui:message key="user.status.update.successfully"/>
-        </div>
+            $('#change-password-ok').button('option', 'label', '<liferay-ui:message key="change.password.change"/>');
+            $('#change-password-cancel').button('option', 'label', '<liferay-ui:message key="change.password.cancel"/>');
+        });
 
-    </div>
+    </script>
 
-    <div id="<portlet:namespace/>dialog-password" class="change-password" style="display: none" title="<liferay-ui:message key="user.change.password"/>&#58;&nbsp;">
+</liferay-util:html-bottom>
 
-        <div class="">
-            <label class="" id="<portlet:namespace/>changePasswordError"></label>
-        </div>
-        <input type="hidden" name="userId" value="" id="<portlet:namespace/>dialog-password-userId">
-
-        <div id="<portlet:namespace/>change-password-info">
-            <liferay-ui:message key="user.change.password.info"/>
-        </div>
-
-        <div id="<portlet:namespace/>change-password-successContent" style="display: none">
-            <liferay-ui:message key="user.change.password.successfully"/>
-        </div>
-
-    </div>
+<div id="userWrapper">
+    <c:import url="main-view.jsp" />
 </div>
-
