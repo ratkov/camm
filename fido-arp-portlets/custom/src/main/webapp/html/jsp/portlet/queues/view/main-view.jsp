@@ -1,6 +1,7 @@
 <%@include file="../init-common.jsp"%>
 
 <input type="hidden" id="queryFormEdit" value="${queryFormEdit}"/>
+<input type="hidden" id="paginator" value="${paginator}"/>
 <div class="navbar">
     <div class="navbar-left">
         <a id="createNewQuery" href="javascript:void(0);" class="btn btn-primary"><liferay-ui:message key="queues.create.new.query"/></a>
@@ -11,10 +12,19 @@
     </div>
 </div>
 <div class="panel panel-default">
-    <!-- Default panel contents -->
-    <div class="panel-heading">10.08.13-01.09.13</div>
     <table class="table table-striped table-hover">
         <thead>
+        <tr class="panel-header">
+            <th><input type="text" /></th>
+            <th><input type="text" /></th>
+            <th><input type="text" /></th>
+            <th><input type="text" /></th>
+            <th><input type="text" /></th>
+            <th><input type="text" /></th>
+            <th><input type="text" /></th>
+            <th><input type="text" /></th>
+            <th><input type="text" /></th>
+        </tr>
         <tr>
             <th><liferay-ui:message key="queues.query.id"/></th>
             <th><liferay-ui:message key="queues.query.date"/></th>
@@ -29,20 +39,38 @@
         </thead>
         <tbody>
         <c:forEach items="${apps}" var="app">
-        <tr>
-            <td><a href="javascript:void(0);" class="edit-query">${app.appId}</a></td>
-            <td>${app.createdDate}</td>
-            <td>${app.clientName}</td>
-            <td>${app.clientOkpo}</td>
-            <td>${app.contactPhone}</td>
-            <td>${app.creditAmount}</td>
-            <td>${app.status}</td>
-            <td>${app.comments}</td>
-            <td>${app.user}</td>
-        </tr>
+            <tr>
+                <td><a href="javascript:void(0);" class="edit-query">${app.appId}</a></td>
+                <td>${app.createdDate}</td>
+                <td>${app.clientName}</td>
+                <td>${app.clientOkpo}</td>
+                <td>${app.contactPhone}</td>
+                <td>${app.creditAmount}</td>
+                <td>${app.status}</td>
+                <td>${app.comments}</td>
+                <td>${app.user}</td>
+            </tr>
         </c:forEach>
         </tbody>
     </table>
+
+    <c:if test="${pageCount gt 1}">
+        <div class="panel-footer">
+            <ul class="pagination">
+                <li <c:if test="${(cpage - 1) eq 0}">class="disabled"</c:if>>
+                    <a href="#" data-page="${cpage - 1}">&laquo;</a></li>
+                <c:forEach begin="1" end="${pageCount}" var="page" step="1">
+                    <li <c:if test="${page eq cpage}">class="active"</c:if>>
+                        <a href="#" data-page="${page}">${page}</a></li>
+                </c:forEach>
+                <li <c:if test="${cpage eq pageCount}">class="disabled"</c:if>>
+                    <a href="#" data-page="${cpage + 1}">&raquo;</a></li>
+            </ul>
+        </div>
+    </c:if>
+
+    <input type="hidden" id="cpage" value="${cpage}"/>
+
 </div>
 
 <div id="dialog" title="<liferay-ui:message key="queues.select.template"/>"></div>
@@ -50,6 +78,7 @@
 <script type="text/x-handlebars-template" id="form-select-templates">
     <div>
         <form action="${queryFormAdd}" method="post">
+           <input type="hidden" name="cpage" value="${cpage}"/>
            <c:forEach items="${productTypes}" var="productType">
                <div>
                    <input type="radio" value="${productType.productTypeId}" name="selectedProduct"

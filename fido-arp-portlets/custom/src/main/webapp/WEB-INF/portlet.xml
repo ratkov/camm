@@ -96,14 +96,24 @@
 		<portlet-name>fido_arp_queues</portlet-name>
 		<display-name>FidoARP Queues</display-name>
 		<portlet-class>com.fidoarp.portlet.QueuePortlet</portlet-class>
+        <init-param>
+            <name>edit-jsp</name>
+            <value>/html/jsp/portlet/queues/edit/edit.jsp</value>
+        </init-param>
 		<init-param>
             <name>view-jsp</name>
 			<value>/html/jsp/portlet/queues/view/view.jsp</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
-		<supports>
-			<mime-type>text/html</mime-type>
-		</supports>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>VIEW</portlet-mode>
+        </supports>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>EDIT</portlet-mode>
+            <window-state>NORMAL</window-state>
+        </supports>
         <supported-locale>uk_UA</supported-locale>
         <supported-locale>ru_RU</supported-locale>
         <resource-bundle>i18n.Resource</resource-bundle>

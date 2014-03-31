@@ -19,6 +19,7 @@
         <input type="hidden" value="${productId}" id="productId" name="productId"/>
         <input type="hidden" value="${appId}" id="appId" name="appId"/>
         <input type="hidden" value="${appStatusId}" id="appStatusId" name="appStatusId"/>
+        <input type="hidden" value="${cpage}" id="cpage" name="cpage"/>
         ${templateHtml}
     </form>
 </div>

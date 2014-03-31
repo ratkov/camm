@@ -10,7 +10,9 @@ import com.fidoarp.catalog.service.ProductTypeLocalServiceUtil;
 import com.fidoarp.dictionary.Dictionaries;
 import com.fidoarp.model.AppWrapper;
 import com.fidoarp.model.questionnaire.DetailsPair;
+import com.fidoarp.preferences.QueuePreferences;
 import com.fidoarp.util.FieldsUtil;
+import com.fidoarp.util.QueuePreferencesUtil;
 import com.fidoarp.util.VelocityFormUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -32,10 +34,7 @@ import org.apache.commons.lang.StringUtils;
 import javax.portlet.*;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 public class QueuePortlet extends FidoMVCPortlet  {
     /**
@@ -49,39 +48,63 @@ public class QueuePortlet extends FidoMVCPortlet  {
         try {
             if (!renderRequest.getPortletMode().equals(PortletMode.VIEW)){
                 super.render(renderRequest, renderResponse);
+                return;
             }
             ServiceContext serviceContext = ServiceContextFactory.getInstance(QueuePortlet.class.getName(), renderRequest);
 
-            User user = UserLocalServiceUtil.getUser(serviceContext.getUserId());
-
-            List<ProductType> productTypes = new ArrayList<ProductType>();
-            long[] listOrganizations = user.getOrganizationIds();
-            for (long organizationId : listOrganizations){
-                productTypes.addAll(ProductTypeLocalServiceUtil.getListProductTypeByOrganizationIdStatus(organizationId, true));
-            }
-
-            List<AppStatus> appStatuses = AppStatusLocalServiceUtil.getAppStatuses(-1, -1);
-            List<App> apps = AppLocalServiceUtil.getApps(-1, -1);
-            List<AppWrapper> appWrappers = new ArrayList<AppWrapper>();
-            for(App app : apps){
-                appWrappers.add(new AppWrapper(app, serviceContext.getLocale()));
-            }
-
-            renderRequest.setAttribute("productTypes", productTypes);
-            renderRequest.setAttribute("appStatuses", appStatuses);
-            renderRequest.setAttribute("apps", appWrappers);
-
             String action = GetterUtil.getString(renderRequest.getParameter("action"), "");
+            int cpage = GetterUtil.getInteger(renderRequest.getParameter("cpage"), 1);
+
+            renderRequest.setAttribute("cpage", cpage);
 
             if(StringUtils.isNotEmpty(action) && StringUtils.isNotBlank(action)){
                 if(action.equals("queryForm")){
                     queryForm(renderRequest, serviceContext);
                 }
+            }else{
+                User user = UserLocalServiceUtil.getUser(serviceContext.getUserId());
+
+                List<ProductType> productTypes = new ArrayList<ProductType>();
+                long[] listOrganizations = user.getOrganizationIds();
+                for (long organizationId : listOrganizations){
+                    productTypes.addAll(ProductTypeLocalServiceUtil.getListProductTypeByOrganizationIdStatus(organizationId, true));
+                }
+
+                List<AppStatus> appStatuses = AppStatusLocalServiceUtil.getAppStatuses(-1, -1);
+
+                renderRequest.setAttribute("productTypes", productTypes);
+                renderRequest.setAttribute("appStatuses", appStatuses);
+
+                getApps(renderRequest, serviceContext.getLocale());
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         super.doView(renderRequest, renderResponse);
+    }
+
+    private List<App> getApps(RenderRequest renderRequest, Locale locale) throws com.liferay.portal.kernel.exception.SystemException {
+        Integer itemCount = getItemCount(renderRequest);
+        int appCount = AppLocalServiceUtil.getAppsCount();
+        int cpage = GetterUtil.getInteger(renderRequest.getParameter("cpage"), 1);
+
+        int remainder = appCount % itemCount;
+        int count = (appCount - remainder) / itemCount;
+        if (remainder != 0) count++;
+        List<App> apps = AppLocalServiceUtil.getApps((cpage - 1) * itemCount, cpage * itemCount);
+
+        renderRequest.setAttribute("pageCount", count);
+
+
+        List<AppWrapper> appWrappers = new ArrayList<AppWrapper>();
+        for(App app : apps){
+            appWrappers.add(new AppWrapper(app, locale));
+        }
+
+        renderRequest.setAttribute("apps", appWrappers);
+        renderRequest.setAttribute("cpage", cpage);
+
+        return apps;
     }
 
     private void queryForm(RenderRequest renderRequest, ServiceContext serviceContext) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
@@ -119,8 +142,12 @@ public class QueuePortlet extends FidoMVCPortlet  {
             long statusProjectId = appStatus.getAppStatusId();
             renderRequest.setAttribute("isProject", statusProjectId == appStatusId);
         }
-
         renderRequest.setAttribute("show", "query-form.jsp");
+    }
+
+    private Integer getItemCount(PortletRequest renderRequest) {
+        QueuePreferences preferences = QueuePreferencesUtil.getPreferences(renderRequest);
+        return preferences.getItemCount();
     }
 
     @Override
@@ -158,11 +185,13 @@ public class QueuePortlet extends FidoMVCPortlet  {
             actionResponse.setWindowState(LiferayWindowState.EXCLUSIVE);
 
             String json = GetterUtil.getString(actionRequest.getParameter("json"), "");
+
             JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
 
             long appId = jsonObject.getLong("appId", 0);
             long productId = jsonObject.getLong("productId", 0);
             long appStatusId = jsonObject.getLong("appStatusId", 0);
+            String cpage = jsonObject.getString("cpage", "1");
 
             if(appId != 0 && productId != 0){
                 ProductType productType = ProductTypeLocalServiceUtil.getProductType(productId);
@@ -211,10 +240,38 @@ public class QueuePortlet extends FidoMVCPortlet  {
                 }else{
                     actionRequest.setAttribute("error", validation);
                 }
+                actionResponse.setRenderParameter("cpage", cpage);
             }
-
         }catch (Exception e){
            log.error("QueuePortlet.saveQuery() error: " + Arrays.toString(e.getStackTrace()), e);
         }
     }
+
+
+    //Edit Mode
+    @Override
+    public void doEdit(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        QueuePreferences preferences = QueuePreferencesUtil.getPreferences(renderRequest);
+        renderRequest.setAttribute("itemCount", preferences.getItemCount());
+        super.doEdit(renderRequest, renderResponse);
+    }
+
+    public void saveSettings(ActionRequest actionRequest, ActionResponse actionResponse){
+        try{
+            int itemCount =  GetterUtil.getInteger(actionRequest.getParameter("itemCount"), 5);
+            if(itemCount != 0){
+                QueuePreferences queuePreferences = new QueuePreferences();
+                queuePreferences.setItemCount(itemCount);
+                QueuePreferencesUtil.setPreferences(actionRequest, queuePreferences);
+                actionResponse.setRenderParameter("info", "global.data.is.saved.success");
+            }else{
+                actionResponse.setRenderParameter("error", "global.data.is.wrong");
+            }
+        }catch (Exception e){
+            log.error(e.getMessage(), e);
+            actionResponse.setRenderParameter("error", "global.data.is.wrong");
+        }
+    }
+
+
 }
