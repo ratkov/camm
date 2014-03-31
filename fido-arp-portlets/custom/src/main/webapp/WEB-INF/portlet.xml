@@ -137,12 +137,22 @@
         <display-name>FidoARP Users</display-name>
         <portlet-class>com.fidoarp.portlet.UserPortlet</portlet-class>
         <init-param>
+            <name>edit-jsp</name>
+            <value>/html/jsp/portlet/users/edit/edit.jsp</value>
+        </init-param>
+        <init-param>
             <name>view-jsp</name>
             <value>/html/jsp/portlet/users/view/view.jsp</value>
         </init-param>
         <expiration-cache>0</expiration-cache>
         <supports>
             <mime-type>text/html</mime-type>
+            <portlet-mode>VIEW</portlet-mode>
+        </supports>
+        <supports>
+            <mime-type>text/html</mime-type>
+            <portlet-mode>EDIT</portlet-mode>
+            <window-state>NORMAL</window-state>
         </supports>
         <supported-locale>uk_UA</supported-locale>
         <supported-locale>ru_RU</supported-locale>

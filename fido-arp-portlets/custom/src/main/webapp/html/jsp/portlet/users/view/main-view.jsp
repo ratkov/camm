@@ -23,6 +23,10 @@
 
 <hr/>
 
+<input type="hidden" value="${filterByStatusURL}" id="<portlet:namespace/>filterByStatusURL">
+<input type="hidden" id="paginator" value="${paginator}"/>
+<input type="hidden" value="${passwordUrl}" id="<portlet:namespace/>passwordUrl">
+
 <div id="<portlet:namespace/>userTable">
     <%@include file="user-table.jsp" %>
 </div>
@@ -36,9 +40,9 @@
         </div>
         <input type="hidden" name="userId" value="" id="<portlet:namespace/>userId">
 
-        <div><input type="radio" name="status" value="0"/> <liferay-ui:message key="user.status.active"/></div>
-        <div><input type="radio" name="status" value="1"/> <liferay-ui:message key="user.status.blocked"/></div>
-        <div><input type="radio" name="status" value="2"/> <liferay-ui:message key="user.status.disabled"/></div>
+        <div><input type="radio" name="status" value="0"/> <liferay-ui:message key="user.status.ACTIVE"/></div>
+        <div><input type="radio" name="status" value="1"/> <liferay-ui:message key="user.status.BLOCKED"/></div>
+        <div><input type="radio" name="status" value="2"/> <liferay-ui:message key="user.status.DISABLED"/></div>
 
     </form>
 

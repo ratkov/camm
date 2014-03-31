@@ -1,17 +1,20 @@
 package com.fidoarp.util;
 
 import com.fidoarp.UserStatus;
+import com.fidoarp.preferences.UserPreferences;
+import com.liferay.portal.kernel.dao.orm.DynamicQuery;
+import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
+import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.util.*;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
+import com.liferay.portlet.expando.model.ExpandoValue;
 import com.liferay.util.PwdGenerator;
 import com.liferay.util.portlet.PortletProps;
 import org.apache.commons.lang.StringUtils;
@@ -83,39 +86,23 @@ public class UsersUtil {
     public static void searchUsers(RenderRequest renderRequest) {
 
         List<User> userList = null;
-        int total = 0;
+        String url = PortalUtil.getCurrentURL(renderRequest);
+
         long partnerId = 0;
 
-        try {
-            String url = PortalUtil.getCurrentURL(renderRequest);
+        if (renderRequest.getParameter("partnerId") == null) {
 
-            if (renderRequest.getParameter("partnerId") == null) {
+            String urlParam = StringUtils.substringAfter(url, "partner=");
+            partnerId = urlParam.equals("") ? 0 : Long.parseLong(urlParam);
 
-                String urlParam = StringUtils.substringAfter(url, "partner/");
-                partnerId = urlParam.equals("") ? 0 : Long.parseLong(urlParam);
-            } else {
-                partnerId = Long.parseLong(renderRequest.getParameter("partnerId"));
-            }
-
-            total = partnerId == 0
-                    ? UserLocalServiceUtil.getUsersCount()
-                    : UserLocalServiceUtil.getOrganizationUsersCount(partnerId);
-
-            userList = partnerId == 0
-                    ? UserLocalServiceUtil.getUsers(0, total)
-                    : UserLocalServiceUtil.getOrganizationUsers(partnerId);
-
-
-
-        } catch (SystemException e) {
-            log.error("Could not get users cause " + e.getMessage());
+        } else {
+            partnerId = Long.parseLong(renderRequest.getParameter("partnerId"));
         }
+
+        userList = getUsers(renderRequest, partnerId);
 
         renderRequest.setAttribute("selectedPartnerId", partnerId);
         renderRequest.setAttribute("userList", userList);
-        renderRequest.setAttribute("total", total);
-        renderRequest.setAttribute("userList", userList);
-
     }
 
     public static String changeStatus(String status, String userId, long companyId) {
@@ -295,4 +282,82 @@ public class UsersUtil {
         return result;
     }
 
+    private static List<User> getUsers(RenderRequest renderRequest, long partnerId) {
+        List<User> userList = new ArrayList<User>();
+
+        String action = renderRequest.getParameter("action");
+        String status = renderRequest.getParameter("status");
+
+        UserPreferences preferences = UserPreferencesUtil.getPreferences(renderRequest);
+
+        int itemCount = preferences.getItemCount();
+        int cpage = GetterUtil.getInteger(renderRequest.getParameter("cpage"), 1);
+
+        int usersCount = 0;
+        int remainder = 0;
+        int count = 0;
+
+        try {
+
+            if (StringUtils.equals("filterByStatus", action)
+                    && !StringUtils.equals("-1", status)) {
+
+                ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+                DynamicQuery expando = DynamicQueryFactoryUtil
+                        .forClass(ExpandoValue.class, classLoader)
+                        .add(PropertyFactoryUtil.forName("data").eq(status));
+
+                List<ExpandoValue> expandoValues = UserLocalServiceUtil.dynamicQuery(expando);
+                List<Long> userIds = new ArrayList<Long>();
+
+                for (ExpandoValue value : expandoValues) {
+                    userIds.add(value.getClassPK());
+                }
+
+                if (!userIds.isEmpty()) {
+
+                    usersCount = userIds.size();
+                    remainder = usersCount % itemCount;
+                    count = remainder == 0
+                            ? usersCount / itemCount
+                            : (usersCount / itemCount) + 1;
+
+                    DynamicQuery userQuery = DynamicQueryFactoryUtil
+                            .forClass(User.class, classLoader)
+                            .add(PropertyFactoryUtil.forName("userId").in(userIds.toArray()));
+
+                    userQuery.setLimit((cpage - 1) * itemCount, cpage * itemCount);
+                    userList = UserLocalServiceUtil.dynamicQuery(userQuery);
+                }
+
+                renderRequest.setAttribute("selectedStatus", status);
+
+            } else {
+
+                usersCount = partnerId == 0
+                        ? UserLocalServiceUtil.getUsersCount()
+                        : UserLocalServiceUtil.getOrganizationUsersCount(partnerId);
+
+                remainder = usersCount % itemCount;
+                count = remainder == 0
+                        ? usersCount / itemCount
+                        : (usersCount / itemCount) + 1;
+
+                // TODO Need to check!!!
+                int lastIndex = usersCount <= itemCount ? cpage * usersCount : cpage * itemCount;
+
+                userList = partnerId == 0
+                        ? UserLocalServiceUtil.getUsers((cpage - 1) * itemCount, cpage * itemCount)
+                        : UserLocalServiceUtil.getOrganizationUsers(partnerId).subList((cpage - 1) * itemCount, lastIndex);
+            }
+
+            renderRequest.setAttribute("cpage", cpage);
+            renderRequest.setAttribute("total", count);
+
+        } catch (SystemException e) {
+            log.error(e.getMessage(), e);
+        }
+
+        return userList;
+    }
 }

@@ -50,7 +50,10 @@ public class UserPortlet extends FidoMVCPortlet {
 
                 if (addView(renderRequest, renderResponse, partners)) return;
 
-            } else if (StringUtils.equals("filterUser", action)) {
+            } else if (StringUtils.equals("filterUser", action)
+                    || StringUtils.equals("filterByStatus", action)
+                    || StringUtils.equals("pagination", action)) {
+
                 getPortletContext().getRequestDispatcher("/html/jsp/portlet/users/view/user-table.jsp").include(renderRequest, renderResponse);
                 return;
             }

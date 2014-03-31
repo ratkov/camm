@@ -16,8 +16,17 @@
     <portlet:param name="action" value="filterUser"/>
 </portlet:renderURL>
 
+<portlet:renderURL var="filterByStatusURL" windowState="${exclusive}" portletMode="view">
+    <portlet:param name="action" value="filterByStatus"/>
+</portlet:renderURL>
+
 <portlet:renderURL var="addUser" windowState="${exclusive}" portletMode="view">
     <portlet:param name="action" value="addUser"/>
 </portlet:renderURL>
 
+<portlet:renderURL var="paginator" windowState="${exclusive}">
+    <portlet:param name="action" value="pagination"/>
+</portlet:renderURL>
+
 <portlet:renderURL var="mainViewUrl" portletMode="view" windowState="${normal}" />
+<portlet:actionURL  var="saveSettings" name="saveSettings" />

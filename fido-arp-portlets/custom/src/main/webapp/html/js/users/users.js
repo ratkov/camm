@@ -105,7 +105,7 @@ UsersProcessor = Class.extend({
 
         });
 
-        // Filter users
+        // Filter users by partner
         $("#" + namespace + "partners").change(function (e) {
 
             var $partner = $("#" + namespace + "partners option:selected").val(),
@@ -113,11 +113,33 @@ UsersProcessor = Class.extend({
 
             if (history.pushState) {
                 var $param = $partner == 0 ? '' : $partner;
-                history.pushState(null, document.title, window.location.pathname + "?partner/" + $param);
+                history.pushState(null, document.title, window.location.pathname + "?partner=" + $param);
             }
 
             $.ajax({
                 data: {
+                    partnerId: $partner
+                },
+                type: "POST",
+                url: $url,
+                success: function (data) {
+                    $('#' + namespace + 'userTable').empty().html(data);
+                }
+
+            });
+
+        });
+
+        // Filter users by status
+        $(document).on("change", "#" + namespace + "filterStatus", function (e) {
+
+            var $filter = $("#" + namespace + "filterStatus option:selected").val(),
+                $partner = $("#" + namespace + "partners option:selected").val(),
+                $url = $("#" + namespace + "filterByStatusURL").val();
+
+            $.ajax({
+                data: {
+                    status: $filter,
                     partnerId: $partner
                 },
                 type: "POST",
@@ -191,6 +213,34 @@ UsersProcessor = Class.extend({
             $inputIdField.val($userId);
 
         });
+
+        if ($(".pagination").length) {
+            $(document).on("click", ".pagination a", function (e) {
+                if ($(this).parent().hasClass("disabled"))
+                    return;
+
+                e.preventDefault();
+                $(document.body).append("<div id='modal-window' class='ui-widget-overlay ui-front' style='display: block;'></div>");
+
+                var url = $("#paginator").val(),
+                    data = {
+                        cpage: $(this).data("page"),
+                        partnerId: $("#" + namespace + "partners option:selected").val()
+                    };
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: data,
+                    success: function (data) {
+                        $('#' + namespace + 'userTable').empty().html(data);
+                        $("#modal-window").remove();
+                    }, error: function () {
+                        $("#modal-window").remove();
+                    }
+                })
+            });
+        }
 
     },
 
