@@ -33,9 +33,12 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.CacheModel;
 import com.liferay.portal.model.ModelListener;
 import com.liferay.portal.service.persistence.BatchSessionUtil;
+import com.liferay.portal.service.persistence.OrganizationPersistence;
 import com.liferay.portal.service.persistence.ResourcePersistence;
 import com.liferay.portal.service.persistence.UserPersistence;
 import com.liferay.portal.service.persistence.impl.BasePersistenceImpl;
+
+import com.liferay.portlet.dynamicdatamapping.service.persistence.DDMTemplatePersistence;
 
 import java.io.Serializable;
 
@@ -173,10 +176,14 @@ public class ProductTypePersistenceImpl extends BasePersistenceImpl<ProductType>
     protected FidoBranchPersistence fidoBranchPersistence;
     @BeanReference(type = ProductTypePersistence.class)
     protected ProductTypePersistence productTypePersistence;
+    @BeanReference(type = OrganizationPersistence.class)
+    protected OrganizationPersistence organizationPersistence;
     @BeanReference(type = ResourcePersistence.class)
     protected ResourcePersistence resourcePersistence;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+    @BeanReference(type = DDMTemplatePersistence.class)
+    protected DDMTemplatePersistence ddmTemplatePersistence;
 
     /**
      * Caches the product type in the entity cache if it is enabled.

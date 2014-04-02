@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.service.UserLocalServiceUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
@@ -16,10 +17,10 @@ public class AppWrapper {
     private long _appId;
     private String _user;
     private long _organizationId;
-    private Date _createdDate;
+    private String _createdDate;
     private String _description;
     private String _status;
-    private Date _statusChangeDate;
+    private String _statusChangeDate;
     private String _clientName;
     private String _clientOkpo;
     private String _contactPhone;
@@ -32,10 +33,14 @@ public class AppWrapper {
             this._appId = app.getAppId();
             this._user = UserLocalServiceUtil.getUser(app.getUserId()).getScreenName();
             this._organizationId = app.getOrganizationId();
-            this._createdDate = app.getCreatedDate();
+            this._createdDate = app.getCreatedDate() != null
+                  ? new SimpleDateFormat("dd.MM.yyyy").format(app.getCreatedDate())
+                  : null;
             this._description = app.getDescription(locale);
             this._status = AppStatusLocalServiceUtil.getAppStatus(app.getStatusId()).getName(locale);
-            this._statusChangeDate = app.getStatusChangeDate();
+            this._statusChangeDate = app.getStatusChangeDate() != null
+                                     ? new SimpleDateFormat("dd.MM.yyyy").format(app.getStatusChangeDate())
+                                     : null;
             this._clientName = app.getClientName();
             this._clientOkpo = app.getClientOkpo();
             this._contactPhone = app.getContactPhone();
@@ -59,7 +64,7 @@ public class AppWrapper {
         return _organizationId;
     }
 
-    public Date getCreatedDate() {
+    public String getCreatedDate() {
         return _createdDate;
     }
 
@@ -71,7 +76,7 @@ public class AppWrapper {
         return _status;
     }
 
-    public Date getStatusChangeDate() {
+    public String getStatusChangeDate() {
         return _statusChangeDate;
     }
 

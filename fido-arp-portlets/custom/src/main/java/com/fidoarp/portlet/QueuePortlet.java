@@ -23,10 +23,16 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.model.User;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portlet.asset.model.AssetEntry;
+import com.liferay.portlet.asset.model.AssetVocabulary;
+import com.liferay.portlet.asset.service.AssetCategoryLocalServiceUtil;
+import com.liferay.portlet.asset.service.AssetEntryLocalServiceUtil;
+import com.liferay.portlet.asset.service.AssetVocabularyServiceUtil;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
@@ -231,10 +237,13 @@ public class QueuePortlet extends FidoMVCPortlet  {
                         //set phone
                         String contactPhone = jsonObject.getString("mobilePhone", "");
                         app.setContactPhone(contactPhone);
-                        if(isNew)
+                        if(isNew){
+                            app.setStatusChangeDate(new Date());
                             AppLocalServiceUtil.addApp(app);
-                        else
+                        }
+                        else{
                             AppLocalServiceUtil.updateApp(app);
+                        }
                         actionRequest.setAttribute("info", "queues.data.is.saved.success");
                     }
                 }else{

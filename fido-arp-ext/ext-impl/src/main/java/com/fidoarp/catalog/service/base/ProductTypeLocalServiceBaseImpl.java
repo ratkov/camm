@@ -27,13 +27,20 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.service.BaseLocalServiceImpl;
+import com.liferay.portal.service.OrganizationLocalService;
+import com.liferay.portal.service.OrganizationService;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.service.ResourceLocalService;
 import com.liferay.portal.service.ResourceService;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.service.UserService;
+import com.liferay.portal.service.persistence.OrganizationPersistence;
 import com.liferay.portal.service.persistence.ResourcePersistence;
 import com.liferay.portal.service.persistence.UserPersistence;
+
+import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateLocalService;
+import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateService;
+import com.liferay.portlet.dynamicdatamapping.service.persistence.DDMTemplatePersistence;
 
 import java.io.Serializable;
 
@@ -78,6 +85,12 @@ public abstract class ProductTypeLocalServiceBaseImpl
     protected ProductTypePersistence productTypePersistence;
     @BeanReference(type = CounterLocalService.class)
     protected CounterLocalService counterLocalService;
+    @BeanReference(type = OrganizationLocalService.class)
+    protected OrganizationLocalService organizationLocalService;
+    @BeanReference(type = OrganizationService.class)
+    protected OrganizationService organizationService;
+    @BeanReference(type = OrganizationPersistence.class)
+    protected OrganizationPersistence organizationPersistence;
     @BeanReference(type = ResourceLocalService.class)
     protected ResourceLocalService resourceLocalService;
     @BeanReference(type = ResourceService.class)
@@ -90,6 +103,12 @@ public abstract class ProductTypeLocalServiceBaseImpl
     protected UserService userService;
     @BeanReference(type = UserPersistence.class)
     protected UserPersistence userPersistence;
+    @BeanReference(type = DDMTemplateLocalService.class)
+    protected DDMTemplateLocalService ddmTemplateLocalService;
+    @BeanReference(type = DDMTemplateService.class)
+    protected DDMTemplateService ddmTemplateService;
+    @BeanReference(type = DDMTemplatePersistence.class)
+    protected DDMTemplatePersistence ddmTemplatePersistence;
     @BeanReference(type = PersistedModelLocalServiceRegistry.class)
     protected PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry;
     private String _beanIdentifier;
@@ -511,6 +530,62 @@ public abstract class ProductTypeLocalServiceBaseImpl
     }
 
     /**
+     * Returns the organization local service.
+     *
+     * @return the organization local service
+     */
+    public OrganizationLocalService getOrganizationLocalService() {
+        return organizationLocalService;
+    }
+
+    /**
+     * Sets the organization local service.
+     *
+     * @param organizationLocalService the organization local service
+     */
+    public void setOrganizationLocalService(
+        OrganizationLocalService organizationLocalService) {
+        this.organizationLocalService = organizationLocalService;
+    }
+
+    /**
+     * Returns the organization remote service.
+     *
+     * @return the organization remote service
+     */
+    public OrganizationService getOrganizationService() {
+        return organizationService;
+    }
+
+    /**
+     * Sets the organization remote service.
+     *
+     * @param organizationService the organization remote service
+     */
+    public void setOrganizationService(OrganizationService organizationService) {
+        this.organizationService = organizationService;
+    }
+
+    /**
+     * Returns the organization persistence.
+     *
+     * @return the organization persistence
+     */
+    public OrganizationPersistence getOrganizationPersistence() {
+        return organizationPersistence;
+    }
+
+    /**
+     * Sets the organization persistence.
+     *
+     * @param organizationPersistence the organization persistence
+     */
+    public void setOrganizationPersistence(
+        OrganizationPersistence organizationPersistence) {
+        this.organizationPersistence = organizationPersistence;
+    }
+
+    /**
      * Returns the resource local service.
      *
      * @return the resource local service
@@ -617,6 +692,62 @@ public abstract class ProductTypeLocalServiceBaseImpl
      */
     public void setUserPersistence(UserPersistence userPersistence) {
         this.userPersistence = userPersistence;
+    }
+
+    /**
+     * Returns the d d m template local service.
+     *
+     * @return the d d m template local service
+     */
+    public DDMTemplateLocalService getDDMTemplateLocalService() {
+        return ddmTemplateLocalService;
+    }
+
+    /**
+     * Sets the d d m template local service.
+     *
+     * @param ddmTemplateLocalService the d d m template local service
+     */
+    public void setDDMTemplateLocalService(
+        DDMTemplateLocalService ddmTemplateLocalService) {
+        this.ddmTemplateLocalService = ddmTemplateLocalService;
+    }
+
+    /**
+     * Returns the d d m template remote service.
+     *
+     * @return the d d m template remote service
+     */
+    public DDMTemplateService getDDMTemplateService() {
+        return ddmTemplateService;
+    }
+
+    /**
+     * Sets the d d m template remote service.
+     *
+     * @param ddmTemplateService the d d m template remote service
+     */
+    public void setDDMTemplateService(DDMTemplateService ddmTemplateService) {
+        this.ddmTemplateService = ddmTemplateService;
+    }
+
+    /**
+     * Returns the d d m template persistence.
+     *
+     * @return the d d m template persistence
+     */
+    public DDMTemplatePersistence getDDMTemplatePersistence() {
+        return ddmTemplatePersistence;
+    }
+
+    /**
+     * Sets the d d m template persistence.
+     *
+     * @param ddmTemplatePersistence the d d m template persistence
+     */
+    public void setDDMTemplatePersistence(
+        DDMTemplatePersistence ddmTemplatePersistence) {
+        this.ddmTemplatePersistence = ddmTemplatePersistence;
     }
 
     public void afterPropertiesSet() {

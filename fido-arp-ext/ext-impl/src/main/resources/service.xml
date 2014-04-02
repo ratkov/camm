@@ -29,6 +29,8 @@
             <finder-column name="organizationId" />
             <finder-column name="status" />
         </finder>
+        <reference package-path="com.liferay.portal" entity="Organization" />
+        <reference package-path="com.liferay.portlet.dynamicdatamapping" entity="DDMTemplate" />
     </entity>
     <entity name="AppStatus" table="fido_app_status" uuid="false" local-service="true" remote-service="false">
         <!-- PK fields -->
@@ -75,6 +77,9 @@
         <finder return-type="Collection" name="User">
             <finder-column name="userId" />
         </finder>
+
+        <reference package-path="com.liferay.portal" entity="Organization" />
+        <reference package-path="com.liferay.portal" entity="User" />
     </entity>
 
     <entity name="Dictionary" table="fido_dict" uuid="false"

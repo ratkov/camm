@@ -1,3 +1,5 @@
+create index IX_5886D11D on fido_app (created_date, client_name, client_okpo, contact_phone, credit_amount, comments, status_id, user_id);
+create index IX_3B00596C on fido_app (id, created_date, client_name, client_okpo, contact_phone, credit_amount, comments, status_id, user_id);
 create index IX_631B5389 on fido_app (user_id);
 
 create unique index IX_53319108 on fido_app_status (code);

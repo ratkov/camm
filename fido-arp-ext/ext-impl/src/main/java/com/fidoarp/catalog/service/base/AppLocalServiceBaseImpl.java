@@ -27,11 +27,14 @@ import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.model.PersistedModel;
 import com.liferay.portal.service.BaseLocalServiceImpl;
+import com.liferay.portal.service.OrganizationLocalService;
+import com.liferay.portal.service.OrganizationService;
 import com.liferay.portal.service.PersistedModelLocalServiceRegistry;
 import com.liferay.portal.service.ResourceLocalService;
 import com.liferay.portal.service.ResourceService;
 import com.liferay.portal.service.UserLocalService;
 import com.liferay.portal.service.UserService;
+import com.liferay.portal.service.persistence.OrganizationPersistence;
 import com.liferay.portal.service.persistence.ResourcePersistence;
 import com.liferay.portal.service.persistence.UserPersistence;
 
@@ -77,6 +80,12 @@ public abstract class AppLocalServiceBaseImpl extends BaseLocalServiceImpl
     protected ProductTypePersistence productTypePersistence;
     @BeanReference(type = CounterLocalService.class)
     protected CounterLocalService counterLocalService;
+    @BeanReference(type = OrganizationLocalService.class)
+    protected OrganizationLocalService organizationLocalService;
+    @BeanReference(type = OrganizationService.class)
+    protected OrganizationService organizationService;
+    @BeanReference(type = OrganizationPersistence.class)
+    protected OrganizationPersistence organizationPersistence;
     @BeanReference(type = ResourceLocalService.class)
     protected ResourceLocalService resourceLocalService;
     @BeanReference(type = ResourceService.class)
@@ -498,6 +507,62 @@ public abstract class AppLocalServiceBaseImpl extends BaseLocalServiceImpl
      */
     public void setCounterLocalService(CounterLocalService counterLocalService) {
         this.counterLocalService = counterLocalService;
+    }
+
+    /**
+     * Returns the organization local service.
+     *
+     * @return the organization local service
+     */
+    public OrganizationLocalService getOrganizationLocalService() {
+        return organizationLocalService;
+    }
+
+    /**
+     * Sets the organization local service.
+     *
+     * @param organizationLocalService the organization local service
+     */
+    public void setOrganizationLocalService(
+        OrganizationLocalService organizationLocalService) {
+        this.organizationLocalService = organizationLocalService;
+    }
+
+    /**
+     * Returns the organization remote service.
+     *
+     * @return the organization remote service
+     */
+    public OrganizationService getOrganizationService() {
+        return organizationService;
+    }
+
+    /**
+     * Sets the organization remote service.
+     *
+     * @param organizationService the organization remote service
+     */
+    public void setOrganizationService(OrganizationService organizationService) {
+        this.organizationService = organizationService;
+    }
+
+    /**
+     * Returns the organization persistence.
+     *
+     * @return the organization persistence
+     */
+    public OrganizationPersistence getOrganizationPersistence() {
+        return organizationPersistence;
+    }
+
+    /**
+     * Sets the organization persistence.
+     *
+     * @param organizationPersistence the organization persistence
+     */
+    public void setOrganizationPersistence(
+        OrganizationPersistence organizationPersistence) {
+        this.organizationPersistence = organizationPersistence;
     }
 
     /**

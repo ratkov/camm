@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<project name="maven-antrun-" default="main"  >
-<target name="main">
-  <copy file="D:\Portlets\Liferay_6_1_1\camm\fido-arp-ext\ext\target/ext-0.0.1-SNAPSHOT/WEB-INF/ext-service/ext-service.jar" tofile="D:\Portlets\Liferay_6_1_1\camm\fido-arp-ext\ext\target/ext-0.0.1-SNAPSHOT/WEB-INF/ext-lib/global/ext-service.jar" overwrite="true"/>
-  <copy file="D:\Portlets\Liferay_6_1_1\camm\fido-arp-ext\ext\target/ext-0.0.1-SNAPSHOT/WEB-INF/ext-impl/ext-impl.jar" tofile="D:\Portlets\Liferay_6_1_1\camm\fido-arp-ext\ext\target/ext-0.0.1-SNAPSHOT/WEB-INF/ext-lib/portal/ext-impl.jar" overwrite="true"/>
-</target>
-</project>

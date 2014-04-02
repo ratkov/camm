@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<project name="maven-antrun-" default="main"  >
-<target name="main">
-  <copy file="D:\Portlets\Liferay_6_1_1\camm\fido-arp-ext\ext-web\target/ext-web-0.0.1-SNAPSHOT/WEB-INF/classes/portal-ext.properties" tofile="D:/LIFERAY/6.1.1/liferay-portal-6.1.1-ce-ga2_fido-arp/tomcat-7.0.27/webapps/ROOT/WEB-INF/classes/portal-ext.properties" overwrite="true"/>
-</target>
-</project>
