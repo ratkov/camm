@@ -1,5 +1,6 @@
 package com.fidoarp.catalog.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
 import java.util.Date;
@@ -118,7 +119,7 @@ public class AppWrapper implements App, ModelWrapper<App> {
             setContactPhone(contactPhone);
         }
 
-        Integer creditAmount = (Integer) attributes.get("creditAmount");
+        Double creditAmount = (Double) attributes.get("creditAmount");
 
         if (creditAmount != null) {
             setCreditAmount(creditAmount);
@@ -488,7 +489,7 @@ public class AppWrapper implements App, ModelWrapper<App> {
     *
     * @return the credit amount of this app
     */
-    public int getCreditAmount() {
+    public java.lang.Double getCreditAmount() {
         return _app.getCreditAmount();
     }
 
@@ -497,7 +498,7 @@ public class AppWrapper implements App, ModelWrapper<App> {
     *
     * @param creditAmount the credit amount of this app
     */
-    public void setCreditAmount(int creditAmount) {
+    public void setCreditAmount(java.lang.Double creditAmount) {
         _app.setCreditAmount(creditAmount);
     }
 
@@ -694,7 +695,7 @@ public class AppWrapper implements App, ModelWrapper<App> {
         return new AppWrapper((App) _app.clone());
     }
 
-    public int compareTo(App app) {
+    public int compareTo(com.fidoarp.catalog.model.App app) {
         return _app.compareTo(app);
     }
 
@@ -703,12 +704,16 @@ public class AppWrapper implements App, ModelWrapper<App> {
         return _app.hashCode();
     }
 
-    public com.liferay.portal.model.CacheModel<App> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.fidoarp.catalog.model.App> toCacheModel() {
         return _app.toCacheModel();
     }
 
-    public App toEscapedModel() {
+    public com.fidoarp.catalog.model.App toEscapedModel() {
         return new AppWrapper(_app.toEscapedModel());
+    }
+
+    public com.fidoarp.catalog.model.App toUnescapedModel() {
+        return new AppWrapper(_app.toUnescapedModel());
     }
 
     @Override
@@ -723,6 +728,25 @@ public class AppWrapper implements App, ModelWrapper<App> {
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _app.persist();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof AppWrapper)) {
+            return false;
+        }
+
+        AppWrapper appWrapper = (AppWrapper) obj;
+
+        if (Validator.equals(_app, appWrapper._app)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

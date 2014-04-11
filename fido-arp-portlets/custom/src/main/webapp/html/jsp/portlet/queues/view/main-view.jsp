@@ -8,23 +8,16 @@
     </div>
     <div class="navbar-right">
         <a href="javascript:void(0);" class="btn btn-info"><liferay-ui:message key="queues.export.to.excel"/></a>
-        <a href="javascript:void(0);" class="btn btn-default"><liferay-ui:message key="queues.search"/></a>
+        <a href="javascript:void(0);" id="showSearch" class="btn btn-default" data-show="search-box"><liferay-ui:message key="queues.search"/></a>
     </div>
 </div>
+<div class="panel-search <c:if test="${isSearch}">show</c:if>" id="search-box">
+    <c:import url="search.jsp"/>
+</div>
+
 <div class="panel panel-default">
     <table class="table table-striped table-hover">
         <thead>
-        <tr class="panel-header">
-            <th><input type="text" /></th>
-            <th><input type="text" /></th>
-            <th><input type="text" /></th>
-            <th><input type="text" /></th>
-            <th><input type="text" /></th>
-            <th><input type="text" /></th>
-            <th><input type="text" /></th>
-            <th><input type="text" /></th>
-            <th><input type="text" /></th>
-        </tr>
         <tr>
             <th><liferay-ui:message key="queues.query.id"/></th>
             <th><liferay-ui:message key="queues.query.date"/></th>

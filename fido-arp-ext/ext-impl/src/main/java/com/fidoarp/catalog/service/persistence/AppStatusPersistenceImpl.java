@@ -213,9 +213,43 @@ public class AppStatusPersistenceImpl extends BasePersistenceImpl<AppStatus>
         }
     }
 
+    protected void cacheUniqueFindersCache(AppStatus appStatus) {
+        if (appStatus.isNew()) {
+            Object[] args = new Object[] { appStatus.getAppStatusCode() };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CODE, args,
+                Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CODE, args, appStatus);
+        } else {
+            AppStatusModelImpl appStatusModelImpl = (AppStatusModelImpl) appStatus;
+
+            if ((appStatusModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_CODE.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] { appStatus.getAppStatusCode() };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CODE, args,
+                    Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CODE, args,
+                    appStatus);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(AppStatus appStatus) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CODE,
-            new Object[] { appStatus.getAppStatusCode() });
+        AppStatusModelImpl appStatusModelImpl = (AppStatusModelImpl) appStatus;
+
+        Object[] args = new Object[] { appStatus.getAppStatusCode() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CODE, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CODE, args);
+
+        if ((appStatusModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_CODE.getColumnBitmask()) != 0) {
+            args = new Object[] { appStatusModelImpl.getOriginalAppStatusCode() };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CODE, args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CODE, args);
+        }
     }
 
     /**
@@ -313,8 +347,6 @@ public class AppStatusPersistenceImpl extends BasePersistenceImpl<AppStatus>
 
         boolean isNew = appStatus.isNew();
 
-        AppStatusModelImpl appStatusModelImpl = (AppStatusModelImpl) appStatus;
-
         Session session = null;
 
         try {
@@ -338,24 +370,8 @@ public class AppStatusPersistenceImpl extends BasePersistenceImpl<AppStatus>
         EntityCacheUtil.putResult(AppStatusModelImpl.ENTITY_CACHE_ENABLED,
             AppStatusImpl.class, appStatus.getPrimaryKey(), appStatus);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CODE,
-                new Object[] { appStatus.getAppStatusCode() }, appStatus);
-        } else {
-            if ((appStatusModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_CODE.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        appStatusModelImpl.getOriginalAppStatusCode()
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CODE, args);
-
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CODE, args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CODE,
-                    new Object[] { appStatus.getAppStatusCode() }, appStatus);
-            }
-        }
+        clearUniqueFindersCache(appStatus);
+        cacheUniqueFindersCache(appStatus);
 
         return appStatus;
     }
@@ -862,8 +878,10 @@ public class AppStatusPersistenceImpl extends BasePersistenceImpl<AppStatus>
                 List<ModelListener<AppStatus>> listenersList = new ArrayList<ModelListener<AppStatus>>();
 
                 for (String listenerClassName : listenerClassNames) {
+                    Class<?> clazz = getClass();
+
                     listenersList.add((ModelListener<AppStatus>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            clazz.getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);

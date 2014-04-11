@@ -19,6 +19,8 @@ public class QuestionnaryDictionaryUtil {
     /** The Constant LOG. */
     private final static Log LOG = LogFactoryUtil.getLog(QuestionnaryDictionaryUtil.class);
 
+    private static FidoARPUtils fidoARPUtils = new FidoARPUtils();
+
     public static List<DetailsPair> getSex(Locale locale) {
         return getList(locale, "SEX_MF");
     }
@@ -200,7 +202,8 @@ public class QuestionnaryDictionaryUtil {
 
     private static List<DetailsPair> getList(Locale locale, int max, String prefix) {
         List<DetailsPair> retValue = new ArrayList<DetailsPair>(0);
-        ResourceBundle res = ResourceBundle.getBundle("i18n.dictionary.DictionaryResource", locale);
+
+        ResourceBundle res = fidoARPUtils.getResourceBundle("/i18n/dictionary/DictionaryResource", locale, "UTF-8");
         for (int i = 1; i < max; i++) {
             DetailsPair pair = new DetailsPair();
             pair.setLeft(String.valueOf(i));
@@ -294,7 +297,7 @@ public class QuestionnaryDictionaryUtil {
 
     public static List<DetailsPair> getFidoAims(Locale locale) {
         List<DetailsPair> retValue = getList(locale, "FIDO_AIM");
-        ResourceBundle res = ResourceBundle.getBundle("i18n.checkout.Resource", locale);
+        ResourceBundle res = fidoARPUtils.getResourceBundle("/i18n/Resource", locale, "UTF-8");
         retValue.add(new DetailsPair("0", res.getString("checkout.other")));
         return retValue;
     }

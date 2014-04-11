@@ -250,6 +250,26 @@ public class AppLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    public static java.util.List<com.fidoarp.catalog.model.App> getSearchResult(
+        long id, java.util.Date startDate, java.util.Date endDate,
+        java.lang.String name, java.lang.String okpo, java.lang.String phone,
+        double creditAmount, long statusId, java.lang.String comment,
+        long userId, int start, int end) {
+        return getService()
+                   .getSearchResult(id, startDate, endDate, name, okpo, phone,
+            creditAmount, statusId, comment, userId, start, end);
+    }
+
+    public static java.lang.Integer getSearchResultCount(long id,
+        java.util.Date startDate, java.util.Date endDate,
+        java.lang.String name, java.lang.String okpo, java.lang.String phone,
+        double creditAmount, long statusId, java.lang.String comment,
+        long userId) {
+        return getService()
+                   .getSearchResultCount(id, startDate, endDate, name, okpo,
+            phone, creditAmount, statusId, comment, userId);
+    }
+
     public static AppLocalService getService() {
         if (_service == null) {
             _service = (AppLocalService) PortalBeanLocatorUtil.locate(AppLocalService.class.getName());

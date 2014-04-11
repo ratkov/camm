@@ -76,7 +76,7 @@ public class AppStatusModelImpl extends BaseModelImpl<AppStatus>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
                 "lock.expiration.time.com.fidoarp.catalog.model.AppStatus"));
     private static ClassLoader _classLoader = AppStatus.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             AppStatus.class
         };
     private long _appStatusId;
@@ -87,7 +87,7 @@ public class AppStatusModelImpl extends BaseModelImpl<AppStatus>
     private String _description;
     private String _descriptionCurrentLanguageId;
     private long _columnBitmask;
-    private AppStatus _escapedModelProxy;
+    private AppStatus _escapedModel;
 
     public AppStatusModelImpl() {
     }
@@ -392,13 +392,16 @@ public class AppStatusModelImpl extends BaseModelImpl<AppStatus>
 
     @Override
     public AppStatus toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (AppStatus) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (AppStatus) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
+    }
+
+    public AppStatus toUnescapedModel() {
+        return (AppStatus) this;
     }
 
     @Override
@@ -435,17 +438,15 @@ public class AppStatusModelImpl extends BaseModelImpl<AppStatus>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof AppStatus)) {
             return false;
         }
 
-        AppStatus appStatus = null;
-
-        try {
-            appStatus = (AppStatus) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        AppStatus appStatus = (AppStatus) obj;
 
         long primaryKey = appStatus.getPrimaryKey();
 

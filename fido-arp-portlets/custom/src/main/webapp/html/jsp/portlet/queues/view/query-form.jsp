@@ -10,7 +10,7 @@
         <div>
             <a href="#" class="btn btn-default"><liferay-ui:message key="global.save"/></a>
             <a href="#" class="btn btn-default"><liferay-ui:message key="global.download.xml"/></a>
-            <a href="#" class="btn btn-default"><liferay-ui:message key="global.sent"/></a>
+            <a href="#" class="btn btn-default"><liferay-ui:message key="global.send"/></a>
         </div>
 
         <hr/>

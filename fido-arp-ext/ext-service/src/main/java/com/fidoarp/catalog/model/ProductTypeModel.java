@@ -356,6 +356,8 @@ public interface ProductTypeModel extends BaseModel<ProductType> {
 
     public ProductType toEscapedModel();
 
+    public ProductType toUnescapedModel();
+
     public String toString();
 
     public String toXmlString();

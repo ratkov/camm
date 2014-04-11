@@ -81,7 +81,7 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
                 "lock.expiration.time.com.fidoarp.catalog.model.ProductType"));
     private static ClassLoader _classLoader = ProductType.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
+    private static Class<?>[] _escapedModelInterfaces = new Class[] {
             ProductType.class
         };
     private long _productTypeId;
@@ -99,7 +99,7 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
     private boolean _setOriginalOrganizationId;
     private long _templateId;
     private long _columnBitmask;
-    private ProductType _escapedModelProxy;
+    private ProductType _escapedModel;
 
     public ProductTypeModelImpl() {
     }
@@ -477,13 +477,16 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
 
     @Override
     public ProductType toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (ProductType) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (ProductType) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
+    }
+
+    public ProductType toUnescapedModel() {
+        return (ProductType) this;
     }
 
     @Override
@@ -523,17 +526,15 @@ public class ProductTypeModelImpl extends BaseModelImpl<ProductType>
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProductType)) {
             return false;
         }
 
-        ProductType productType = null;
-
-        try {
-            productType = (ProductType) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        ProductType productType = (ProductType) obj;
 
         long primaryKey = productType.getPrimaryKey();
 

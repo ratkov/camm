@@ -307,6 +307,8 @@ public interface AppStatusModel extends BaseModel<AppStatus> {
 
     public AppStatus toEscapedModel();
 
+    public AppStatus toUnescapedModel();
+
     public String toString();
 
     public String toXmlString();

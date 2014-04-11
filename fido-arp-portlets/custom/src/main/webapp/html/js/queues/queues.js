@@ -25,9 +25,46 @@ function setEvents() {
 
     setEditEvent();
 
+    setSearchEvents();
+
     setPaginationEvents();
 }
 
+function setSearchEvents(){
+    $("#showSearch").on("click", function(){
+        var id = $(this).data("show");
+        var $element = $("#"+id);
+        if($element.hasClass("show")){
+            $("#isSearch").val(false);
+            $element.removeClass("show");
+        }else{
+            $("#isSearch").val(true);
+            $element.addClass("show");
+        }
+    });
+
+    $( "#from" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 3,
+        regional:["uk"],
+        dateFormat:"dd.mm.yy",
+        onClose: function( selectedDate ) {
+            $( "#to" ).datepicker( "option", "minDate", selectedDate );
+        }
+
+    });
+    $( "#to" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 3,
+        regional:["uk"],
+        dateFormat:"dd.mm.yy",
+        onClose: function( selectedDate ) {
+            $( "#from" ).datepicker( "option", "maxDate", selectedDate );
+        }
+    });
+}
 
 function setPaginationEvents() {
     if ($(".pagination").length) {
@@ -35,15 +72,19 @@ function setPaginationEvents() {
             if ($(this).parent().hasClass("disabled"))
                 return;
 
+            $(document.body).append("<div id='modal-window' style='display: block;'></div>");
+
             var url = $("#paginator").val();
-            var data = {
+            var json = {
                 cpage: $(this).data("page")
             };
+            var formJson = $("#search-box form").serializeObject();
+            formJson = $.extend(formJson, json);
             $.ajax({
                 type: "POST",
                 url: url,
-                data: data,
-                success: function (data) {
+                data: formJson,
+                success: function(data) {
                     $("#queues-view").html(data);
                     $("#modal-window").remove();
                     setEvents();
@@ -58,6 +99,7 @@ function setPaginationEvents() {
 function setEditEvent() {
     $(document).on("click", ".edit-query", function () {
         var url = $("#queryFormEdit").val();
+        $(document.body).append("<div id='modal-window' style='display: block;'></div>");
         var data = {
             appId: $(this).text(),
             cpage: $("#cpage").val()

@@ -1,5 +1,6 @@
 package com.fidoarp.catalog.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
 import java.util.HashMap;
@@ -507,7 +508,7 @@ public class ProductTypeWrapper implements ProductType,
         return new ProductTypeWrapper((ProductType) _productType.clone());
     }
 
-    public int compareTo(ProductType productType) {
+    public int compareTo(com.fidoarp.catalog.model.ProductType productType) {
         return _productType.compareTo(productType);
     }
 
@@ -516,12 +517,16 @@ public class ProductTypeWrapper implements ProductType,
         return _productType.hashCode();
     }
 
-    public com.liferay.portal.model.CacheModel<ProductType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.fidoarp.catalog.model.ProductType> toCacheModel() {
         return _productType.toCacheModel();
     }
 
-    public ProductType toEscapedModel() {
+    public com.fidoarp.catalog.model.ProductType toEscapedModel() {
         return new ProductTypeWrapper(_productType.toEscapedModel());
+    }
+
+    public com.fidoarp.catalog.model.ProductType toUnescapedModel() {
+        return new ProductTypeWrapper(_productType.toUnescapedModel());
     }
 
     @Override
@@ -536,6 +541,25 @@ public class ProductTypeWrapper implements ProductType,
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _productType.persist();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof ProductTypeWrapper)) {
+            return false;
+        }
+
+        ProductTypeWrapper productTypeWrapper = (ProductTypeWrapper) obj;
+
+        if (Validator.equals(_productType, productTypeWrapper._productType)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

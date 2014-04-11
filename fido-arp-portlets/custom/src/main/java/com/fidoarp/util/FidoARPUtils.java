@@ -10,7 +10,13 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Locale;
 import java.util.Properties;
+import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 
 public class FidoARPUtils {
 
@@ -42,8 +48,32 @@ public class FidoARPUtils {
 
             log.info("Sent message successfully..to .." + toMail);
         } catch (MessagingException e) {
-           log.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
         return sendMail;
     }
+
+    /* fileProperties = "/i18n/Resources" or "/i18n/.../Resources"
+     *  enc ="UTF-8" or .....
+     */
+    public ResourceBundle getResourceBundle(String fileProperties, Locale lc, String enc) {
+        ResourceBundle rb = null;
+        String fileSfx = ".properties";
+        if (!lc.toString().startsWith("en_")) {
+            fileProperties = fileProperties + "_" + lc.toString();
+        }
+        fileProperties = fileProperties + fileSfx;
+        InputStream in = getClass().getResourceAsStream(fileProperties);
+        if (in != null) {
+
+            try {
+                rb = new PropertyResourceBundle(new InputStreamReader(in, enc));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rb;
+    }
+
 }

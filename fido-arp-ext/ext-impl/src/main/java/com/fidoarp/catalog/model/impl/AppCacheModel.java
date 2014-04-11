@@ -29,7 +29,7 @@ public class AppCacheModel implements CacheModel<App>, Serializable {
     public String clientName;
     public String clientOkpo;
     public String contactPhone;
-    public int creditAmount;
+    public Double creditAmount;
     public String comments;
     public String questionnaire;
 

@@ -24,7 +24,7 @@ public class AppSoap implements Serializable {
     private String _clientName;
     private String _clientOkpo;
     private String _contactPhone;
-    private int _creditAmount;
+    private Double _creditAmount;
     private String _comments;
     private String _questionnaire;
 
@@ -184,11 +184,11 @@ public class AppSoap implements Serializable {
         _contactPhone = contactPhone;
     }
 
-    public int getCreditAmount() {
+    public Double getCreditAmount() {
         return _creditAmount;
     }
 
-    public void setCreditAmount(int creditAmount) {
+    public void setCreditAmount(Double creditAmount) {
         _creditAmount = creditAmount;
     }
 

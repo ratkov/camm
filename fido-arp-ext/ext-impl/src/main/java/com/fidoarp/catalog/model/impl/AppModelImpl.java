@@ -64,11 +64,11 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
             { "client_name", Types.VARCHAR },
             { "client_okpo", Types.VARCHAR },
             { "contact_phone", Types.VARCHAR },
-            { "credit_amount", Types.INTEGER },
+            { "credit_amount", Types.DOUBLE },
             { "comments", Types.VARCHAR },
             { "questionnaire", Types.VARCHAR }
         };
-    public static final String TABLE_SQL_CREATE = "create table fido_app (id LONG not null primary key,user_id LONG,organization_id LONG,created_date DATE null,description STRING null,status_id LONG,product_type_id LONG,status_change_date DATE null,client_name VARCHAR(75) null,client_okpo VARCHAR(75) null,contact_phone VARCHAR(75) null,credit_amount INTEGER,comments STRING null,questionnaire VARCHAR(75) null)";
+    public static final String TABLE_SQL_CREATE = "create table fido_app (id LONG not null primary key,user_id LONG,organization_id LONG,created_date DATE null,description STRING null,status_id LONG,product_type_id LONG,status_change_date DATE null,client_name VARCHAR(75) null,client_okpo VARCHAR(75) null,contact_phone VARCHAR(75) null,credit_amount DOUBLE,comments STRING null,questionnaire VARCHAR(75) null)";
     public static final String TABLE_SQL_DROP = "drop table fido_app";
     public static final String ORDER_BY_JPQL = " ORDER BY app.appId ASC";
     public static final String ORDER_BY_SQL = " ORDER BY fido_app.id ASC";
@@ -88,9 +88,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
                 "lock.expiration.time.com.fidoarp.catalog.model.App"));
     private static ClassLoader _classLoader = App.class.getClassLoader();
-    private static Class<?>[] _escapedModelProxyInterfaces = new Class[] {
-            App.class
-        };
+    private static Class<?>[] _escapedModelInterfaces = new Class[] { App.class };
     private long _appId;
     private long _userId;
     private String _userUuid;
@@ -106,12 +104,12 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     private String _clientName;
     private String _clientOkpo;
     private String _contactPhone;
-    private int _creditAmount;
+    private Double _creditAmount;
     private String _comments;
     private String _commentsCurrentLanguageId;
     private String _questionnaire;
     private long _columnBitmask;
-    private App _escapedModelProxy;
+    private App _escapedModel;
 
     public AppModelImpl() {
     }
@@ -230,7 +228,7 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
             setContactPhone(contactPhone);
         }
 
-        Integer creditAmount = (Integer) attributes.get("creditAmount");
+        Double creditAmount = (Double) attributes.get("creditAmount");
 
         if (creditAmount != null) {
             setCreditAmount(creditAmount);
@@ -453,11 +451,11 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
         _contactPhone = contactPhone;
     }
 
-    public int getCreditAmount() {
+    public Double getCreditAmount() {
         return _creditAmount;
     }
 
-    public void setCreditAmount(int creditAmount) {
+    public void setCreditAmount(Double creditAmount) {
         _creditAmount = creditAmount;
     }
 
@@ -589,13 +587,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
     @Override
     public App toEscapedModel() {
-        if (_escapedModelProxy == null) {
-            _escapedModelProxy = (App) ProxyUtil.newProxyInstance(_classLoader,
-                    _escapedModelProxyInterfaces,
-                    new AutoEscapeBeanHandler(this));
+        if (_escapedModel == null) {
+            _escapedModel = (App) ProxyUtil.newProxyInstance(_classLoader,
+                    _escapedModelInterfaces, new AutoEscapeBeanHandler(this));
         }
 
-        return _escapedModelProxy;
+        return _escapedModel;
+    }
+
+    public App toUnescapedModel() {
+        return (App) this;
     }
 
     @Override
@@ -642,17 +643,15 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof App)) {
             return false;
         }
 
-        App app = null;
-
-        try {
-            app = (App) obj;
-        } catch (ClassCastException cce) {
-            return false;
-        }
+        App app = (App) obj;
 
         long primaryKey = app.getPrimaryKey();
 

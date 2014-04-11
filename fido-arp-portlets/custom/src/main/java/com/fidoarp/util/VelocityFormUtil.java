@@ -9,10 +9,8 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.velocity.VelocityContext;
 import com.liferay.portal.kernel.velocity.VelocityEngineUtil;
 import com.liferay.portal.service.ServiceContext;
-import org.apache.commons.lang.StringUtils;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.RenderRequest;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Locale;
@@ -67,7 +65,7 @@ public class VelocityFormUtil {
             velocityContext.put("fieldWriter", fieldWriter);
             velocityContext.put("fieldHiddenWriter", fieldHiddenWriter);
             velocityContext.put("esc", Class.forName("org.apache.commons.lang.StringEscapeUtils"));
-            ResourceBundle res = ResourceBundle.getBundle("i18n.Resource", locale);
+            ResourceBundle res =  new FidoARPUtils().getResourceBundle("/i18n/Resource", locale, "UTF-8");
             velocityContext.put("continue", res.getString("continue.step"));
             VelocityEngineUtil.mergeTemplate(velocityClientTemplateId, velocityTemplateContent, velocityContext, clientWriter);
 

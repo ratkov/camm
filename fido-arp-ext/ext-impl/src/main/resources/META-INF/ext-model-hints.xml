@@ -13,7 +13,7 @@
 		<field name="clientName" type="String" />
 		<field name="clientOkpo" type="String" />
 		<field name="contactPhone" type="String" />
-		<field name="creditAmount" type="int" />
+		<field name="creditAmount" type="Double" />
 		<field name="comments" type="String" localized="true" />
 		<field name="questionnaire" type="String" />
 	</model>

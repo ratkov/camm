@@ -65,7 +65,7 @@
         <column name="clientName" db-name="client_name" type="String" />
         <column name="clientOkpo" db-name="client_okpo" type="String" />
         <column name="contactPhone" db-name="contact_phone" type="String" />
-        <column name="creditAmount" db-name="credit_amount" type="int" />
+        <column name="creditAmount" db-name="credit_amount" type="Double" />
         <column name="comments" db-name="comments" type="String" localized="true"/>
         <column name="questionnaire" db-name="questionnaire" type="String"/>
         <!-- Order -->

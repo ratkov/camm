@@ -1,8 +1,8 @@
 package com.fidoarp.dictionary.impl;
 
-import com.fidoarp.util.QuestionnaryDictionaryUtil;
 import com.fidoarp.dictionary.Dictionary;
 import com.fidoarp.model.questionnaire.DetailsPair;
+import com.fidoarp.util.QuestionnaryDictionaryUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.theme.ThemeDisplay;
 

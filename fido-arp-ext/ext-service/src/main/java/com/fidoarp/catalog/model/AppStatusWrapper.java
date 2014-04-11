@@ -1,5 +1,6 @@
 package com.fidoarp.catalog.model;
 
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.model.ModelWrapper;
 
 import java.util.HashMap;
@@ -422,7 +423,7 @@ public class AppStatusWrapper implements AppStatus, ModelWrapper<AppStatus> {
         return new AppStatusWrapper((AppStatus) _appStatus.clone());
     }
 
-    public int compareTo(AppStatus appStatus) {
+    public int compareTo(com.fidoarp.catalog.model.AppStatus appStatus) {
         return _appStatus.compareTo(appStatus);
     }
 
@@ -431,12 +432,16 @@ public class AppStatusWrapper implements AppStatus, ModelWrapper<AppStatus> {
         return _appStatus.hashCode();
     }
 
-    public com.liferay.portal.model.CacheModel<AppStatus> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.fidoarp.catalog.model.AppStatus> toCacheModel() {
         return _appStatus.toCacheModel();
     }
 
-    public AppStatus toEscapedModel() {
+    public com.fidoarp.catalog.model.AppStatus toEscapedModel() {
         return new AppStatusWrapper(_appStatus.toEscapedModel());
+    }
+
+    public com.fidoarp.catalog.model.AppStatus toUnescapedModel() {
+        return new AppStatusWrapper(_appStatus.toUnescapedModel());
     }
 
     @Override
@@ -451,6 +456,25 @@ public class AppStatusWrapper implements AppStatus, ModelWrapper<AppStatus> {
     public void persist()
         throws com.liferay.portal.kernel.exception.SystemException {
         _appStatus.persist();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (!(obj instanceof AppStatusWrapper)) {
+            return false;
+        }
+
+        AppStatusWrapper appStatusWrapper = (AppStatusWrapper) obj;
+
+        if (Validator.equals(_appStatus, appStatusWrapper._appStatus)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

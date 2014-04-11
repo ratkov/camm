@@ -22,7 +22,7 @@
 		<property name="clientName" type="com.liferay.portal.dao.orm.hibernate.StringType" column="client_name" />
 		<property name="clientOkpo" type="com.liferay.portal.dao.orm.hibernate.StringType" column="client_okpo" />
 		<property name="contactPhone" type="com.liferay.portal.dao.orm.hibernate.StringType" column="contact_phone" />
-		<property name="creditAmount" type="com.liferay.portal.dao.orm.hibernate.IntegerType" column="credit_amount" />
+		<property name="creditAmount" type="com.liferay.portal.dao.orm.hibernate.DoubleType" column="credit_amount" />
 		<property name="comments" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="questionnaire" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>

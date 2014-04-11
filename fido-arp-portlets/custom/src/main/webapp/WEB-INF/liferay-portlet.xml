@@ -25,6 +25,8 @@
         <header-portlet-css>/html/css/queues.css</header-portlet-css>
         <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.inputmask.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/ui.datepicker-ru.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/ui.datepicker-uk.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/jquery.serialize-object.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/jQuery.ajaxQueue.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/dateSelectBoxes.js</footer-portlet-javascript>

@@ -119,10 +119,6 @@ input[type="text"], input[type="password"], input[type="file"], input[type="subm
 	@include input-field-default;
 }
 
-select {
-	padding: 1px;
-}
-
 input[type="image"] {
 	background: transparent none;
 	border: none;

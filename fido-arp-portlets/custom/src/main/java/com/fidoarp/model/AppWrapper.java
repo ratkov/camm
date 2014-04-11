@@ -8,7 +8,6 @@ import com.liferay.portal.service.UserLocalServiceUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.Locale;
 
 public class AppWrapper {
@@ -24,7 +23,7 @@ public class AppWrapper {
     private String _clientName;
     private String _clientOkpo;
     private String _contactPhone;
-    private int _creditAmount;
+    private Double _creditAmount;
     private String _comments;
     private String _questionnaire;
 
@@ -92,7 +91,7 @@ public class AppWrapper {
         return _contactPhone;
     }
 
-    public int getCreditAmount() {
+    public Double getCreditAmount() {
         return _creditAmount;
     }
 

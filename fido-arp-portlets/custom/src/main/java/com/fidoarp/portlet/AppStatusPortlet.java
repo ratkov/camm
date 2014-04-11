@@ -1,7 +1,6 @@
 package com.fidoarp.portlet;
 
 import com.fidoarp.catalog.model.AppStatus;
-import com.fidoarp.catalog.service.AppStatusLocalService;
 import com.fidoarp.catalog.service.AppStatusLocalServiceUtil;
 import com.liferay.counter.service.CounterLocalServiceUtil;
 import com.liferay.portal.kernel.exception.SystemException;

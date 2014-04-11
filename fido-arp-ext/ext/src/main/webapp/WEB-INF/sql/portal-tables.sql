@@ -10,7 +10,7 @@ create table fido_app (
 	client_name VARCHAR(75) null,
 	client_okpo VARCHAR(75) null,
 	contact_phone VARCHAR(75) null,
-	credit_amount INTEGER,
+	credit_amount DOUBLE,
 	comments STRING null,
 	questionnaire VARCHAR(75) null
 );

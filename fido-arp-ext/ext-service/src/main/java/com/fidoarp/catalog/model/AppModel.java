@@ -313,14 +313,14 @@ public interface AppModel extends BaseModel<App> {
      *
      * @return the credit amount of this app
      */
-    public int getCreditAmount();
+    public Double getCreditAmount();
 
     /**
      * Sets the credit amount of this app.
      *
      * @param creditAmount the credit amount of this app
      */
-    public void setCreditAmount(int creditAmount);
+    public void setCreditAmount(Double creditAmount);
 
     /**
      * Returns the comments of this app.
@@ -467,6 +467,8 @@ public interface AppModel extends BaseModel<App> {
     public CacheModel<App> toCacheModel();
 
     public App toEscapedModel();
+
+    public App toUnescapedModel();
 
     public String toString();
 

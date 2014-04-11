@@ -268,9 +268,46 @@ public class ProductTypePersistenceImpl extends BasePersistenceImpl<ProductType>
         }
     }
 
+    protected void cacheUniqueFindersCache(ProductType productType) {
+        if (productType.isNew()) {
+            Object[] args = new Object[] { productType.getProductTypeCode() };
+
+            FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CODE, args,
+                Long.valueOf(1));
+            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CODE, args,
+                productType);
+        } else {
+            ProductTypeModelImpl productTypeModelImpl = (ProductTypeModelImpl) productType;
+
+            if ((productTypeModelImpl.getColumnBitmask() &
+                    FINDER_PATH_FETCH_BY_CODE.getColumnBitmask()) != 0) {
+                Object[] args = new Object[] { productType.getProductTypeCode() };
+
+                FinderCacheUtil.putResult(FINDER_PATH_COUNT_BY_CODE, args,
+                    Long.valueOf(1));
+                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CODE, args,
+                    productType);
+            }
+        }
+    }
+
     protected void clearUniqueFindersCache(ProductType productType) {
-        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CODE,
-            new Object[] { productType.getProductTypeCode() });
+        ProductTypeModelImpl productTypeModelImpl = (ProductTypeModelImpl) productType;
+
+        Object[] args = new Object[] { productType.getProductTypeCode() };
+
+        FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CODE, args);
+        FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CODE, args);
+
+        if ((productTypeModelImpl.getColumnBitmask() &
+                FINDER_PATH_FETCH_BY_CODE.getColumnBitmask()) != 0) {
+            args = new Object[] {
+                    productTypeModelImpl.getOriginalProductTypeCode()
+                };
+
+            FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CODE, args);
+            FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CODE, args);
+        }
     }
 
     /**
@@ -439,25 +476,8 @@ public class ProductTypePersistenceImpl extends BasePersistenceImpl<ProductType>
         EntityCacheUtil.putResult(ProductTypeModelImpl.ENTITY_CACHE_ENABLED,
             ProductTypeImpl.class, productType.getPrimaryKey(), productType);
 
-        if (isNew) {
-            FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CODE,
-                new Object[] { productType.getProductTypeCode() }, productType);
-        } else {
-            if ((productTypeModelImpl.getColumnBitmask() &
-                    FINDER_PATH_FETCH_BY_CODE.getColumnBitmask()) != 0) {
-                Object[] args = new Object[] {
-                        productTypeModelImpl.getOriginalProductTypeCode()
-                    };
-
-                FinderCacheUtil.removeResult(FINDER_PATH_COUNT_BY_CODE, args);
-
-                FinderCacheUtil.removeResult(FINDER_PATH_FETCH_BY_CODE, args);
-
-                FinderCacheUtil.putResult(FINDER_PATH_FETCH_BY_CODE,
-                    new Object[] { productType.getProductTypeCode() },
-                    productType);
-            }
-        }
+        clearUniqueFindersCache(productType);
+        cacheUniqueFindersCache(productType);
 
         return productType;
     }
@@ -1876,8 +1896,10 @@ public class ProductTypePersistenceImpl extends BasePersistenceImpl<ProductType>
                 List<ModelListener<ProductType>> listenersList = new ArrayList<ModelListener<ProductType>>();
 
                 for (String listenerClassName : listenerClassNames) {
+                    Class<?> clazz = getClass();
+
                     listenersList.add((ModelListener<ProductType>) InstanceFactory.newInstance(
-                            listenerClassName));
+                            clazz.getClassLoader(), listenerClassName));
                 }
 
                 listeners = listenersList.toArray(new ModelListener[listenersList.size()]);
