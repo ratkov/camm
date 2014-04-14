@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -32,50 +32,50 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class ActionUtil {
 
-	public static void getStructure(HttpServletRequest request)
-		throws Exception {
+    public static void getStructure(HttpServletRequest request)
+            throws Exception {
 
-		long structureId = ParamUtil.getLong(request, "structureId");
+        long structureId = ParamUtil.getLong(request, "structureId");
 
-		DDMStructure structure = null;
+        DDMStructure structure = null;
 
-		if (structureId > 0) {
-			structure = DDMStructureServiceUtil.getStructure(structureId);
-		}
+        if (structureId > 0) {
+            structure = DDMStructureServiceUtil.getStructure(structureId);
+        }
 
-		request.setAttribute(WebKeys.DYNAMIC_DATA_MAPPING_STRUCTURE, structure);
-	}
+        request.setAttribute(WebKeys.DYNAMIC_DATA_MAPPING_STRUCTURE, structure);
+    }
 
-	public static void getStructure(PortletRequest portletRequest)
-		throws Exception {
+    public static void getStructure(PortletRequest portletRequest)
+            throws Exception {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			portletRequest);
+        HttpServletRequest request = PortalUtil.getHttpServletRequest(
+                portletRequest);
 
-		getStructure(request);
-	}
+        getStructure(request);
+    }
 
-	public static void getTemplate(HttpServletRequest request)
-		throws Exception {
+    public static void getTemplate(HttpServletRequest request)
+            throws Exception {
 
-		long templateId = ParamUtil.getLong(request, "templateId");
+        long templateId = ParamUtil.getLong(request, "templateId");
 
-		DDMTemplate template = null;
+        DDMTemplate template = null;
 
-		if (templateId > 0) {
-			template = DDMTemplateLocalServiceUtil.getDDMTemplate(templateId);
-		}
+        if (templateId > 0) {
+            template = DDMTemplateLocalServiceUtil.getDDMTemplate(templateId);
+        }
 
-		request.setAttribute(WebKeys.DYNAMIC_DATA_MAPPING_TEMPLATE, template);
-	}
+        request.setAttribute(WebKeys.DYNAMIC_DATA_MAPPING_TEMPLATE, template);
+    }
 
-	public static void getTemplate(PortletRequest portletRequest)
-		throws Exception {
+    public static void getTemplate(PortletRequest portletRequest)
+            throws Exception {
 
-		HttpServletRequest request = PortalUtil.getHttpServletRequest(
-			portletRequest);
+        HttpServletRequest request = PortalUtil.getHttpServletRequest(
+                portletRequest);
 
-		getTemplate(request);
-	}
+        getTemplate(request);
+    }
 
 }

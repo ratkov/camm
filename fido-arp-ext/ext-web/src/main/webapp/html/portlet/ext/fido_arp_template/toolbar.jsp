@@ -1,3 +1,4 @@
+<%@ page import="com.liferay.portal.security.permission.ActionKeys" %>
 <%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
@@ -18,11 +19,14 @@
 
 <%
 String toolbarItem = ParamUtil.getString(request, "toolbarItem", "view-all");
+
+long groupId = ParamUtil.getLong(request, "groupId", scopeGroupId);
 %>
 
 <div class="lfr-portlet-toolbar">
 	<portlet:renderURL var="viewStructuresURL">
 		<portlet:param name="struts_action" value="/fido_arp_template/view" />
+<portlet:param name="groupId" value="<%= String.valueOf(groupId) %>" />
 	</portlet:renderURL>
 
 	<span class="lfr-toolbar-button view-button <%= toolbarItem.equals("view-all") ? "current" : StringPool.BLANK %>">
@@ -34,6 +38,7 @@ String toolbarItem = ParamUtil.getString(request, "toolbarItem", "view-all");
 			<portlet:param name="struts_action" value="/fido_arp_template/edit_structure" />
 			<portlet:param name="redirect" value="<%= viewStructuresURL %>" />
 			<portlet:param name="backURL" value="<%= viewStructuresURL %>" />
+<portlet:param name="groupId" value="<%= String.valueOf(groupId) %>" />
 		</portlet:renderURL>
 
 		<span class="lfr-toolbar-button add-button <%= toolbarItem.equals("add") ? "current" : StringPool.BLANK %>">

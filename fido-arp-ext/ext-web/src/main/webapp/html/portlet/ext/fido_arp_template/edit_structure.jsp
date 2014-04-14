@@ -1,7 +1,6 @@
-
 <%--
 /**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -25,6 +24,8 @@ String portletResourceNamespace = ParamUtil.getString(request, "portletResourceN
 
 DDMStructure structure = (DDMStructure)request.getAttribute(WebKeys.DYNAMIC_DATA_MAPPING_STRUCTURE);
 
+long groupId = BeanParamUtil.getLong(structure, request, "groupId", scopeGroupId);
+
 long structureId = BeanParamUtil.getLong(structure, request, "structureId");
 
 String script = BeanParamUtil.getString(structure, request, "xsd");
@@ -33,6 +34,10 @@ JSONArray scriptJSONArray = null;
 
 if (Validator.isNotNull(script)) {
 	scriptJSONArray = DDMXSDUtil.getJSONArray(script);
+}
+
+if (scriptJSONArray != null) {
+	scriptJSONArray = _addStructureFieldAttributes(structure, scriptJSONArray);
 }
 %>
 
@@ -43,6 +48,7 @@ if (Validator.isNotNull(script)) {
 <aui:form action="<%= editStructureURL %>" method="post" name="fm" onSubmit='<%= "event.preventDefault(); " + renderResponse.getNamespace() + "saveStructure();" %>'>
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= (structure != null) ? Constants.UPDATE : Constants.ADD %>" />
 	<aui:input name="redirect" type="hidden" value="<%= redirect %>" />
+	<aui:input name="groupId" type="hidden" value="<%= groupId %>" />
 	<aui:input name="structureId" type="hidden" value="<%= structureId %>" />
 	<aui:input name="xsd" type="hidden" />
 	<aui:input name="ddmResource" type="hidden" value="<%=ddmResource%>" />
@@ -75,8 +81,12 @@ if (Validator.isNotNull(script)) {
 	}
 	%>
 
+	<portlet:renderURL var="viewRecordsURL">
+		<portlet:param name="struts_action" value="/fido_arp_template/view" />
+	</portlet:renderURL>
+
 	<liferay-ui:header
-		backURL="<%= backURL %>"
+		backURL="<%= viewRecordsURL %>"
 		localizeTitle="<%= localizeTitle %>"
 		title="<%= title %>"
 	/>
@@ -161,3 +171,34 @@ if (Validator.isNotNull(script)) {
 		window.parent['<%= HtmlUtil.escapeJS(saveCallback) %>']('<%= structureId %>', '<%= HtmlUtil.escape(structure.getName(locale)) %>');
 	</c:if>
 </aui:script>
+<%!
+public JSONArray _addStructureFieldAttributes(DDMStructure structure, JSONArray scriptJSONArray) {
+	for (int i = 0; i < scriptJSONArray.length(); i++) {
+		JSONObject jsonObject = scriptJSONArray.getJSONObject(i);
+
+		String fieldName = jsonObject.getString("name");
+
+		try {
+			jsonObject.put("readOnlyAttributes", _getFieldReadOnlyAttributes(structure, fieldName));
+		}
+		catch (StructureFieldException sfe) {
+		}
+	}
+
+	return scriptJSONArray;
+}
+
+public JSONArray _getFieldReadOnlyAttributes(DDMStructure structure, String fieldName) throws StructureFieldException {
+	JSONArray readOnlyAttributesJSONArray = JSONFactoryUtil.createJSONArray();
+
+	try {
+		if (DDMStorageLinkLocalServiceUtil.getStructureStorageLinksCount(structure.getStructureId()) > 0) {
+			readOnlyAttributesJSONArray.put("name");
+		}
+	}
+	catch (Exception e) {
+	}
+
+	return readOnlyAttributesJSONArray;
+}
+%>

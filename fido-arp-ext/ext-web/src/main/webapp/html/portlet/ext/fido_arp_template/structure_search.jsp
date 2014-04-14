@@ -1,3 +1,4 @@
+<%@ page import="com.liferay.portal.security.permission.ActionKeys" %>
 <%--
 /**
  * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.

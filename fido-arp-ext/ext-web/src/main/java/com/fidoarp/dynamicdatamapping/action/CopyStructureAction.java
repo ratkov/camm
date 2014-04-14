@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -17,6 +17,7 @@ package com.fidoarp.dynamicdatamapping.action;
 import com.liferay.portal.kernel.portlet.LiferayPortletConfig;
 import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.servlet.SessionMessages;
+import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -34,52 +35,62 @@ import com.liferay.portlet.dynamicdatamapping.model.DDMTemplate;
 import com.liferay.portlet.dynamicdatamapping.model.DDMTemplateConstants;
 import com.liferay.portlet.dynamicdatamapping.service.DDMStructureServiceUtil;
 import com.liferay.portlet.dynamicdatamapping.service.DDMTemplateServiceUtil;
+
+import java.util.Locale;
+import java.util.Map;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import javax.portlet.*;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author Marcellus Tavares
  */
 public class CopyStructureAction extends PortletAction {
 
-	@Override
-	public void processAction(
-			ActionMapping mapping, ActionForm form, PortletConfig portletConfig,
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
+    @Override
+    public void processAction(
+            ActionMapping actionMapping, ActionForm actionForm,
+            PortletConfig portletConfig, ActionRequest actionRequest,
+            ActionResponse actionResponse)
+            throws Exception {
 
-		try {
-			DDMStructure structure = copyStructure(actionRequest);
+        try {
+            DDMStructure structure = copyStructure(actionRequest);
 
-			String redirect = getSaveAndContinueRedirect(
-				portletConfig, actionRequest, structure);
+            String redirect = getSaveAndContinueRedirect(
+                    portletConfig, actionRequest, structure);
+            String closeRedirect = ParamUtil.getString(
+                    actionRequest, "closeRedirect");
 
-			String closeRedirect = ParamUtil.getString(
-				actionRequest, "closeRedirect");
+            if (Validator.isNotNull(closeRedirect)) {
+                redirect = HttpUtil.setParameter(
+                        redirect, "closeRedirect", closeRedirect);
 
-			if (Validator.isNotNull(closeRedirect)) {
-				LiferayPortletConfig liferayPortletConfig =
-					(LiferayPortletConfig)portletConfig;
+                LiferayPortletConfig liferayPortletConfig =
+                        (LiferayPortletConfig)portletConfig;
 
-				SessionMessages.add(
-					actionRequest,
-					liferayPortletConfig.getPortletId() +
-						SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT,
-					closeRedirect);
-			}
+                SessionMessages.add(
+                        actionRequest,
+                        liferayPortletConfig.getPortletId() +
+                                SessionMessages.KEY_SUFFIX_CLOSE_REDIRECT,
+                        closeRedirect);
+            }
 
-			sendRedirect(actionRequest, actionResponse, redirect);
-		}
-		catch (Exception e) {
-			if (e instanceof NoSuchStructureException ||
-				e instanceof PrincipalException) {
+            sendRedirect(actionRequest, actionResponse, redirect);
+        }
+        catch (Exception e) {
+            if (e instanceof NoSuchStructureException ||
+                    e instanceof PrincipalException) {
 
-				SessionErrors.add(actionRequest, e.getClass());
+                SessionErrors.add(actionRequest, e.getClass());
 
 				setForward(actionRequest, "portlet.fido_arp_template.error");
 			}
@@ -92,109 +103,109 @@ public class CopyStructureAction extends PortletAction {
 		}
 	}
 
-	@Override
-	public ActionForward render(
-			ActionMapping mapping, ActionForm form, PortletConfig portletConfig,
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws Exception {
+    @Override
+    public ActionForward render(
+            ActionMapping actionMapping, ActionForm actionForm,
+            PortletConfig portletConfig, RenderRequest renderRequest,
+            RenderResponse renderResponse)
+            throws Exception {
 
-		try {
-			com.liferay.portlet.dynamicdatamapping.action.ActionUtil.getStructure(renderRequest);
-		}
-		catch (NoSuchStructureException nsse) {
+        try {
+            ActionUtil.getStructure(renderRequest);
+        }
+        catch (NoSuchStructureException nsse) {
 
-			// Let this slide because the user can manually input a structure
-			// key for a new structure that does not yet exist
+            // Let this slide because the user can manually input a structure
+            // key for a new structure that does not yet exist
 
-		}
-		catch (Exception e) {
-			if (e instanceof PrincipalException) {
-				SessionErrors.add(renderRequest, e.getClass());
+        }
+        catch (Exception e) {
+            if (e instanceof PrincipalException) {
+                SessionErrors.add(renderRequest, e.getClass());
 
-				return mapping.findForward(
-					"portlet.fido_arp_template.error");
-			}
-			else {
-				throw e;
-			}
-		}
+                return actionMapping.findForward(
+                        "portlet.fido_arp_template.error");
+            }
+            else {
+                throw e;
+            }
+        }
 
-		return mapping.findForward(
-			getForward(
-				renderRequest, "portlet.fido_arp_template.copy_structure"));
-	}
+        return actionMapping.findForward(
+                getForward(
+                        renderRequest, "portlet.fido_arp_template.copy_structure"));
+    }
 
-	protected DDMStructure copyStructure(ActionRequest actionRequest)
-		throws Exception {
+    protected DDMStructure copyStructure(ActionRequest actionRequest)
+            throws Exception {
 
-		long structureId = ParamUtil.getLong(actionRequest, "structureId");
+        long structureId = ParamUtil.getLong(actionRequest, "structureId");
 
-		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
-			actionRequest, "name");
+        Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
+                actionRequest, "name");
 
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDMStructure.class.getName(), actionRequest);
+        ServiceContext serviceContext = ServiceContextFactory.getInstance(
+                DDMStructure.class.getName(), actionRequest);
 
-		DDMStructure structure = DDMStructureServiceUtil.copyStructure(
-			structureId, nameMap, null, serviceContext);
+        DDMStructure structure = DDMStructureServiceUtil.copyStructure(
+                structureId, nameMap, null, serviceContext);
 
-		copyTemplates(actionRequest, structureId, structure.getStructureId());
+        copyTemplates(actionRequest, structureId, structure.getStructureId());
 
-		return structure;
-	}
+        return structure;
+    }
 
-	protected void copyTemplates(
-			ActionRequest actionRequest, long structureId, long newStructureId)
-		throws Exception {
+    protected void copyTemplates(
+            ActionRequest actionRequest, long structureId, long newStructureId)
+            throws Exception {
 
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(
-			DDMTemplate.class.getName(), actionRequest);
+        ServiceContext serviceContext = ServiceContextFactory.getInstance(
+                DDMTemplate.class.getName(), actionRequest);
 
-		boolean copyDetailTemplates = ParamUtil.getBoolean(
-			actionRequest, "copyDetailTemplates");
+        boolean copyDetailTemplates = ParamUtil.getBoolean(
+                actionRequest, "copyDetailTemplates");
 
-		if (copyDetailTemplates) {
-			DDMTemplateServiceUtil.copyTemplates(
-				structureId, newStructureId,
-				DDMTemplateConstants.TEMPLATE_TYPE_DETAIL, serviceContext);
-		}
+        if (copyDetailTemplates) {
+            DDMTemplateServiceUtil.copyTemplates(
+                    structureId, newStructureId,
+                    DDMTemplateConstants.TEMPLATE_TYPE_DETAIL, serviceContext);
+        }
 
-		boolean copyListTemplates = ParamUtil.getBoolean(
-			actionRequest, "copyListTemplates");
+        boolean copyListTemplates = ParamUtil.getBoolean(
+                actionRequest, "copyListTemplates");
 
-		if (copyListTemplates) {
-			DDMTemplateServiceUtil.copyTemplates(
-				structureId, newStructureId,
-				DDMTemplateConstants.TEMPLATE_TYPE_LIST, serviceContext);
-		}
-	}
+        if (copyListTemplates) {
+            DDMTemplateServiceUtil.copyTemplates(
+                    structureId, newStructureId,
+                    DDMTemplateConstants.TEMPLATE_TYPE_LIST, serviceContext);
+        }
+    }
 
-	protected String getSaveAndContinueRedirect(
-			PortletConfig portletConfig, ActionRequest actionRequest,
-			DDMStructure structure)
-		throws Exception {
+    protected String getSaveAndContinueRedirect(
+            PortletConfig portletConfig, ActionRequest actionRequest,
+            DDMStructure structure)
+            throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+        ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+                WebKeys.THEME_DISPLAY);
 
-		PortletURLImpl portletURL = new PortletURLImpl(
-			actionRequest, portletConfig.getPortletName(),
-			themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+        PortletURLImpl portletURL = new PortletURLImpl(
+                actionRequest, portletConfig.getPortletName(),
+                themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
-		portletURL.setWindowState(actionRequest.getWindowState());
+        portletURL.setParameter(
+                "struts_action", "/fido_arp_template/copy_structure");
+        portletURL.setParameter(
+                "structureId", String.valueOf(structure.getStructureId()), false);
+        portletURL.setParameter(
+                "copyDetailTemplates",
+                ParamUtil.getString(actionRequest, "copyDetailTemplates"), false);
+        portletURL.setParameter(
+                "copyListTemplates",
+                ParamUtil.getString(actionRequest, "copyListTemplates"), false);
+        portletURL.setWindowState(actionRequest.getWindowState());
 
-		portletURL.setParameter(
-			"struts_action", "/fido_arp_template/copy_structure");
-		portletURL.setParameter(
-			"structureId", String.valueOf(structure.getStructureId()), false);
-		portletURL.setParameter(
-			"copyDetailTemplates",
-			ParamUtil.getString(actionRequest, "copyDetailTemplates"), false);
-		portletURL.setParameter(
-			"copyListTemplates",
-			ParamUtil.getString(actionRequest, "copyListTemplates"), false);
-
-		return portletURL.toString();
-	}
+        return portletURL.toString();
+    }
 
 }

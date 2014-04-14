@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2000-2012 Liferay, Inc. All rights reserved.
+ * Copyright (c) 2000-2013 Liferay, Inc. All rights reserved.
  *
  * This library is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Lesser General Public License as published by the Free
@@ -28,17 +28,28 @@ import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.util.PortalUtil;
 import com.liferay.portal.util.WebKeys;
 import com.liferay.portlet.PortletURLImpl;
-import com.liferay.portlet.dynamicdatamapping.*;
+import com.liferay.portlet.dynamicdatamapping.NoSuchStructureException;
+import com.liferay.portlet.dynamicdatamapping.RequiredStructureException;
+import com.liferay.portlet.dynamicdatamapping.StructureDuplicateElementException;
+import com.liferay.portlet.dynamicdatamapping.StructureNameException;
+import com.liferay.portlet.dynamicdatamapping.StructureXsdException;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructure;
 import com.liferay.portlet.dynamicdatamapping.model.DDMStructureConstants;
 import com.liferay.portlet.dynamicdatamapping.service.DDMStructureServiceUtil;
+
+import java.util.Locale;
+import java.util.Map;
+
+import javax.portlet.ActionRequest;
+import javax.portlet.ActionResponse;
+import javax.portlet.PortletConfig;
+import javax.portlet.PortletRequest;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
+
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-
-import javax.portlet.*;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author Brian Wing Shun Chan
@@ -47,44 +58,47 @@ import java.util.Map;
  */
 public class EditStructureAction extends PortletAction {
 
-	@Override
-	public void processAction(
-			ActionMapping mapping, ActionForm form, PortletConfig portletConfig,
-			ActionRequest actionRequest, ActionResponse actionResponse)
-		throws Exception {
+    @Override
+    public void processAction(
+            ActionMapping actionMapping, ActionForm actionForm,
+            PortletConfig portletConfig, ActionRequest actionRequest,
+            ActionResponse actionResponse)
+            throws Exception {
 
-		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+        String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
-		DDMStructure structure = null;
+        DDMStructure structure = null;
 
-		try {
-			if (cmd.equals(Constants.ADD) || cmd.equals(Constants.UPDATE)) {
-				structure = updateStructure(actionRequest);
-			}
-			else if (cmd.equals(Constants.DELETE)) {
-				deleteStructure(actionRequest);
-			}
+        try {
+            if (cmd.equals(Constants.ADD) || cmd.equals(Constants.UPDATE)) {
+                structure = updateStructure(actionRequest);
+            }
+            else if (cmd.equals(Constants.DELETE)) {
+                deleteStructure(actionRequest);
+            }
 
-			if (Validator.isNotNull(cmd)) {
-				String redirect = ParamUtil.getString(
-					actionRequest, "redirect");
+            if (Validator.isNotNull(cmd)) {
+                String redirect = ParamUtil.getString(
+                        actionRequest, "redirect");
 
-				if (structure != null) {
-					boolean saveAndContinue = ParamUtil.getBoolean(actionRequest, "saveAndContinue");
+                if (structure != null) {
+                    boolean saveAndContinue = ParamUtil.getBoolean(
+                            actionRequest, "saveAndContinue");
 
-					if (saveAndContinue) {
-						redirect = getSaveAndContinueRedirect(portletConfig, actionRequest, structure, redirect);
-					}
-				}
+                    if (saveAndContinue) {
+                        redirect = getSaveAndContinueRedirect(
+                                portletConfig, actionRequest, structure, redirect);
+                    }
+                }
 
-				sendRedirect(actionRequest, actionResponse, redirect);
-			}
-		}
-		catch (Exception e) {
-			if (e instanceof NoSuchStructureException ||
-				e instanceof PrincipalException) {
+                sendRedirect(actionRequest, actionResponse, redirect);
+            }
+        }
+        catch (Exception e) {
+            if (e instanceof NoSuchStructureException ||
+                    e instanceof PrincipalException) {
 
-				SessionErrors.add(actionRequest, e.getClass());
+                SessionErrors.add(actionRequest, e.getClass());
 
 				setForward(actionRequest, "portlet.fido_arp_template.error");
 			}
@@ -94,127 +108,136 @@ public class EditStructureAction extends PortletAction {
 					 e instanceof StructureNameException ||
 					 e instanceof StructureXsdException) {
 
-				SessionErrors.add(actionRequest, e.getClass(), e);
+                SessionErrors.add(actionRequest, e.getClass(), e);
 
-				if (e instanceof RequiredStructureException) {
-					String redirect = PortalUtil.escapeRedirect(
-						ParamUtil.getString(actionRequest, "redirect"));
+                if (e instanceof RequiredStructureException) {
+                    String redirect = PortalUtil.escapeRedirect(
+                            ParamUtil.getString(actionRequest, "redirect"));
 
-					if (Validator.isNotNull(redirect)) {
-						actionResponse.sendRedirect(redirect);
-					}
-				}
-			}
-			else {
-				throw e;
-			}
-		}
-	}
+                    if (Validator.isNotNull(redirect)) {
+                        actionResponse.sendRedirect(redirect);
+                    }
+                }
+            }
+            else {
+                throw e;
+            }
+        }
+    }
 
-	@Override
-	public ActionForward render(
-			ActionMapping mapping, ActionForm form, PortletConfig portletConfig,
-			RenderRequest renderRequest, RenderResponse renderResponse)
-		throws Exception {
+    @Override
+    public ActionForward render(
+            ActionMapping actionMapping, ActionForm actionForm,
+            PortletConfig portletConfig, RenderRequest renderRequest,
+            RenderResponse renderResponse)
+            throws Exception {
 
-		try {
-			String cmd = ParamUtil.getString(renderRequest, Constants.CMD);
+        try {
+            String cmd = ParamUtil.getString(renderRequest, Constants.CMD);
 
-			if (!cmd.equals(Constants.ADD)) {
-				com.liferay.portlet.dynamicdatamapping.action.ActionUtil.getStructure(renderRequest);
-			}
-		}
-		catch (NoSuchStructureException nsse) {
+            if (!cmd.equals(Constants.ADD)) {
+                ActionUtil.getStructure(renderRequest);
+            }
+        }
+        catch (NoSuchStructureException nsse) {
 
-			// Let this slide because the user can manually input a structure
-			// key for a new structure that does not yet exist
+            // Let this slide because the user can manually input a structure
+            // key for a new structure that does not yet exist
 
-		}
-		catch (Exception e) {
-			if (//e instanceof NoSuchStructureException ||
-				e instanceof PrincipalException) {
+        }
+        catch (Exception e) {
+            if (//e instanceof NoSuchStructureException ||
+                    e instanceof PrincipalException) {
 
-				SessionErrors.add(renderRequest, e.getClass());
+                SessionErrors.add(renderRequest, e.getClass());
 
-				return mapping.findForward("portlet.fido_arp_template.error");
-			}
-			else {
-				throw e;
-			}
-		}
+                return actionMapping.findForward(
+                        "portlet.fido_arp_template.error");
+            }
+            else {
+                throw e;
+            }
+        }
 
-		return mapping.findForward(
-			getForward(renderRequest, "portlet.fido_arp_template.edit_structure"));
-	}
+        return actionMapping.findForward(
+                getForward(
+                        renderRequest, "portlet.fido_arp_template.edit_structure"));
+    }
 
-	protected void deleteStructure(ActionRequest actionRequest)
-		throws Exception {
+    protected void deleteStructure(ActionRequest actionRequest)
+            throws Exception {
 
-		long structureId = ParamUtil.getLong(actionRequest, "structureId");
+        long structureId = ParamUtil.getLong(actionRequest, "structureId");
 
-		DDMStructureServiceUtil.deleteStructure(structureId);
-	}
+        DDMStructureServiceUtil.deleteStructure(structureId);
+    }
 
-	protected String getSaveAndContinueRedirect(
-			PortletConfig portletConfig, ActionRequest actionRequest,
-			DDMStructure structure, String redirect)
-		throws Exception {
+    protected String getSaveAndContinueRedirect(
+            PortletConfig portletConfig, ActionRequest actionRequest,
+            DDMStructure structure, String redirect)
+            throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+        ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
+                WebKeys.THEME_DISPLAY);
 
-		String availableFields = ParamUtil.getString(
-			actionRequest, "availableFields");
-		String saveCallback = ParamUtil.getString(
-			actionRequest, "saveCallback");
+        String availableFields = ParamUtil.getString(
+                actionRequest, "availableFields");
+        String saveCallback = ParamUtil.getString(
+                actionRequest, "saveCallback");
 
-		PortletURLImpl portletURL = new PortletURLImpl(
-			actionRequest, portletConfig.getPortletName(),
-			themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
+        PortletURLImpl portletURL = new PortletURLImpl(
+                actionRequest, portletConfig.getPortletName(),
+                themeDisplay.getPlid(), PortletRequest.RENDER_PHASE);
 
-		portletURL.setWindowState(actionRequest.getWindowState());
+        portletURL.setWindowState(actionRequest.getWindowState());
 
-		portletURL.setParameter(Constants.CMD, Constants.UPDATE, false);
-		portletURL.setParameter("struts_action", "/fido_arp_template/edit_structure");
-		portletURL.setParameter("redirect", redirect, false);
-		portletURL.setParameter("groupId", String.valueOf(structure.getGroupId()), false);
-		portletURL.setParameter("structureId", String.valueOf(structure.getStructureId()), false);
-		portletURL.setParameter("availableFields", availableFields, false);
-		portletURL.setParameter("saveCallback", saveCallback, false);
+        portletURL.setParameter(Constants.CMD, Constants.UPDATE, false);
+        portletURL.setParameter(
+                "struts_action", "/fido_arp_template/edit_structure");
+        portletURL.setParameter("redirect", redirect, false);
+        portletURL.setParameter(
+                "groupId", String.valueOf(structure.getGroupId()), false);
+        portletURL.setParameter(
+                "structureId", String.valueOf(structure.getStructureId()), false);
+        portletURL.setParameter("availableFields", availableFields, false);
+        portletURL.setParameter("saveCallback", saveCallback, false);
 
-		return portletURL.toString();
-	}
+        return portletURL.toString();
+    }
 
-	protected DDMStructure updateStructure(ActionRequest actionRequest)
-		throws Exception {
+    protected DDMStructure updateStructure(ActionRequest actionRequest)
+            throws Exception {
 
-		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+        String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
-		long structureId = ParamUtil.getLong(actionRequest, "structureId");
+        long structureId = ParamUtil.getLong(actionRequest, "structureId");
 
-		long groupId = ParamUtil.getLong(actionRequest, "groupId");
-		long classNameId = ParamUtil.getLong(actionRequest, "classNameId");
-		Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(actionRequest, "name");
-		Map<Locale, String> descriptionMap = LocalizationUtil.getLocalizationMap(actionRequest, "description");
-		String xsd = ParamUtil.getString(actionRequest, "xsd");
-		String storageType = ParamUtil.getString(actionRequest, "storageType");
+        long groupId = ParamUtil.getLong(actionRequest, "groupId");
+        long classNameId = ParamUtil.getLong(actionRequest, "classNameId");
+        Map<Locale, String> nameMap = LocalizationUtil.getLocalizationMap(
+                actionRequest, "name");
+        Map<Locale, String> descriptionMap =
+                LocalizationUtil.getLocalizationMap(actionRequest, "description");
+        String xsd = ParamUtil.getString(actionRequest, "xsd");
+        String storageType = ParamUtil.getString(actionRequest, "storageType");
 
-		ServiceContext serviceContext = ServiceContextFactory.getInstance(DDMStructure.class.getName(), actionRequest);
+        ServiceContext serviceContext = ServiceContextFactory.getInstance(
+                DDMStructure.class.getName(), actionRequest);
 
-		DDMStructure structure = null;
+        DDMStructure structure = null;
 
-		if (cmd.equals(Constants.ADD)) {
-			structure = DDMStructureServiceUtil.addStructure(
-				groupId, classNameId, null, nameMap, descriptionMap, xsd,
-				storageType, DDMStructureConstants.TYPE_DEFAULT,
-				serviceContext);
-		}
-		else if (cmd.equals(Constants.UPDATE)) {
-			structure = DDMStructureServiceUtil.updateStructure(
-				structureId, nameMap, descriptionMap, xsd, serviceContext);
-		}
+        if (cmd.equals(Constants.ADD)) {
+            structure = DDMStructureServiceUtil.addStructure(
+                    groupId, classNameId, null, nameMap, descriptionMap, xsd,
+                    storageType, DDMStructureConstants.TYPE_DEFAULT,
+                    serviceContext);
+        }
+        else if (cmd.equals(Constants.UPDATE)) {
+            structure = DDMStructureServiceUtil.updateStructure(
+                    structureId, nameMap, descriptionMap, xsd, serviceContext);
+        }
 
-		return structure;
-	}
+        return structure;
+    }
 
 }

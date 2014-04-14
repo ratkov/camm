@@ -112,8 +112,13 @@ if (Validator.isNotNull(structureAvailableFields)) {
 	}
 	%>
 
+	<portlet:renderURL var="viewTemplatesURL">
+		<portlet:param name="struts_action" value="/fido_arp_template/view_template" />
+		<portlet:param name="structureId" value="<%= String.valueOf(structureId) %>" />
+	</portlet:renderURL>
+
 	<liferay-ui:header
-		backURL="<%= backURL %>"
+		backURL="<%= Validator.isNotNull(portletResource) ? null : viewTemplatesURL %>"
 		localizeTitle="<%= false %>"
 		title="<%= title %>"
 	/>

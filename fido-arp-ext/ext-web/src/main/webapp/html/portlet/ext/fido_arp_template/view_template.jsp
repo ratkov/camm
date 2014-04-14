@@ -38,8 +38,12 @@ portletURL.setParameter("structureId", String.valueOf(structureId));
 %>
 
 <c:if test="<%= (structure != null) %>">
+	<portlet:renderURL var="viewRecordsURL">
+		<portlet:param name="struts_action" value="/fido_arp_template/view" />
+	</portlet:renderURL>
+
 	<liferay-ui:header
-		backURL="<%= backURL %>"
+		backURL="<%= viewRecordsURL %>"
 		title='<%= LanguageUtil.format(pageContext, (Validator.isNull(templateHeaderTitle) ? "templates-for-structure-x" : templateHeaderTitle), structure.getName(locale), false) %>'
 	/>
 </c:if>

@@ -18,10 +18,11 @@
 
 <%
 String backURL = ParamUtil.getString(request, "backURL");
+long groupId = ParamUtil.getLong(request, "groupId", scopeGroupId);
+long structureId = ParamUtil.getLong(request, "structureId");
 
 String toolbarItem = ParamUtil.getString(request, "toolbarItem", "view-all");
 
-long structureId = ParamUtil.getLong(request, "structureId");
 %>
 
 <div class="lfr-portlet-toolbar">
@@ -43,8 +44,7 @@ long structureId = ParamUtil.getLong(request, "structureId");
 		<portlet:renderURL var="addTemplateURL">
 			<portlet:param name="struts_action" value="/fido_arp_template/edit_template" />
 			<portlet:param name="redirect" value="<%= viewTemplatesURL %>" />
-			<portlet:param name="backURL" value="<%= viewTemplatesURL %>" />
-			<portlet:param name="groupId" value="<%= String.valueOf(scopeGroupId) %>" />
+			<portlet:param name="groupId" value="<%= String.valueOf(groupId) %>" />
 			<portlet:param name="structureId" value="<%= String.valueOf(structureId) %>" />
 			<portlet:param name="structureAvailableFields" value='<%= renderResponse.getNamespace() + "structureAvailableFields" %>' />
 		</portlet:renderURL>
@@ -64,8 +64,7 @@ long structureId = ParamUtil.getLong(request, "structureId");
 		<portlet:renderURL var="addTemplateURL">
 			<portlet:param name="struts_action" value="/fido_arp_template/edit_template" />
 			<portlet:param name="redirect" value="<%= viewTemplatesURL %>" />
-			<portlet:param name="backURL" value="<%= viewTemplatesURL %>" />
-			<portlet:param name="groupId" value="<%= String.valueOf(scopeGroupId) %>" />
+			<portlet:param name="groupId" value="<%= String.valueOf(groupId) %>" />
 			<portlet:param name="structureId" value="<%= String.valueOf(structureId) %>" />
 			<portlet:param name="type" value="list" />
 		</portlet:renderURL>
