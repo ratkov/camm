@@ -7,7 +7,7 @@
         <a id="createNewQuery" href="javascript:void(0);" class="btn btn-primary"><liferay-ui:message key="queues.create.new.query"/></a>
     </div>
     <div class="navbar-right">
-        <a href="javascript:void(0);" class="btn btn-info"><liferay-ui:message key="queues.export.to.excel"/></a>
+        <a href="javascript:void(0);" id="exportExcel" class="btn btn-info" data-url="${excelURL}"><liferay-ui:message key="queues.export.to.excel"/></a>
         <a href="javascript:void(0);" id="showSearch" class="btn btn-default" data-show="search-box"><liferay-ui:message key="queues.search"/></a>
     </div>
 </div>

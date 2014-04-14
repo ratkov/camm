@@ -28,6 +28,8 @@ function setEvents() {
     setSearchEvents();
 
     setPaginationEvents();
+
+    setExportExcelEvent();
 }
 
 function setSearchEvents(){
@@ -65,6 +67,17 @@ function setSearchEvents(){
         }
     });
 }
+
+function setExportExcelEvent() {
+    if ($("#exportExcel").length) {
+        $("#exportExcel").on("click", function () {
+            var formParams = $("#search-box form").serialize();
+            var url = $(this).data("url");
+            window.location.href = url + "&" + formParams;
+        });
+    }
+}
+
 
 function setPaginationEvents() {
     if ($(".pagination").length) {

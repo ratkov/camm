@@ -10,6 +10,7 @@ import com.fidoarp.dictionary.Dictionaries;
 import com.fidoarp.model.AppWrapper;
 import com.fidoarp.model.questionnaire.DetailsPair;
 import com.fidoarp.preferences.QueuePreferences;
+import com.fidoarp.util.ExportUtil;
 import com.fidoarp.util.FieldsUtil;
 import com.fidoarp.util.QueuePreferencesUtil;
 import com.fidoarp.util.VelocityFormUtil;
@@ -24,6 +25,8 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
+import com.liferay.portal.kernel.portlet.PortletResponseUtil;
+import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.model.User;
@@ -31,13 +34,13 @@ import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import javax.portlet.*;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
-import java.io.IOException;
-import java.io.StringWriter;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -84,7 +87,7 @@ public class QueuePortlet extends FidoMVCPortlet  {
                 renderRequest.setAttribute("appStatuses", appStatuses);
                 renderRequest.setAttribute("users", users);
 
-                getApps(renderRequest, serviceContext.getLocale(), serviceContext.getCompanyId());
+                getApps(renderRequest, serviceContext.getLocale(), serviceContext.getCompanyId(), true);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -92,149 +95,13 @@ public class QueuePortlet extends FidoMVCPortlet  {
         super.doView(renderRequest, renderResponse);
     }
 
-    private List<App> getApps(RenderRequest renderRequest, Locale locale, long companyId) throws com.liferay.portal.kernel.exception.SystemException {
-        try{
-
-            Map<String, Object> map = getAttrMap(renderRequest, companyId);
-            boolean search = GetterUtil.getBoolean(renderRequest.getParameter("isSearch"), false);
-            Integer itemCount = getItemCount(renderRequest);
-
-            int appCount = 0;
-            if(search){
-                appCount = AppLocalServiceUtil.getSearchResultCount((Long)map.get("searchId"), convertDate((String)map.get("searchDateStart")),
-                        convertDate((String) map.get("searchDateEnd")), (String) map.get("searchName"), (String) map.get("searchOkpo"), (String) map.get("searchPhone"),
-                        (Double) map.get("searchSum"), (Long) map.get("searchAppStatus"), (String) map.get("searchComment"), (Long) map.get("searchUser"));
-            }else {
-                appCount = AppLocalServiceUtil.getAppsCount();
-            }
-
-            int cpage = GetterUtil.getInteger(renderRequest.getParameter("cpage"), 1);
-
-            int remainder = appCount % itemCount;
-            int count = (appCount - remainder) / itemCount;
-            if (remainder != 0) count++;
-
-            int start = (cpage - 1) * itemCount;
-            int end = cpage * itemCount;
-
-            List<App> apps = Collections.emptyList();
-            if(search){
-                renderRequest.setAttribute("isSearch", true);
-                renderRequest.setAttribute("mapSearch", map);
-
-                apps =  AppLocalServiceUtil.getSearchResult((Long)map.get("searchId"), convertDate((String)map.get("searchDateStart")),
-                        convertDate((String) map.get("searchDateEnd")), (String) map.get("searchName"), (String) map.get("searchOkpo"), (String) map.get("searchPhone"),
-                        (Double) map.get("searchSum"), (Long) map.get("searchAppStatus"), (String) map.get("searchComment"), (Long) map.get("searchUser"), start, end);
-            }else{
-                apps = AppLocalServiceUtil.getApps(start, end);
-            }
-
-            renderRequest.setAttribute("pageCount", count);
-
-            List<AppWrapper> appWrappers = new ArrayList<AppWrapper>();
-            for(App app : apps){
-                appWrappers.add(new AppWrapper(app, locale));
-            }
-
-            renderRequest.setAttribute("apps", appWrappers);
-            renderRequest.setAttribute("cpage", cpage);
-
-            return apps;
-        }catch (Exception e){
-            log.error("QueuePortlet.getApps() error: " + Arrays.toString(e.getStackTrace()), e);
-        }
-        return Collections.emptyList();
-    }
-
-    private Map<String, Object> getAttrMap(RenderRequest renderRequest, long companyId) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        try{
-            long searchId = GetterUtil.getLong(renderRequest.getParameter("searchId"), 0);
-            String searchDateStart = GetterUtil.getString(renderRequest.getParameter("searchDateStart"), "");
-            String searchDateEnd = GetterUtil.getString(renderRequest.getParameter("searchDateEnd"), "");
-            String searchName = GetterUtil.getString(renderRequest.getParameter("searchName"), "");
-            String searchOkpo = GetterUtil.getString(renderRequest.getParameter("searchOkpo"), "");
-            String searchPhone = GetterUtil.getString(renderRequest.getParameter("searchPhone"), "");
-            Double searchSum = GetterUtil.getDouble(renderRequest.getParameter("searchSum"), 0);
-            long searchAppStatus = GetterUtil.getLong(renderRequest.getParameter("searchAppStatus"), 0);
-            String searchComment = GetterUtil.getString(renderRequest.getParameter("searchComment"), "");
-            long searchUser = GetterUtil.getLong(renderRequest.getParameter("searchUser"), 0);
-            map.put("searchId", searchId);
-            map.put("searchDateStart", searchDateStart);
-            map.put("searchDateEnd", searchDateEnd);
-            map.put("searchName", searchName);
-            map.put("searchOkpo", searchOkpo);
-            map.put("searchPhone", searchPhone);
-            map.put("searchSum", searchSum);
-            map.put("searchAppStatus", searchAppStatus);
-            map.put("searchComment", searchComment);
-            map.put("searchUser", searchUser);
-        }catch (Exception e){
-            log.error("QueuePortlet.getAttrMap() error: " + Arrays.toString(e.getStackTrace()), e);
-        }
-        return map;
-    }
-
-    private Date convertDate(String dateStr) throws ParseException {
-        if(StringUtils.isNotBlank(dateStr) && StringUtils.isNotEmpty(dateStr)){
-            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
-            Date date = formatter.parse(dateStr);
-
-            Calendar start = Calendar.getInstance();
-            start.setTime(date);
-            return new Date(start.getTimeInMillis());
-        }
-        return null;
-    }
-
-    private void queryForm(RenderRequest renderRequest, ServiceContext serviceContext) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
-        Long appId = GetterUtil.getLong(renderRequest.getParameter("appId"), 0);
-        Long appStatusId;
-        ProductType productType = null;
-        if(appId == 0){
-            Long productId = GetterUtil.getLong(renderRequest.getParameter("selectedProduct"), 0);
-            appStatusId = GetterUtil.getLong(renderRequest.getParameter("selectedAppStatus"), 0);
-            if(productId != 0){
-                productType = ProductTypeLocalServiceUtil.getProductType(productId);
-
-                VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
-                StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, "{}");
-                renderRequest.setAttribute("templateHtml", stringWriter);
-                renderRequest.setAttribute("productId", productId);
-                renderRequest.setAttribute("appId", CounterLocalServiceUtil.increment());
-                renderRequest.setAttribute("appStatusId", appStatusId);
-            }
-        }else{
-            App app = AppLocalServiceUtil.getApp(appId);
-            appStatusId = app.getStatusId();
-            productType = ProductTypeLocalServiceUtil.getProductType(app.getProductTypeId());
-
-            VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
-            StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, app.getQuestionnaire());
-            renderRequest.setAttribute("templateHtml", stringWriter);
-            renderRequest.setAttribute("productId", app.getProductTypeId());
-            renderRequest.setAttribute("appId", app.getAppId());
-            renderRequest.setAttribute("appStatusId", app.getStatusId());
-        }
-
-        AppStatus appStatus = AppStatusLocalServiceUtil.getAppStatusByCode("PROJECT");
-        if(appStatus != null){
-            long statusProjectId = appStatus.getAppStatusId();
-            renderRequest.setAttribute("isProject", statusProjectId == appStatusId);
-        }
-        renderRequest.setAttribute("show", "query-form.jsp");
-    }
-
-    private Integer getItemCount(PortletRequest renderRequest) {
-        QueuePreferences preferences = QueuePreferencesUtil.getPreferences(renderRequest);
-        return preferences.getItemCount();
-    }
-
     @Override
     public void serveResource(ResourceRequest resourceRequest,
                               ResourceResponse resourceResponse) throws IOException, PortletException {
         //needs for load dictionary by ajax
         String dictionary = ParamUtil.getString(resourceRequest, "dictionary");
+        //needs for excel file
+        boolean excel = GetterUtil.getBoolean(ParamUtil.getString(resourceRequest, "excel"), false);
         if(StringUtils.isNotEmpty(dictionary) && StringUtils.isNotBlank(dictionary)){
 
             List<DetailsPair> detailsPairs = dictionaries.get(dictionary).execute(resourceRequest);
@@ -243,20 +110,23 @@ public class QueuePortlet extends FidoMVCPortlet  {
             resourceResponse.setContentType("application/json");
             resourceResponse.setCharacterEncoding("UTF-8");
             resourceResponse.getWriter().write(jsonFeed.toString());
-        }
-    }
-
-    private JSONArray convertListToJsonValues(List<DetailsPair> list) {
-        JSONArray values = JSONFactoryUtil.getJSONFactory().createJSONArray();
-        if (list != null) {
-            for (DetailsPair pair : list) {
-                JSONObject obj = JSONFactoryUtil.getJSONFactory().createJSONObject();
-                obj.put("id", pair.getLeft());
-                obj.put("value", pair.getRight());
-                values.put(obj);
+        }else if(excel){
+            try{
+                ServiceContext serviceContext = ServiceContextFactory.getInstance(QueuePortlet.class.getName(), resourceRequest);
+                Locale locale = serviceContext.getLocale();
+                List<App> apps = getApps(resourceRequest, locale, serviceContext.getCompanyId(), false);
+                String sheetName = "cred_app_" + new Date().getTime();
+                Workbook workbook = new ExportUtil().getAppExcel(apps, sheetName, locale);
+                resourceResponse.addProperty(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="+sheetName+".xls");
+                resourceResponse.setContentType("application/vnd.ms-excel");
+                resourceResponse.setCharacterEncoding("UTF-8");
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                workbook.write(baos);
+                PortletResponseUtil.sendFile(resourceRequest, resourceResponse, sheetName+".xls", baos.toByteArray(), "application/vnd.ms-excel");
+            }catch (Exception e){
+                log.error(e.getMessage(), e);
             }
         }
-        return values;
     }
 
     public void saveQuery(ActionRequest actionRequest, ActionResponse actionResponse){
@@ -326,10 +196,155 @@ public class QueuePortlet extends FidoMVCPortlet  {
                 actionResponse.setRenderParameter("cpage", cpage);
             }
         }catch (Exception e){
-           log.error("QueuePortlet.saveQuery() error: " + Arrays.toString(e.getStackTrace()), e);
+            log.error("QueuePortlet.saveQuery() error: " + Arrays.toString(e.getStackTrace()), e);
         }
     }
 
+
+    private JSONArray convertListToJsonValues(List<DetailsPair> list) {
+        JSONArray values = JSONFactoryUtil.getJSONFactory().createJSONArray();
+        if (list != null) {
+            for (DetailsPair pair : list) {
+                JSONObject obj = JSONFactoryUtil.getJSONFactory().createJSONObject();
+                obj.put("id", pair.getLeft());
+                obj.put("value", pair.getRight());
+                values.put(obj);
+            }
+        }
+        return values;
+    }
+
+
+    private List<App> getApps(PortletRequest renderRequest, Locale locale, long companyId, boolean hasPaging) throws com.liferay.portal.kernel.exception.SystemException {
+        try{
+
+            Map<String, Object> map = getAttrMap(renderRequest, companyId);
+            boolean search = GetterUtil.getBoolean(renderRequest.getParameter("isSearch"), false);
+            Integer itemCount = getItemCount(renderRequest);
+
+            int appCount = 0;
+            if(search){
+                appCount = AppLocalServiceUtil.getSearchResultCount((Long)map.get("searchId"), convertDate((String)map.get("searchDateStart")),
+                        convertDate((String) map.get("searchDateEnd")), (String) map.get("searchName"), (String) map.get("searchOkpo"), (String) map.get("searchPhone"),
+                        (Double) map.get("searchSum"), (Long) map.get("searchAppStatus"), (String) map.get("searchComment"), (Long) map.get("searchUser"));
+            }else {
+                appCount = AppLocalServiceUtil.getAppsCount();
+            }
+            int start = -1;
+            int end = -1;
+            if(hasPaging){
+                int cpage = GetterUtil.getInteger(renderRequest.getParameter("cpage"), 1);
+                int remainder = appCount % itemCount;
+                int count = (appCount - remainder) / itemCount;
+                if (remainder != 0) count++;
+                start = (cpage - 1) * itemCount;
+                end = cpage * itemCount;
+
+                renderRequest.setAttribute("pageCount", count);
+                renderRequest.setAttribute("cpage", cpage);
+            }
+
+            List<App> apps = Collections.emptyList();
+            if(search){
+                renderRequest.setAttribute("isSearch", true);
+                renderRequest.setAttribute("mapSearch", map);
+
+                apps =  AppLocalServiceUtil.getSearchResult((Long)map.get("searchId"), convertDate((String)map.get("searchDateStart")),
+                        convertDate((String) map.get("searchDateEnd")), (String) map.get("searchName"), (String) map.get("searchOkpo"), (String) map.get("searchPhone"),
+                        (Double) map.get("searchSum"), (Long) map.get("searchAppStatus"), (String) map.get("searchComment"), (Long) map.get("searchUser"), start, end);
+            }else{
+                apps = AppLocalServiceUtil.getApps(start, end);
+            }
+
+
+            List<AppWrapper> appWrappers = new ArrayList<AppWrapper>();
+            for(App app : apps){
+                appWrappers.add(new AppWrapper(app, locale));
+            }
+
+            renderRequest.setAttribute("apps", appWrappers);
+
+            return apps;
+        }catch (Exception e){
+            log.error("QueuePortlet.getApps() error: " + Arrays.toString(e.getStackTrace()), e);
+        }
+        return Collections.emptyList();
+    }
+
+
+    private Map<String, Object> getAttrMap(PortletRequest renderRequest, long companyId) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        try{
+            map.put("searchId", GetterUtil.getLong(renderRequest.getParameter("searchId"), 0));
+            map.put("searchDateStart", GetterUtil.getString(renderRequest.getParameter("searchDateStart"), ""));
+            map.put("searchDateEnd", GetterUtil.getString(renderRequest.getParameter("searchDateEnd"), ""));
+            map.put("searchName", GetterUtil.getString(renderRequest.getParameter("searchName"), ""));
+            map.put("searchOkpo", GetterUtil.getString(renderRequest.getParameter("searchOkpo"), ""));
+            map.put("searchPhone", GetterUtil.getString(renderRequest.getParameter("searchPhone"), ""));
+            map.put("searchSum",  GetterUtil.getDouble(renderRequest.getParameter("searchSum"), 0));
+            map.put("searchAppStatus", GetterUtil.getLong(renderRequest.getParameter("searchAppStatus"), 0));
+            map.put("searchComment", GetterUtil.getString(renderRequest.getParameter("searchComment"), ""));
+            map.put("searchUser", GetterUtil.getLong(renderRequest.getParameter("searchUser"), 0));
+        }catch (Exception e){
+            log.error("QueuePortlet.getAttrMap() error: " + Arrays.toString(e.getStackTrace()), e);
+        }
+        return map;
+    }
+
+    private Date convertDate(String dateStr) throws ParseException {
+        if(StringUtils.isNotBlank(dateStr) && StringUtils.isNotEmpty(dateStr)){
+            SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yy");
+            Date date = formatter.parse(dateStr);
+
+            Calendar start = Calendar.getInstance();
+            start.setTime(date);
+            return new Date(start.getTimeInMillis());
+        }
+        return null;
+    }
+
+    private void queryForm(RenderRequest renderRequest, ServiceContext serviceContext) throws com.liferay.portal.kernel.exception.PortalException, com.liferay.portal.kernel.exception.SystemException {
+        Long appId = GetterUtil.getLong(renderRequest.getParameter("appId"), 0);
+        Long appStatusId;
+        ProductType productType = null;
+        if(appId == 0){
+            Long productId = GetterUtil.getLong(renderRequest.getParameter("selectedProduct"), 0);
+            appStatusId = GetterUtil.getLong(renderRequest.getParameter("selectedAppStatus"), 0);
+            if(productId != 0){
+                productType = ProductTypeLocalServiceUtil.getProductType(productId);
+
+                VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
+                StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, "{}");
+                renderRequest.setAttribute("templateHtml", stringWriter);
+                renderRequest.setAttribute("productId", productId);
+                renderRequest.setAttribute("appId", CounterLocalServiceUtil.increment());
+                renderRequest.setAttribute("appStatusId", appStatusId);
+            }
+        }else{
+            App app = AppLocalServiceUtil.getApp(appId);
+            appStatusId = app.getStatusId();
+            productType = ProductTypeLocalServiceUtil.getProductType(app.getProductTypeId());
+
+            VelocityFormUtil velocityFormUtil = new VelocityFormUtil();
+            StringWriter stringWriter = velocityFormUtil.getVelocityForm(renderRequest, productType.getTemplateId(), serviceContext, app.getQuestionnaire());
+            renderRequest.setAttribute("templateHtml", stringWriter);
+            renderRequest.setAttribute("productId", app.getProductTypeId());
+            renderRequest.setAttribute("appId", app.getAppId());
+            renderRequest.setAttribute("appStatusId", app.getStatusId());
+        }
+
+        AppStatus appStatus = AppStatusLocalServiceUtil.getAppStatusByCode("PROJECT");
+        if(appStatus != null){
+            long statusProjectId = appStatus.getAppStatusId();
+            renderRequest.setAttribute("isProject", statusProjectId == appStatusId);
+        }
+        renderRequest.setAttribute("show", "query-form.jsp");
+    }
+
+    private Integer getItemCount(PortletRequest renderRequest) {
+        QueuePreferences preferences = QueuePreferencesUtil.getPreferences(renderRequest);
+        return preferences.getItemCount();
+    }
 
     //Edit Mode
     @Override
@@ -355,19 +370,5 @@ public class QueuePortlet extends FidoMVCPortlet  {
             actionResponse.setRenderParameter("error", "global.data.is.wrong");
         }
     }
-
-    private XMLGregorianCalendar getGregorianDate(Date date) {
-        GregorianCalendar c = new GregorianCalendar();
-        if (date != null) {
-            c.setTime(date);
-            try {
-                return DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-            } catch (DatatypeConfigurationException e) {
-                log.error(e);
-            }
-        }
-        return null;
-    }
-
 
 }
