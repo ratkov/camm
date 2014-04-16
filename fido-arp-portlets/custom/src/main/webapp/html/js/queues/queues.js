@@ -112,24 +112,6 @@ function setPaginationEvents() {
 function setEditEvent() {
     $(document).on("click", ".edit-query", function () {
         var url = $("#queryFormEdit").val();
-        $(document.body).append("<div id='modal-window' style='display: block;'></div>");
-        var data = {
-            appId: $(this).text(),
-            cpage: $("#cpage").val()
-        };
-        $.ajax({
-            type: "POST",
-            url: url,
-            data: data,
-            success: function (data) {
-                $("#queues-view").html(data);
-                setTabs();
-                var locale = $("#query-form").find(".validateForm").data("locale");
-                setValidator(locale);
-                $("#modal-window").remove();
-            }, error: function () {
-                $("#modal-window").remove();
-            }
-        })
+        window.location.href = url + "&appId=" + $(this).text()+ "&cpage=" +$("#cpage").val();
     });
 }

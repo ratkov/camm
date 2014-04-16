@@ -20,7 +20,7 @@ blockquote:before, blockquote:after, q:before, q:after { content: ''; content: n
 table { border-collapse: collapse; border-spacing: 0;}
 input[type=text]:focus, input[type=password]:focus, textarea:focus {outline: none}
 a,a:link, a:visited, a:hover{outline:none;}
-html,body.main { height:100%;  margin:0;  padding:0;}
+html,body.main { margin:0;  padding:0;}
 
 body{
     color: #333;

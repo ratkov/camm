@@ -52,10 +52,11 @@ $theme.include($body_top_include)
 		#end
 	</div>
 
-	<footer id="footer" role="contentinfo">
-
-	</footer>
     </div>
+
+    <footer id="footer" role="contentinfo">
+
+    </footer>
     ##JS
     #js($jquery)
     #js($jqueryUi)

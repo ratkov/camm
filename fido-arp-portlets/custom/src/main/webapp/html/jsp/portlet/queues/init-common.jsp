@@ -14,6 +14,6 @@
 <portlet:renderURL var="queryFormAdd" portletMode="view" windowState="${normal}">
     <portlet:param name="action" value="queryForm"/>
 </portlet:renderURL>
-<portlet:renderURL var="queryFormEdit" portletMode="view" windowState="${exclusive}">
+<portlet:renderURL var="queryFormEdit" portletMode="view" windowState="${normal}">
     <portlet:param name="action" value="queryForm"/>
 </portlet:renderURL>

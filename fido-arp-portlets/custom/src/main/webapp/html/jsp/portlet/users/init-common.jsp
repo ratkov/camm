@@ -29,4 +29,4 @@
 </portlet:renderURL>
 
 <portlet:renderURL var="mainViewUrl" portletMode="view" windowState="${normal}" />
-<portlet:actionURL  var="saveSettings" name="saveSettings" />
+<portlet:actionURL  var="saveUserSettings" name="saveSettings" />

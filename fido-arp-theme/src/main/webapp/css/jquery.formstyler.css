@@ -142,7 +142,7 @@
     padding: 0;
 }
 .jq-selectbox__select {
-	height: 30px;
+	/*height: 30px;*/
 	padding: 0 32px 0 10px;
 	border: 1px solid #B8BDC0;
 	background: #fff none;

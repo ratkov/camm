@@ -1,6 +1,9 @@
 package com.fidoarp.portlet;
 
 import com.fidoarp.UserStatus;
+import com.fidoarp.preferences.UserPreferences;
+import com.fidoarp.util.FidoARPUtils;
+import com.fidoarp.util.UserPreferencesUtil;
 import com.fidoarp.util.UsersUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
@@ -29,10 +32,15 @@ public class UserPortlet extends FidoMVCPortlet {
     @Override
     public void render(final RenderRequest renderRequest, final RenderResponse renderResponse) throws IOException, PortletException {
 
+        if (!renderRequest.getPortletMode().equals(PortletMode.VIEW)) {
+            super.render(renderRequest, renderResponse);
+            return;
+        }
+
         ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
         Locale currentLocale = themeDisplay.getLocale();
 
-        UsersUtil.resources = ResourceBundle.getBundle("/i18n/user/Resource", LocaleUtil.getMostRelevantLocale());
+        UsersUtil.resources = new FidoARPUtils().getResourceBundle("/i18n/user/Resource", LocaleUtil.getMostRelevantLocale(), "UTF-8");
         List<Organization> partners = null;
 
         try {
@@ -112,6 +120,31 @@ public class UserPortlet extends FidoMVCPortlet {
         log.info("jsonFeed.toString()===" + jsonFeed.toString());
         resourceResponse.getWriter().write(jsonFeed.toString());
 
+    }
+
+    //Edit Mode
+    @Override
+    public void doEdit(RenderRequest renderRequest, RenderResponse renderResponse) throws IOException, PortletException {
+        UserPreferences preferences = UserPreferencesUtil.getPreferences(renderRequest);
+        renderRequest.setAttribute("itemCount", preferences.getItemCount());
+        super.doEdit(renderRequest, renderResponse);
+    }
+
+    public void saveSettings(ActionRequest actionRequest, ActionResponse actionResponse) {
+        try {
+            int itemCount = GetterUtil.getInteger(actionRequest.getParameter("itemCount"), 10);
+            if (itemCount != 0) {
+                UserPreferences preferences = new UserPreferences();
+                preferences.setItemCount(itemCount);
+                UserPreferencesUtil.setPreferences(actionRequest, preferences);
+                actionResponse.setRenderParameter("info", "user.preference.data.is.saved.success");
+            } else {
+                actionResponse.setRenderParameter("error", "user.preference.data.is.wrong");
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            actionResponse.setRenderParameter("error", "user.preference.data.is.wrong");
+        }
     }
 
     private boolean addView(RenderRequest renderRequest, RenderResponse renderResponse, List<Organization> partners) throws SystemException, PortalException, PortletException, IOException {

@@ -303,9 +303,21 @@ public class UsersUtil {
                     && !StringUtils.equals("-1", status)) {
 
                 ClassLoader classLoader = PortalClassLoaderUtil.getClassLoader();
+                DynamicQuery expandoCount = DynamicQueryFactoryUtil
+                        .forClass(ExpandoValue.class, classLoader)
+                        .add(PropertyFactoryUtil.forName("data").eq(status));
+
+                usersCount = (int) UserLocalServiceUtil.dynamicQueryCount(expandoCount);
+                remainder = usersCount % itemCount;
+                count = remainder == 0
+                        ? usersCount / itemCount
+                        : (usersCount / itemCount) + 1;
+
                 DynamicQuery expando = DynamicQueryFactoryUtil
                         .forClass(ExpandoValue.class, classLoader)
                         .add(PropertyFactoryUtil.forName("data").eq(status));
+
+                expando.setLimit((cpage - 1) * itemCount, cpage * itemCount);
 
                 List<ExpandoValue> expandoValues = UserLocalServiceUtil.dynamicQuery(expando);
                 List<Long> userIds = new ArrayList<Long>();
@@ -316,17 +328,10 @@ public class UsersUtil {
 
                 if (!userIds.isEmpty()) {
 
-                    usersCount = userIds.size();
-                    remainder = usersCount % itemCount;
-                    count = remainder == 0
-                            ? usersCount / itemCount
-                            : (usersCount / itemCount) + 1;
-
                     DynamicQuery userQuery = DynamicQueryFactoryUtil
                             .forClass(User.class, classLoader)
                             .add(PropertyFactoryUtil.forName("userId").in(userIds.toArray()));
 
-                    userQuery.setLimit((cpage - 1) * itemCount, cpage * itemCount);
                     userList = UserLocalServiceUtil.dynamicQuery(userQuery);
                 }
 
