@@ -1,6 +1,6 @@
 package com.fidoarp.portlet;
 
-import com.fidoarp.UserStatus;
+import com.fidoarp.model.UserStatus;
 import com.fidoarp.preferences.UserPreferences;
 import com.fidoarp.util.FidoARPUtils;
 import com.fidoarp.util.UserPreferencesUtil;

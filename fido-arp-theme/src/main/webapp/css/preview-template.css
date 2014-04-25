@@ -9,7 +9,6 @@
 .t_item_block {
     border-bottom: 1px solid #aeb2b4;
     font-size: 0;
-    text-align: center;
     margin: 0 0 20px;
     padding: 5px 0;
 }
@@ -19,6 +18,16 @@
     *display: inline;
     *zoom: 1;
     vertical-align: top;
+    a{
+        font-size:16px;
+    }
+}
+
+#back-to{
+    border: 1px solid #CCCCCC;
+    border-radius: 4px;
+    line-height: 1em;
+    padding: 2px;
 }
 
 .t_item+.t_item {margin-left: 8px;}
@@ -264,7 +273,7 @@ label.error {
     *display: inline;
     *zoom: 1;
     vertical-align: top;
-    width: 280px;
+    width: 300px;
     padding: 5px 10px;
     background: #fff;
     border: 1px solid #b8bdc0;
@@ -356,7 +365,7 @@ label.error {
     *display: inline;
     *zoom: 1;
     vertical-align: top;
-    font: 14px/18px 'Plumb';
+    font: 14px/28px 'Plumb';
     color: #797c80;
 }
 
@@ -365,7 +374,7 @@ label.error {
 .quest-template .t_item+.t_item {
     padding-left: 25px;
     margin-left: 10px;
-    background: url(../images/pic/sprite.png) 0 -822px no-repeat;
+    background: url(../images/pic/sprite.png) 0 -816px no-repeat;
 }
 
 .quest-template .t_item a {text-decoration: none !important;}

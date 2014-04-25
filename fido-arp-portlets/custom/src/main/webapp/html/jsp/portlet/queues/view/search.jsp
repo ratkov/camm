@@ -63,6 +63,7 @@
                     <input type="text" id="searchComment" name="searchComment" value="${mapSearch.searchComment}"/>
                 </div>
             </div>
+            <c:if test="${isAdmin}">
             <div class="form-group">
                 <label  class="control-label col-sm-4"><liferay-ui:message key="queues.user"/></label>
                 <div class="col-sm-8">
@@ -75,6 +76,7 @@
                     </select>
                 </div>
             </div>
+            </c:if>
             <div class="form-group text-right">
                 <button class="btn btn-default"><liferay-ui:message key="queues.search"/></button>
             </div>

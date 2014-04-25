@@ -6,6 +6,7 @@ import com.liferay.portal.kernel.dao.orm.Criterion;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
 import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.exception.SystemException;
 import org.apache.commons.lang.StringUtils;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 
@@ -34,6 +35,62 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
      * Never reference this interface directly. Always use {@link com.fidoarp.catalog.service.AppLocalServiceUtil} to access the app local service.
      */
 
+    public List<App> getAppByUser(long userId, int start, int end){
+        try {
+            return appPersistence.findByUser(userId, start, end);
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+        return Collections.emptyList();
+    }
+
+    public int getAppCountByUser(long userId){
+        try {
+            return appPersistence.countByUser(userId);
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getMonthlyAppCountByPartner(long organizationId){
+        try {
+            DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(App.class);
+            Calendar last = Calendar.getInstance();
+            last.add(Calendar.MONTH, -1);
+
+            Criterion dateCriterion = PropertyFactoryUtil.forName("createdDate").between(new Date(last.getTimeInMillis()), new Date());
+            dynamicQuery.add(dateCriterion);
+
+            if(organizationId != 0)  {
+                Criterion organizationIdCriterion = PropertyFactoryUtil.forName("organizationId").eq(organizationId);
+                dynamicQuery.add(organizationIdCriterion);
+            }
+            return ((Long)appLocalService.dynamicQueryCount(dynamicQuery)).intValue();
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getAppCountByPartnerStatus(long organizationId, long statusId){
+        try {
+            DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(App.class);
+            if(organizationId != 0)  {
+                Criterion organizationIdCriterion = PropertyFactoryUtil.forName("organizationId").eq(organizationId);
+                dynamicQuery.add(organizationIdCriterion);
+            }
+            if(statusId != 0)  {
+                Criterion statusIdCriterion = PropertyFactoryUtil.forName("statusId").eq(statusId);
+                dynamicQuery.add(statusIdCriterion);
+            }
+            return ((Long)appLocalService.dynamicQueryCount(dynamicQuery)).intValue();
+        } catch (SystemException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public List<App> getSearchResult(long id, Date startDate, Date endDate, String name, String okpo, String phone,
                                      double creditAmount, long statusId, String comment, long userId, int start, int end){
         try {
@@ -47,15 +104,15 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
                 dynamicQuery.add(dateCriterion);
             }
             if(StringUtils.isNotBlank(name) && StringUtils.isNotEmpty(name))  {
-                Criterion nameCriterion = PropertyFactoryUtil.forName("clientName").like(name);
+                Criterion nameCriterion = PropertyFactoryUtil.forName("clientName").like("%" + name + "%");
                 dynamicQuery.add(nameCriterion);
             }
             if(StringUtils.isNotBlank(okpo) && StringUtils.isNotEmpty(okpo))  {
-                Criterion okpoCriterion = PropertyFactoryUtil.forName("clientOkpo").like(okpo);
+                Criterion okpoCriterion = PropertyFactoryUtil.forName("clientOkpo").like("%" + okpo + "%");
                 dynamicQuery.add(okpoCriterion);
             }
             if(StringUtils.isNotBlank(phone) && StringUtils.isNotEmpty(phone))  {
-                Criterion phoneCriterion = PropertyFactoryUtil.forName("contactPhone").like(phone);
+                Criterion phoneCriterion = PropertyFactoryUtil.forName("contactPhone").like("%" + phone+ "%");
                 dynamicQuery.add(phoneCriterion);
             }
             if(creditAmount != 0)  {
@@ -67,7 +124,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
                 dynamicQuery.add(statusIdCriterion);
             }
             if(StringUtils.isNotBlank(comment) && StringUtils.isNotEmpty(comment))  {
-                Criterion commentCriterion = PropertyFactoryUtil.forName("clientName").like(comment);
+                Criterion commentCriterion = PropertyFactoryUtil.forName("clientName").like("%" + comment+ "%");
                 dynamicQuery.add(commentCriterion);
             }
             if(userId != 0)  {

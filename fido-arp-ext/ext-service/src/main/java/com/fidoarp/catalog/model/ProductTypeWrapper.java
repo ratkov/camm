@@ -508,7 +508,7 @@ public class ProductTypeWrapper implements ProductType,
         return new ProductTypeWrapper((ProductType) _productType.clone());
     }
 
-    public int compareTo(com.fidoarp.catalog.model.ProductType productType) {
+    public int compareTo(ProductType productType) {
         return _productType.compareTo(productType);
     }
 
@@ -517,15 +517,15 @@ public class ProductTypeWrapper implements ProductType,
         return _productType.hashCode();
     }
 
-    public com.liferay.portal.model.CacheModel<com.fidoarp.catalog.model.ProductType> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<ProductType> toCacheModel() {
         return _productType.toCacheModel();
     }
 
-    public com.fidoarp.catalog.model.ProductType toEscapedModel() {
+    public ProductType toEscapedModel() {
         return new ProductTypeWrapper(_productType.toEscapedModel());
     }
 
-    public com.fidoarp.catalog.model.ProductType toUnescapedModel() {
+    public ProductType toUnescapedModel() {
         return new ProductTypeWrapper(_productType.toUnescapedModel());
     }
 

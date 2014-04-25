@@ -84,7 +84,10 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     public static final boolean COLUMN_BITMASK_ENABLED = GetterUtil.getBoolean(com.liferay.portal.util.PropsUtil.get(
                 "value.object.column.bitmask.enabled.com.fidoarp.catalog.model.App"),
             true);
-    public static long USERID_COLUMN_BITMASK = 1L;
+    public static long CREATEDDATE_COLUMN_BITMASK = 1L;
+    public static long ORGANIZATIONID_COLUMN_BITMASK = 2L;
+    public static long STATUSID_COLUMN_BITMASK = 4L;
+    public static long USERID_COLUMN_BITMASK = 8L;
     public static final long LOCK_EXPIRATION_TIME = GetterUtil.getLong(com.liferay.portal.util.PropsUtil.get(
                 "lock.expiration.time.com.fidoarp.catalog.model.App"));
     private static ClassLoader _classLoader = App.class.getClassLoader();
@@ -95,10 +98,15 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     private long _originalUserId;
     private boolean _setOriginalUserId;
     private long _organizationId;
+    private long _originalOrganizationId;
+    private boolean _setOriginalOrganizationId;
     private Date _createdDate;
+    private Date _originalCreatedDate;
     private String _description;
     private String _descriptionCurrentLanguageId;
     private long _statusId;
+    private long _originalStatusId;
+    private boolean _setOriginalStatusId;
     private long _productTypeId;
     private Date _statusChangeDate;
     private String _clientName;
@@ -290,7 +298,19 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     }
 
     public void setOrganizationId(long organizationId) {
+        _columnBitmask |= ORGANIZATIONID_COLUMN_BITMASK;
+
+        if (!_setOriginalOrganizationId) {
+            _setOriginalOrganizationId = true;
+
+            _originalOrganizationId = _organizationId;
+        }
+
         _organizationId = organizationId;
+    }
+
+    public long getOriginalOrganizationId() {
+        return _originalOrganizationId;
     }
 
     public Date getCreatedDate() {
@@ -298,7 +318,17 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     }
 
     public void setCreatedDate(Date createdDate) {
+        _columnBitmask |= CREATEDDATE_COLUMN_BITMASK;
+
+        if (_originalCreatedDate == null) {
+            _originalCreatedDate = _createdDate;
+        }
+
         _createdDate = createdDate;
+    }
+
+    public Date getOriginalCreatedDate() {
+        return _originalCreatedDate;
     }
 
     public String getDescription() {
@@ -396,7 +426,19 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
     }
 
     public void setStatusId(long statusId) {
+        _columnBitmask |= STATUSID_COLUMN_BITMASK;
+
+        if (!_setOriginalStatusId) {
+            _setOriginalStatusId = true;
+
+            _originalStatusId = _statusId;
+        }
+
         _statusId = statusId;
+    }
+
+    public long getOriginalStatusId() {
+        return _originalStatusId;
     }
 
     public long getProductTypeId() {
@@ -674,6 +716,16 @@ public class AppModelImpl extends BaseModelImpl<App> implements AppModel {
         appModelImpl._originalUserId = appModelImpl._userId;
 
         appModelImpl._setOriginalUserId = false;
+
+        appModelImpl._originalOrganizationId = appModelImpl._organizationId;
+
+        appModelImpl._setOriginalOrganizationId = false;
+
+        appModelImpl._originalCreatedDate = appModelImpl._createdDate;
+
+        appModelImpl._originalStatusId = appModelImpl._statusId;
+
+        appModelImpl._setOriginalStatusId = false;
 
         appModelImpl._columnBitmask = 0;
     }

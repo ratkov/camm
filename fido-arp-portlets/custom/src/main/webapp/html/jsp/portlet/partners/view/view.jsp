@@ -1,3 +1,6 @@
 <%@include file="../init-common.jsp"%>
 
-Hello Partners
+<div id="partnerWrapper">
+    <c:import url="main-view.jsp" />
+    <hr/>
+</div>

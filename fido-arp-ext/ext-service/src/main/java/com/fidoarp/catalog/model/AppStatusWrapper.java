@@ -423,7 +423,7 @@ public class AppStatusWrapper implements AppStatus, ModelWrapper<AppStatus> {
         return new AppStatusWrapper((AppStatus) _appStatus.clone());
     }
 
-    public int compareTo(com.fidoarp.catalog.model.AppStatus appStatus) {
+    public int compareTo(AppStatus appStatus) {
         return _appStatus.compareTo(appStatus);
     }
 
@@ -432,15 +432,15 @@ public class AppStatusWrapper implements AppStatus, ModelWrapper<AppStatus> {
         return _appStatus.hashCode();
     }
 
-    public com.liferay.portal.model.CacheModel<com.fidoarp.catalog.model.AppStatus> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<AppStatus> toCacheModel() {
         return _appStatus.toCacheModel();
     }
 
-    public com.fidoarp.catalog.model.AppStatus toEscapedModel() {
+    public AppStatus toEscapedModel() {
         return new AppStatusWrapper(_appStatus.toEscapedModel());
     }
 
-    public com.fidoarp.catalog.model.AppStatus toUnescapedModel() {
+    public AppStatus toUnescapedModel() {
         return new AppStatusWrapper(_appStatus.toUnescapedModel());
     }
 

@@ -243,6 +243,24 @@ public class AppLocalServiceWrapper implements AppLocalService,
         _appLocalService.setBeanIdentifier(beanIdentifier);
     }
 
+    public java.util.List<com.fidoarp.catalog.model.App> getAppByUser(
+        long userId, int start, int end) {
+        return _appLocalService.getAppByUser(userId, start, end);
+    }
+
+    public int getAppCountByUser(long userId) {
+        return _appLocalService.getAppCountByUser(userId);
+    }
+
+    public int getMonthlyAppCountByPartner(long organizationId) {
+        return _appLocalService.getMonthlyAppCountByPartner(organizationId);
+    }
+
+    public int getAppCountByPartnerStatus(long organizationId, long statusId) {
+        return _appLocalService.getAppCountByPartnerStatus(organizationId,
+            statusId);
+    }
+
     public java.util.List<com.fidoarp.catalog.model.App> getSearchResult(
         long id, java.util.Date startDate, java.util.Date endDate,
         java.lang.String name, java.lang.String okpo, java.lang.String phone,

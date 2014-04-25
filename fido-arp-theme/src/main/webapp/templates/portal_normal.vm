@@ -14,8 +14,26 @@
 
 $theme.include($body_top_include)
 
-#if ($is_signed_in)
-	#dockbar()
+#set($show=false)
+#if($is_signed_in)
+    #if($permissionChecker.isOmniadmin() || $permissionChecker.isCompanyAdmin($company_id))
+        #dockbar()
+        #set($show=true)
+    #elseif($roles && $roles != "")
+        #set($show=false)
+        #set($roleService = $serviceLocator.findService("com.liferay.portal.service.RoleLocalService"))
+        #set($userRoles = $roleService.getUserRoles($user.getUserId()))
+        #foreach($role in $userRoles)
+            #foreach($roleName in $rolesArray)
+                #if($role.getName().equals($roleName))
+                    #set($show=true)
+                #end
+            #end
+        #end
+        #if($show)
+            #dockbar()
+        #end
+    #end
 #end
 
 <div id="wrapper">
@@ -23,21 +41,38 @@ $theme.include($body_top_include)
 	<a href="#main-content" id="skip-to-content">#language("skip-to-content")</a>
 
 	<header id="banner" role="banner">
-		<div id="heading">
-			<h1 class="site-title">
-				<a class="$logo_css_class" href="$site_default_url" title="#language("go-to") $site_name">
+		<div id="heading" class="row-fluid">
+			<h1 class="site-title col-md-6">
+				<a class="$logo_css_class" href="$company_url" title="#language("go-to") $site_name">
 					<img alt="$logo_description" height="$site_logo_height" src="$site_logo" width="$site_logo_width" />
 				</a>
 			</h1>
+
+        <div id="user-section" class="col-md-6 text-right">
+            #if($is_signed_in)
+
+            <span>
+                <img src="/image/user_male_portrait?img_id=$user.portraitId&amp;t=$dateTool.getSystemTime()"
+                     alt="$user_first_name $user_last_name" width="30" />
+                <span class="user-full-name">$user_first_name $user_last_name</span>
+            </span>
+                    <a href="$sign_out_url" rel="nofollow">
+                        <i class="glyphicon glyphicon-off"></i>
+                        $sign_out_text</a>
+
+            #else
+                <a href="$sign_in_url" rel="nofollow"><i class="glyphicon glyphicon-lock"></i>
+                    $sign_in_text</a>
+            #end
+        </div>
 		</div>
 
-		#if (!$is_signed_in)
-			<a href="$sign_in_url" id="sign-in" rel="nofollow">$sign_in_text</a>
-		#end
 
-		#if ($has_navigation || $is_signed_in)
-			#parse ("$full_templates_path/navigation.vm")
-		#end
+        #if ($is_signed_in && $show)
+            #if ($has_navigation || $is_signed_in)
+                #parse ("$full_templates_path/navigation.vm")
+            #end
+        #end
 	</header>
 
 	<div id="content">

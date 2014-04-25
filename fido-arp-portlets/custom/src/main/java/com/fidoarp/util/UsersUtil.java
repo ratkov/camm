@@ -1,6 +1,6 @@
 package com.fidoarp.util;
 
-import com.fidoarp.UserStatus;
+import com.fidoarp.model.UserStatus;
 import com.fidoarp.preferences.UserPreferences;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQueryFactoryUtil;
@@ -54,7 +54,7 @@ public class UsersUtil {
                     String password = PwdGenerator.getPassword();
                     int status = UserStatus.ACTIVE.getStatus();
 
-                    user = UserLocalServiceUtil.addUser(themeDisplay.getUserId(),
+                    user = UserLocalServiceUtil.addUser(0,
                             themeDisplay.getCompanyId(),
                             false, password, password,
                             true, login, email, 0, StringUtils.EMPTY,

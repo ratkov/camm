@@ -250,6 +250,24 @@ public class AppLocalServiceUtil {
         getService().setBeanIdentifier(beanIdentifier);
     }
 
+    public static java.util.List<com.fidoarp.catalog.model.App> getAppByUser(
+        long userId, int start, int end) {
+        return getService().getAppByUser(userId, start, end);
+    }
+
+    public static int getAppCountByUser(long userId) {
+        return getService().getAppCountByUser(userId);
+    }
+
+    public static int getMonthlyAppCountByPartner(long organizationId) {
+        return getService().getMonthlyAppCountByPartner(organizationId);
+    }
+
+    public static int getAppCountByPartnerStatus(long organizationId,
+        long statusId) {
+        return getService().getAppCountByPartnerStatus(organizationId, statusId);
+    }
+
     public static java.util.List<com.fidoarp.catalog.model.App> getSearchResult(
         long id, java.util.Date startDate, java.util.Date endDate,
         java.lang.String name, java.lang.String okpo, java.lang.String phone,

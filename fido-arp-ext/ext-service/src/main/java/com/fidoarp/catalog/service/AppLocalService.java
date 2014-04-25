@@ -225,6 +225,19 @@ public interface AppLocalService extends BaseLocalService,
     public void setBeanIdentifier(java.lang.String beanIdentifier);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public java.util.List<com.fidoarp.catalog.model.App> getAppByUser(
+        long userId, int start, int end);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getAppCountByUser(long userId);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getMonthlyAppCountByPartner(long organizationId);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+    public int getAppCountByPartnerStatus(long organizationId, long statusId);
+
+    @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.util.List<com.fidoarp.catalog.model.App> getSearchResult(
         long id, java.util.Date startDate, java.util.Date endDate,
         java.lang.String name, java.lang.String okpo, java.lang.String phone,

@@ -29,10 +29,16 @@ import com.liferay.portal.kernel.portlet.PortletResponseUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.model.User;
+import com.liferay.portal.security.permission.PermissionChecker;
+import com.liferay.portal.security.permission.PermissionCheckerFactory;
+import com.liferay.portal.security.permission.PermissionCheckerFactoryImpl;
+import com.liferay.portal.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.service.ServiceContext;
 import com.liferay.portal.service.ServiceContextFactory;
 import com.liferay.portal.service.UserLocalServiceUtil;
+import com.liferay.portal.theme.ThemeDisplay;
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 
@@ -217,18 +223,36 @@ public class QueuePortlet extends FidoMVCPortlet  {
 
     private List<App> getApps(PortletRequest renderRequest, Locale locale, long companyId, boolean hasPaging) throws com.liferay.portal.kernel.exception.SystemException {
         try{
+            ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
+            PermissionChecker permissionChecker = themeDisplay.getPermissionChecker();
+            boolean isAdmin = false;
 
             Map<String, Object> map = getAttrMap(renderRequest, companyId);
             boolean search = GetterUtil.getBoolean(renderRequest.getParameter("isSearch"), false);
             Integer itemCount = getItemCount(renderRequest);
 
+            if(permissionChecker.isOmniadmin() || permissionChecker.isCompanyAdmin()){
+                isAdmin = true;
+            }
+
+
             int appCount = 0;
             if(search){
-                appCount = AppLocalServiceUtil.getSearchResultCount((Long)map.get("searchId"), convertDate((String)map.get("searchDateStart")),
+                if(isAdmin){
+                    appCount = AppLocalServiceUtil.getSearchResultCount((Long) map.get("searchId"), convertDate((String) map.get("searchDateStart")),
                         convertDate((String) map.get("searchDateEnd")), (String) map.get("searchName"), (String) map.get("searchOkpo"), (String) map.get("searchPhone"),
                         (Double) map.get("searchSum"), (Long) map.get("searchAppStatus"), (String) map.get("searchComment"), (Long) map.get("searchUser"));
+                } else {
+                    appCount = AppLocalServiceUtil.getSearchResultCount((Long) map.get("searchId"), convertDate((String) map.get("searchDateStart")),
+                            convertDate((String) map.get("searchDateEnd")), (String) map.get("searchName"), (String) map.get("searchOkpo"), (String) map.get("searchPhone"),
+                            (Double) map.get("searchSum"), (Long) map.get("searchAppStatus"), (String) map.get("searchComment"), themeDisplay.getUserId());
+                }
             }else {
-                appCount = AppLocalServiceUtil.getAppsCount();
+                if(isAdmin){
+                    appCount = AppLocalServiceUtil.getAppsCount();
+                }else{
+                    appCount = AppLocalServiceUtil.getAppCountByUser(themeDisplay.getUserId());
+                }
             }
             int start = -1;
             int end = -1;
@@ -249,11 +273,21 @@ public class QueuePortlet extends FidoMVCPortlet  {
                 renderRequest.setAttribute("isSearch", true);
                 renderRequest.setAttribute("mapSearch", map);
 
-                apps =  AppLocalServiceUtil.getSearchResult((Long)map.get("searchId"), convertDate((String)map.get("searchDateStart")),
+                if(isAdmin){
+                    apps =  AppLocalServiceUtil.getSearchResult((Long)map.get("searchId"), convertDate((String)map.get("searchDateStart")),
                         convertDate((String) map.get("searchDateEnd")), (String) map.get("searchName"), (String) map.get("searchOkpo"), (String) map.get("searchPhone"),
                         (Double) map.get("searchSum"), (Long) map.get("searchAppStatus"), (String) map.get("searchComment"), (Long) map.get("searchUser"), start, end);
+                } else {
+                    apps =  AppLocalServiceUtil.getSearchResult((Long)map.get("searchId"), convertDate((String)map.get("searchDateStart")),
+                            convertDate((String) map.get("searchDateEnd")), (String) map.get("searchName"), (String) map.get("searchOkpo"), (String) map.get("searchPhone"),
+                            (Double) map.get("searchSum"), (Long) map.get("searchAppStatus"), (String) map.get("searchComment"), themeDisplay.getUserId(), start, end);
+                }
             }else{
-                apps = AppLocalServiceUtil.getApps(start, end);
+                if(isAdmin){
+                    apps = AppLocalServiceUtil.getApps(start, end);
+                }else{
+                    apps = AppLocalServiceUtil.getAppByUser(themeDisplay.getUserId(), start, end);
+                }
             }
 
 
@@ -263,6 +297,7 @@ public class QueuePortlet extends FidoMVCPortlet  {
             }
 
             renderRequest.setAttribute("apps", appWrappers);
+            renderRequest.setAttribute("isAdmin", isAdmin);
 
             return apps;
         }catch (Exception e){

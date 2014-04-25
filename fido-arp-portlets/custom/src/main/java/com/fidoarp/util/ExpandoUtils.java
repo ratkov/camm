@@ -53,16 +53,7 @@ public class ExpandoUtils {
     public static void addUserValues(User user, String attrName, long attrValue) throws SystemException, PortalException {
         ExpandoTable table = getExpandoTable();
         ExpandoColumn column = getColumn(table, attrName);
-
-        ExpandoValue value = ExpandoValueLocalServiceUtil.createExpandoValue(CounterLocalServiceUtil.increment());
-        value.setClassNameId(ClassNameLocalServiceUtil.getClassNameId(User.class));
-        value.setTableId(table.getTableId());
-        value.setColumn(column);
-        value.setCompanyId(column.getCompanyId());
-        value.setClassPK(user.getUserId());
-        value.setData(String.valueOf(attrValue));
-
-        ExpandoValueLocalServiceUtil.addExpandoValue(value);
+        ExpandoValueLocalServiceUtil.addValue(column.getCompanyId(), User.class.getName(), table.getName(), column.getName(), user.getUserId(), attrValue);
     }
 
     public static void updateUserValues(long userId, long companyId, String status) {
