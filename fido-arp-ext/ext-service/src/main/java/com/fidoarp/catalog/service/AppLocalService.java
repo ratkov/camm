@@ -242,12 +242,12 @@ public interface AppLocalService extends BaseLocalService,
         long id, java.util.Date startDate, java.util.Date endDate,
         java.lang.String name, java.lang.String okpo, java.lang.String phone,
         double creditAmount, long statusId, java.lang.String comment,
-        long userId, int start, int end);
+        long userId, long organizationId, int start, int end);
 
     @Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
     public java.lang.Integer getSearchResultCount(long id,
         java.util.Date startDate, java.util.Date endDate,
         java.lang.String name, java.lang.String okpo, java.lang.String phone,
         double creditAmount, long statusId, java.lang.String comment,
-        long userId);
+        long userId, long organizationId);
 }

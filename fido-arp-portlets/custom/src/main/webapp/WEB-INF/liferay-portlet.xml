@@ -7,6 +7,11 @@
 		<instanceable>false</instanceable>
 		<header-portlet-css>/html/css/main.css</header-portlet-css>
 		<footer-portlet-javascript>/html/js/main.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/jquery.form.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/class.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/validation-config.js</footer-portlet-javascript>
+		<footer-portlet-javascript>/html/js/partners/partners.js</footer-portlet-javascript>
 		<css-class-wrapper>fido-arp-partners-portlet</css-class-wrapper>
 	</portlet>
 	<portlet>
@@ -27,6 +32,7 @@
         <footer-portlet-javascript>/html/js/jquery.inputmask.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/ui.datepicker-ru.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/ui.datepicker-uk.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/validation-config.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/jquery.serialize-object.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/jQuery.ajaxQueue.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/dateSelectBoxes.js</footer-portlet-javascript>
@@ -43,6 +49,7 @@
         <header-portlet-css>/html/css/main.css</header-portlet-css>
         <footer-portlet-javascript>/html/js/jquery.validate.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/jquery.inputmask.js</footer-portlet-javascript>
+        <footer-portlet-javascript>/html/js/validation-config.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/jquery.serialize-object.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/jQuery.ajaxQueue.js</footer-portlet-javascript>
         <footer-portlet-javascript>/html/js/template/dateSelectBoxes.js</footer-portlet-javascript>

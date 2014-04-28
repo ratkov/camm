@@ -272,20 +272,20 @@ public class AppLocalServiceUtil {
         long id, java.util.Date startDate, java.util.Date endDate,
         java.lang.String name, java.lang.String okpo, java.lang.String phone,
         double creditAmount, long statusId, java.lang.String comment,
-        long userId, int start, int end) {
+        long userId, long organizationId, int start, int end) {
         return getService()
                    .getSearchResult(id, startDate, endDate, name, okpo, phone,
-            creditAmount, statusId, comment, userId, start, end);
+            creditAmount, statusId, comment, userId, organizationId, start, end);
     }
 
     public static java.lang.Integer getSearchResultCount(long id,
         java.util.Date startDate, java.util.Date endDate,
         java.lang.String name, java.lang.String okpo, java.lang.String phone,
         double creditAmount, long statusId, java.lang.String comment,
-        long userId) {
+        long userId, long organizationId) {
         return getService()
                    .getSearchResultCount(id, startDate, endDate, name, okpo,
-            phone, creditAmount, statusId, comment, userId);
+            phone, creditAmount, statusId, comment, userId, organizationId);
     }
 
     public static AppLocalService getService() {

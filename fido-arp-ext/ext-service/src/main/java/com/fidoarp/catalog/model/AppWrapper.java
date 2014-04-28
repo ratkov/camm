@@ -695,7 +695,7 @@ public class AppWrapper implements App, ModelWrapper<App> {
         return new AppWrapper((App) _app.clone());
     }
 
-    public int compareTo(App app) {
+    public int compareTo(com.fidoarp.catalog.model.App app) {
         return _app.compareTo(app);
     }
 
@@ -704,15 +704,15 @@ public class AppWrapper implements App, ModelWrapper<App> {
         return _app.hashCode();
     }
 
-    public com.liferay.portal.model.CacheModel<App> toCacheModel() {
+    public com.liferay.portal.model.CacheModel<com.fidoarp.catalog.model.App> toCacheModel() {
         return _app.toCacheModel();
     }
 
-    public App toEscapedModel() {
+    public com.fidoarp.catalog.model.App toEscapedModel() {
         return new AppWrapper(_app.toEscapedModel());
     }
 
-    public App toUnescapedModel() {
+    public com.fidoarp.catalog.model.App toUnescapedModel() {
         return new AppWrapper(_app.toUnescapedModel());
     }
 

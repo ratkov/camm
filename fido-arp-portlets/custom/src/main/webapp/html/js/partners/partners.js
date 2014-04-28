@@ -3,66 +3,11 @@ PartnersProcessor = Class.extend({
     init: function (namespace) {
         this.namespace = namespace;
 
-        var $this = this,
-            $statusDialog = $('#' + namespace + 'dialog-status'),
-            $passwordDialog = $('#' + namespace + 'dialog-password'),
-            $form = $('#' + namespace + 'statusForm');
+        var $this = this;
 
-        $statusDialog.dialog({
-            closeOnEscape: false,
-            modal: true,
-            autoOpen: false,
-            resizable: false,
-            height: 250,
-            width: 450,
-            buttons: [
-                {
-                    id: "ok",
-                    click: function (e) {
-                        $form.ajaxSubmit({
-                            success: function (data) {
-                                var parsedMessage = $.parseJSON($.parseJSON(data).resultMap),
-                                    $statusForm = $('#' + namespace + 'statusForm'),
-                                    $content = $('#' + namespace + 'successContent');
+        $this.setValidator();
 
-                                if (parsedMessage.length == 0) {
-                                    $statusForm.hide();
-
-                                    $('#ok').hide();
-                                    $('#cancel').text("OK");
-
-                                    $content.show();
-                                } else {
-                                    $('#' + $this.namespace + 'changeStatusError')
-                                        .empty()
-                                        .append(parsedMessage[0].value).show().addClass('alert alert-danger');
-                                }
-                            }
-                        });
-                    }
-                },
-                {
-                    id: "cancel",
-                    click: function () {
-                        window.location.reload();
-                    }
-                }
-            ]
-
-        });
-
-        $(document).on('click','#' + namespace + 'showUserForm', function(e) {
-            e.preventDefault();
-            $(document.body).append("<div id='modal-window' class='ui-widget-overlay ui-front' style='display: block;'></div>");
-
-            var url = $("#addUser").val(),
-                data = {userId: null};
-
-            $this.viewMode(url, data);
-
-        });
-
-        $(document).on("click", ".editUser", function (e) {
+        $(document).on("click", ".editStatus", function (e) {
             $(document.body).append("<div id='modal-window' class='ui-widget-overlay ui-front' style='display: block;'></div>");
             var url = $("#addUser").val();
             var data = {
@@ -72,30 +17,22 @@ PartnersProcessor = Class.extend({
             $this.viewMode(url, data);
         });
 
-        // Add new user
-        $(document).on('click', '#' + namespace + 'addUser', $.proxy(function (e) {
+        $(document).on('click', ".change-status", function (e) {
             e.preventDefault();
 
-            var $userForm = $('#' + namespace + 'usersForm'),
-                $link = $('#' + namespace + 'addUser');
+            $('#' + namespace + 'dialog-status').html("");
+            var $statusDialogHtml = $('#' + namespace + 'dialog-status-script').html();
+            var container = $($statusDialogHtml);
+            var title = $("#" + $this.namespace + "title-dialog").val() + $(this).data("name");
 
-            $this.submitFormAjax($userForm, $link);
+            $(container).dialog({
+                closeOnEscape: false,
+                title: title,
+                appendTo: '#' + namespace + 'dialog-status'
+            });
 
-        }, this));
-
-        $(document).on('click', '#' + namespace + "changeStatus", function (e) {
-            e.preventDefault();
-
-            $statusDialog.dialog("open");
-
-            var $loginName = $(e.target).parents("tr").find("td[id*='login'] ").text().trim(),
-                $userId = $(e.target).parents("tr").find("td[id*='id'] ").text().trim(),
-                $dialogTitle = $('#ui-id-1'),
-                $inputIdField = $('#' + namespace + 'userId');
-
-            $dialogTitle.append($loginName);
-            $inputIdField.val($userId);
-
+            $(container).find("#"+$this.namespace+"partnerId").val($(this).data("partner"));
+            $(container).find("input[type='radio'][value='"+$(this).data("status")+"']").attr("checked","checked");
         });
 
         if ($(".pagination").length) {
@@ -106,26 +43,89 @@ PartnersProcessor = Class.extend({
                 e.preventDefault();
                 $(document.body).append("<div id='modal-window' class='ui-widget-overlay ui-front' style='display: block;'></div>");
 
-                var url = $("#paginator").val(),
-                    data = {
-                        cpage: $(this).data("page"),
-                        partnerId: $("#" + namespace + "partners option:selected").val()
-                    };
+                var url = $("#"+ $this.namespace +"paginator").val(),
+                data = {
+                    cpage: $(this).data("page")
+                };
 
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: data,
-                    success: function (data) {
-                        $('#' + namespace + 'userTable').empty().html(data);
-                        $("#modal-window").remove();
-                    }, error: function () {
-                        $("#modal-window").remove();
-                    }
-                })
+                $this.viewMode(url, data);
             });
         }
 
+    },
+
+    setValidator: function(){
+        var $this = this;
+
+        var locale = $("#"+ $this.namespace +"partner-view").find(".validationForm").data("locale");
+
+        if(!!locale && locale.length){
+            setValidationConfig(locale);
+
+            $(".validationForm").each(function() {
+                var form = $(this);
+
+                var v = form.validate({
+                    errorElement: "span",
+                    showErrors: function(errorMap, errorList) {
+                        if (errorList.length) {
+                            var s = errorList.shift();
+                            var n = [];
+                            n.push(s);
+                            this.errorList = n;
+                        }
+                        this.defaultShowErrors();
+                    },
+                    highlight: function(element) {
+                        $(element).closest('.regRow').addClass('errorP');
+                        if ($(element).hasClass('sel')) {
+                            $(element).parent().children('.sbHolder').addClass('error');
+                        } else {
+                            $(element).addClass('error');
+                        }
+                    },
+                    unhighlight: function(element) {
+                        $(element).closest('.regRow').removeClass('errorP');
+                        $(element).removeClass('error');
+                        $(element).parent().children('.sbHolder').removeClass('error');
+                    },
+                    invalidHandler: function(form, validator) {
+                        $(".validateForm").each(function() {
+                            $(this).addClass('invalidForm');
+                        });
+                    }
+                });
+
+                $(form).on("keydown keypress keyup", function(e) {
+                    var KEY_ENTER = 13;
+                    if (e.keyCode == KEY_ENTER) {
+                        e.preventDefault();
+                        return false;
+                    }
+                });
+
+                $(form).on("click", "#"+ $this.namespace +"add-partner", function(event) {
+                    event.preventDefault();
+                    $(form).valid();
+                    if($(form).valid()) {
+                        $(form).submit();
+                    } else {
+                        if (!v.numberOfInvalids())
+                            return;
+
+                        v.errorList[0].element.focus();
+                        if($(v.errorList[0].element).offset().top < 0){
+                            $(window).scrollTop( $(v.errorList[0].element).next().offset().top )
+                        } else {
+                            $(window).scrollTop( $(v.errorList[0].element).offset().top )
+                        }
+                    }
+                    return false;
+                });
+
+
+            });
+        }
     },
 
     submitFormAjax: function (form, link) {
@@ -156,12 +156,14 @@ PartnersProcessor = Class.extend({
     },
 
     viewMode: function (url, data) {
+        var $this = this;
+
         $.ajax({
             type: "POST",
             url: url,
             data: data,
             success: function (data) {
-                $("#userWrapper").html(data);
+                $("#"+ $this.namespace +"partner-view").html(data);
                 $("#modal-window").remove();
             },
             error: function () {

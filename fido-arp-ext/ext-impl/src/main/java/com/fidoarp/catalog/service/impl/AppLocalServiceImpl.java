@@ -92,7 +92,8 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
     }
 
     public List<App> getSearchResult(long id, Date startDate, Date endDate, String name, String okpo, String phone,
-                                     double creditAmount, long statusId, String comment, long userId, int start, int end){
+                                     double creditAmount, long statusId, String comment, long userId,
+                                     long organizationId, int start, int end){
         try {
             DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(App.class);
             if(id != 0){
@@ -131,6 +132,10 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
                 Criterion userIdCriterion = PropertyFactoryUtil.forName("userId").eq(userId);
                 dynamicQuery.add(userIdCriterion);
             }
+            if(organizationId != 0)  {
+                Criterion organizationIdCriterion = PropertyFactoryUtil.forName("organizationId").eq(organizationId);
+                dynamicQuery.add(organizationIdCriterion);
+            }
             dynamicQuery.setLimit(start, end);
 
             return appLocalService.dynamicQuery(dynamicQuery);
@@ -141,7 +146,7 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
     }
 
     public Integer getSearchResultCount(long id, Date startDate, Date endDate, String name, String okpo, String phone,
-                                     double creditAmount, long statusId, String comment, long userId){
+                                     double creditAmount, long statusId, String comment, long userId, long organizationId){
         try {
             DynamicQuery dynamicQuery = DynamicQueryFactoryUtil.forClass(App.class);
             if(id != 0){
@@ -179,6 +184,10 @@ public class AppLocalServiceImpl extends AppLocalServiceBaseImpl {
             if(userId != 0)  {
                 Criterion userIdCriterion = PropertyFactoryUtil.forName("userId").eq(userId);
                 dynamicQuery.add(userIdCriterion);
+            }
+            if(organizationId != 0)  {
+                Criterion organizationIdCriterion = PropertyFactoryUtil.forName("organizationId").eq(organizationId);
+                dynamicQuery.add(organizationIdCriterion);
             }
             return ((Long)appLocalService.dynamicQueryCount(dynamicQuery)).intValue();
         } catch (Exception e) {
