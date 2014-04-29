@@ -11,6 +11,9 @@
         <a href="javascript:void(0);" id="showSearch" class="btn btn-default" data-show="search-box"><liferay-ui:message key="queues.search"/></a>
     </div>
 </div>
+<h1>
+    ${partnerName}
+</h1>
 <div class="panel-search <c:if test="${isSearch}">show</c:if>" id="search-box">
     <c:import url="search.jsp"/>
 </div>

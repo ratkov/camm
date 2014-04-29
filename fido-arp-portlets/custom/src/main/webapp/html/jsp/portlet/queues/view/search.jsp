@@ -2,6 +2,7 @@
 
 <form role="form" class="form-horizontal" action="${search}" method="post">
     <input type="hidden" name="isSearch" id="isSearch" value="${isSearch}" />
+    <input type="hidden" name="partner" id="partner" value="${partner}" />
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">

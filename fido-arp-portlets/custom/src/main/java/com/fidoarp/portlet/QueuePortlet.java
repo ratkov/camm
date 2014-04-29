@@ -318,6 +318,10 @@ public class QueuePortlet extends FidoMVCPortlet  {
 
             renderRequest.setAttribute("apps", appWrappers);
             renderRequest.setAttribute("isAdmin", isAdmin);
+            if(partner != 0){
+                renderRequest.setAttribute("partner", partner);
+                renderRequest.setAttribute("partnerName", OrganizationLocalServiceUtil.getOrganization(partner).getName());
+            }
 
             return apps;
         }catch (Exception e){
